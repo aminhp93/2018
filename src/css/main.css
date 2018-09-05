@@ -1,0 +1,17 @@
+.goldenLayout {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.lm_header {
+  background: #262b3e;
+  z-index: 101;
+  height: 32px;
+}
+
+.lm_content {
+  background: #171b29;
+}
