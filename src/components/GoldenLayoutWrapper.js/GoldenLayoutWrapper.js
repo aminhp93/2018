@@ -17,7 +17,7 @@ class GoldenLayoutWrapper extends React.Component {
         this.initGoldenLayout = this.initGoldenLayout.bind(this);
     }
     componentDidMount() {
-        this.initGoldenLayout();
+        // this.initGoldenLayout();
     }
     initGoldenLayout() {
         new Promise((resolve) => {
@@ -95,7 +95,7 @@ class GoldenLayoutWrapper extends React.Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <div className='goldenLayout' ref={input => this.layout = input} />
+                    {/* <div className='goldenLayout' ref={input => this.layout = input} /> */}
                     <App />
                 </div>
 
