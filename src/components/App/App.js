@@ -1,11 +1,35 @@
 import React from 'react';
 import Book from '../Book';
+import { I18n } from 'react-i18next';
+import CustomedDropdown from '../Ultilities/CustomedDropdown';
 
-import CustomedDropdown from '../Ultilities/CustomedDropdown'
 class App extends React.Component {
     render() {
         return (
             <div>
+                <I18n>
+                    {
+                        (t, { i18n }) => (
+                            <div>
+                                <h1>{t('test')}</h1>
+                                <button
+                                    onClick={() => { i18n.changeLanguage('vi'); }}>{t('vi')}
+                                </button>
+                                <button
+                                    onClick={() => { i18n.changeLanguage('en'); }}>{t('en')}
+                                </button>
+                                <a
+                                    href='https://github.com/i18next/react-i18next'
+                                    target='_blank'
+                                    rel="noopener noreferrer"
+                                >
+                                    {t('nav:link1')}
+                                </a>
+                            </div>
+                        )
+                    }
+                </I18n>
+
                 <a href='https://vndirectcareers.com/viec-lam/thuc-tap-sinh-ngan-hang-dau-tu.35a65311.html'>Thuc tap sinh ngan hang dau tu</a>/>
                 <div>
                     Ngành nghề: Chứng khoán, Kế toán / Kiểm toán, Ngân hàng, Tài chính / Đầu tư
