@@ -95,7 +95,7 @@ class GoldenLayoutWrapper extends React.Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <div className='goldenLayout' ref={input => this.layout = input} />
+                    {/* <div className='goldenLayout' ref={input => this.layout = input} /> */}
                     <App />
                 </div>
 
