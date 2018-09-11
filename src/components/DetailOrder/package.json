@@ -1,0 +1,6 @@
+{
+    "name": "DetailOrder",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./DetailOrder.js"
+}

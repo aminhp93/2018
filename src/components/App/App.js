@@ -1,5 +1,6 @@
 import React from 'react';
 import Book from '../Book';
+import DetailOrder from '../DetailOrder';
 import { I18n } from 'react-i18next';
 import CustomedDropdown from '../Ultilities/CustomedDropdown';
 
@@ -7,6 +8,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
+                <DetailOrder />
                 <I18n>
                     {
                         (t, { i18n }) => (
