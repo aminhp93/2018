@@ -17,7 +17,7 @@ class GoldenLayoutWrapper extends React.Component {
         this.initGoldenLayout = this.initGoldenLayout.bind(this);
     }
     componentDidMount() {
-        this.initGoldenLayout();
+        // this.initGoldenLayout();
     }
     initGoldenLayout() {
         new Promise((resolve) => {
