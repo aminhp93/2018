@@ -1,13 +1,15 @@
 import React from 'react';
+import { I18n } from 'react-i18next';
 import Book from '../Book';
 import DetailOrder from '../DetailOrder';
-import { I18n } from 'react-i18next';
+import Header from '../Header';
 import CustomedDropdown from '../Ultilities/CustomedDropdown';
 
 class App extends React.Component {
     render() {
         return (
             <div>
+                <Header />
                 <DetailOrder />
                 <I18n>
                     {

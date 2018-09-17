@@ -1,13 +1,31 @@
 import React from 'react';
+import axios from 'axios';
+
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import { getCompanyInfoUrl } from '../../helpers/requests';
 
 const interest = 1.2
-const stoploss = 0.93
+// const stoploss = 0.93
 
 class DetailOrder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            price: 0
+            price: 0,
+            companyObj: {},
+            columnDefs: [
+                { headerName: "Make", field: "make" },
+                { headerName: "Model", field: "model" },
+                { headerName: "Price", field: "price" }
+
+            ],
+            rowData: [
+                { make: "Toyota", model: "Celica", price: 35000 },
+                { make: "Ford", model: "Mondeo", price: 32000 },
+                { make: "Porsche", model: "Boxter", price: 72000 }
+            ]
         }
     }
 
@@ -44,11 +62,40 @@ class DetailOrder extends React.Component {
                         {this.state.price * interest}
                     </div>
                 </div>
-
+                <div>
+                    Company Name: {this.state.companyObj.InternationalName || ''}
+                </div>
+                <div
+                    className="ag-theme-balham"
+                    style={{
+                        height: '500px',
+                        width: '600px'
+                    }}
+                >
+                    <AgGridReact
+                        columnDefs={this.state.columnDefs}
+                        rowData={this.state.rowData}>
+                    </AgGridReact>
+                </div>
 
             </div>
 
         )
+    }
+
+    componentDidMount() {
+        const url = getCompanyInfoUrl('FPT')
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    this.setState({
+                        companyObj: response.data
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 }
 
