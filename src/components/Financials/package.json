@@ -1,0 +1,6 @@
+{
+    "name": "Financials",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./Financials.js"
+}

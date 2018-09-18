@@ -1,11 +1,24 @@
 import React from 'react';
 import axios from 'axios';
 
-import { AgGridReact } from 'ag-grid-react';
+// import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { getCompanyInfoUrl } from '../../helpers/requests';
+import { Tab } from 'semantic-ui-react';
+import CustomedTabPane from '../Ultilities/CustomedTabPane/';
+// import 
 
+const panes = [
+    { menuItem: 'Transaction', render: () => <CustomedTabPane title='Transaction' /> },
+    { menuItem: 'Profile', render: () => <CustomedTabPane title='Profile' /> },
+    { menuItem: 'Shareholders', render: () => <CustomedTabPane title='Shareholders' /> },
+    { menuItem: 'Capital and Dividend', render: () => <CustomedTabPane title='Capital and Dividend' /> },
+    { menuItem: 'News', render: () => <CustomedTabPane title='News' /> },
+    { menuItem: 'Price', render: () => <CustomedTabPane title='Price' /> },
+    { menuItem: 'Financials', render: () => <CustomedTabPane title='Financials' /> },
+    { menuItem: 'Technical Analysis', render: () => <CustomedTabPane title='Technical Analysis' /> },
+]
 const interest = 1.2
 // const stoploss = 0.93
 
@@ -65,7 +78,7 @@ class DetailOrder extends React.Component {
                 <div>
                     Company Name: {this.state.companyObj.InternationalName || ''}
                 </div>
-                <div
+                {/* <div
                     className="ag-theme-balham"
                     style={{
                         height: '500px',
@@ -76,7 +89,12 @@ class DetailOrder extends React.Component {
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}>
                     </AgGridReact>
-                </div>
+                </div> */}
+
+
+                <Tab panes={panes} />
+
+
 
             </div>
 

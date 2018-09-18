@@ -1,0 +1,6 @@
+{
+    "name": "TechnicalAnalysis",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./TechnicalAnalysis.js"
+}
