@@ -15,3 +15,15 @@ export function getAllIndustryFinancialInfoUrl() {
 export function getAlertsUrl() {
     return 'https://www.fireant.vn/api/Data/Alerts/Alerts'
 }
+
+export function getIntradayQuotesUrl(symbol) {
+    return 'https://svr2.fireant.vn/api/Data/Markets/IntradayQuotes?symbol=' + symbol
+}
+
+export function getMajorHolderTransactionsRangeUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/MajorHolderTransactionsRange?symbol=' + symbol + '&startDate=2017-9-25&endDate=2037-1-1'
+}
+
+export function getTimescaleMarksUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/TimescaleMarks?symbol=' + symbol + '&startDate=2017-9-25&endDate=2037-1-1'
+}

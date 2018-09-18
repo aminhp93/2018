@@ -28,3 +28,16 @@
 .lm_content {
   background: #171b29;
 }
+
+.companyInfo{
+  display: flex;
+}
+.companyInfo > div{
+  padding: 8px;
+  width: 100%;
+}
+
+.companyInfo > div .row{
+  display: flex;
+  justify-content: space-between;
+}

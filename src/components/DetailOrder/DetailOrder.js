@@ -51,7 +51,7 @@ class DetailOrder extends React.Component {
     render() {
         return (
             <div>
-                <div className='row'>
+                {/* <div className='row'>
                     <div>
                         Price
                     </div>
@@ -77,7 +77,7 @@ class DetailOrder extends React.Component {
                 </div>
                 <div>
                     Company Name: {this.state.companyObj.InternationalName || ''}
-                </div>
+                </div> */}
                 {/* <div
                     className="ag-theme-balham"
                     style={{
@@ -90,30 +90,24 @@ class DetailOrder extends React.Component {
                         rowData={this.state.rowData}>
                     </AgGridReact>
                 </div> */}
-
-
                 <Tab panes={panes} />
-
-
-
             </div>
-
         )
     }
 
     componentDidMount() {
-        const url = getCompanyInfoUrl('FPT')
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    this.setState({
-                        companyObj: response.data
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
+        // const url = getCompanyInfoUrl('FPT')
+        // axios.get(url)
+        //     .then(response => {
+        //         if (response.data) {
+        //             this.setState({
+        //                 companyObj: response.data
+        //             })
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log(error.response)
+        //     });
     }
 }
 

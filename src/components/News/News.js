@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default class Shareholder extends React.Component {
+export default class News extends React.Component {
 
     render() {
         return (
             <div>
-                Shareholder
+                News
            </div>
         );
     }

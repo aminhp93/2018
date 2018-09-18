@@ -11,7 +11,7 @@ class App extends React.Component {
             <div>
                 <Header />
                 <DetailOrder />
-                <I18n>
+                {/* <I18n>
                     {
                         (t, { i18n }) => (
                             <div>
@@ -32,9 +32,9 @@ class App extends React.Component {
                             </div>
                         )
                     }
-                </I18n>
+                </I18n> */}
 
-                <a href='https://vndirectcareers.com/viec-lam/thuc-tap-sinh-ngan-hang-dau-tu.35a65311.html'>Thuc tap sinh ngan hang dau tu</a>/>
+                {/* <a href='https://vndirectcareers.com/viec-lam/thuc-tap-sinh-ngan-hang-dau-tu.35a65311.html'>Thuc tap sinh ngan hang dau tu</a>/>
                 <div>
                     Ngành nghề: Chứng khoán, Kế toán / Kiểm toán, Ngân hàng, Tài chính / Đầu tư
                 </div>
@@ -62,8 +62,8 @@ class App extends React.Component {
 
                 <Book />
 
-                <div>Helloworld1</div>
-                <CustomedDropdown />
+                <div>Helloworld1</div> */}
+                {/* <CustomedDropdown /> */}
             </div>
         )
     }
