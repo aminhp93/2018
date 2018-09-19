@@ -46,3 +46,26 @@ export function getHistoricalQuotesUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
 }
 
+export function getYearlyFinancialInfoUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/YearlyFinancialInfo?symbol=' + symbol + '&fromYear=2015&toYear=2018'
+}
+
+export function getQuarterlyFinancialInfoUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/QuarterlyFinancialInfo?symbol=' + symbol + '&fromYear=2015&fromQuarter=1&toYear=2018&toQuarter=4'
+}
+
+export function getHistoricalQuotesBeforeUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Markets/HistoricalQuotesBefore?symbol=' + symbol + '&days=20'
+}
+
+export function getPivotPointsUrl() {
+    return 'https://www.fireant.vn/api/Data/Technical/PivotPoints'
+}
+
+export function getTechnicalIndicatorsUrl() {
+    return 'https://www.fireant.vn/api/Data/Technical/TechnicalIndicators'
+}
+
+export function getMovingAveragesUrl() {
+    return 'https://www.fireant.vn/api/Data/Technical/MovingAverages'
+}
