@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom';
 import GoldenLayout from 'golden-layout';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import App from '../App';
+import App from './App';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import layoutConfig from '../../layoutConfig';
+import layoutConfig from '../layoutConfig';
 
 window.React = React;
 window.ReactDOM = ReactDOM;

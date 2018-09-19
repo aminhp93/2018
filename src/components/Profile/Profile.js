@@ -1,36 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import { getCompanyInfoUrl, getMajorHolderTransactionsRangeUrl, getTimescaleMarksUrl } from '../../helpers/requests';
+import { getCompanyInfoUrl } from '../../helpers/requests';
 
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyInfoObj: {},
-            majorHolderObj: [],
-            timescaleObj: []
-        }
-    }
-
-    renderMajorHolder() {
-        if (this.state.majorHolderObj && this.state.majorHolderObj.length) {
-            const a = this.state.majorHolderObj.map(item => {
-                return <div key={item.TransactionID}>{item.Name}</div>
-            })
-            return a
-        } else {
-            return null
-        }
-    }
-
-    renderTimescale() {
-        if (this.state.majorHolderObj && this.state.majorHolderObj.length) {
-            const a = this.state.majorHolderObj.map(item => {
-                return <div key={item.ID}>{item.Title}</div>
-            })
-            return a
-        } else {
-            return null
+            companyInfoObj: {}
         }
     }
 
@@ -151,8 +127,7 @@ export default class Profile extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.renderMajorHolder()}
-                {this.renderTimescale()}
+
             </div>
         );
     }
@@ -164,32 +139,6 @@ export default class Profile extends React.Component {
                 if (response.data) {
                     this.setState({
                         companyInfoObj: response.data
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-
-        url = getMajorHolderTransactionsRangeUrl('FPT')
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    this.setState({
-                        majorHolderObj: response.data
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-
-        url = getTimescaleMarksUrl('FPT')
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    this.setState({
-                        timescaleObj: response.data
                     })
                 }
             })

@@ -8,7 +8,7 @@ import News from '../../News';
 import Price from '../../Price';
 import Financials from '../../Financials';
 import TechnicalAnalysis from '../../TechnicalAnalysis';
-
+import CustomedTable from '../CustomedTable';
 export default class CustomedTabPane extends React.Component {
 
     render() {
@@ -29,6 +29,12 @@ export default class CustomedTabPane extends React.Component {
                 return <Tab.Pane><Financials /></Tab.Pane>
             case 'Technical Analysis':
                 return <Tab.Pane><TechnicalAnalysis /></Tab.Pane>
+            case 'AllShareholders':
+                return <Tab.Pane><CustomedTable data={this.props.data} /></Tab.Pane>
+            case 'Individuals':
+                return <Tab.Pane><CustomedTable /></Tab.Pane>
+            case 'Organizations':
+                return <Tab.Pane><CustomedTable /></Tab.Pane>
             default:
                 return <div>Test</div>
         }

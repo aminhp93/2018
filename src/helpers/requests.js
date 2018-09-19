@@ -27,3 +27,7 @@ export function getMajorHolderTransactionsRangeUrl(symbol) {
 export function getTimescaleMarksUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/TimescaleMarks?symbol=' + symbol + '&startDate=2017-9-25&endDate=2037-1-1'
 }
+
+export function getMajorHoldersUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/MajorHolders?symbol=' + symbol
+}

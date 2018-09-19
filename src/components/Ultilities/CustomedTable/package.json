@@ -1,0 +1,6 @@
+{
+    "name": "CustomedTable",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./CustomedTable.js"
+}
