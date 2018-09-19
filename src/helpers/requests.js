@@ -31,3 +31,7 @@ export function getTimescaleMarksUrl(symbol) {
 export function getMajorHoldersUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/MajorHolders?symbol=' + symbol
 }
+
+export function getEquityAndDividendsUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/EquityAndDividends?symbol=' + symbol + '&count=5'
+}
