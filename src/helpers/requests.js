@@ -1,5 +1,3 @@
-// import axios from 'axios';
-
 export function getCompanyInfoUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/CompanyInfo?symbol=' + symbol
 }
@@ -35,3 +33,16 @@ export function getMajorHoldersUrl(symbol) {
 export function getEquityAndDividendsUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/EquityAndDividends?symbol=' + symbol + '&count=5'
 }
+
+export function getCompanyNewsUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/News/CompanyNews?symbol=' + symbol + '&startIndex=0&count=10'
+}
+
+export function getCompanyNewsCountUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/News/CompanyNewsCount?symbol=' + symbol
+}
+
+export function getHistoricalQuotesUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
+}
+
