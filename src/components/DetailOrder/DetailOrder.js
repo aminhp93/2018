@@ -1,23 +1,29 @@
 import React from 'react';
 import axios from 'axios';
-
 // import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { getCompanyInfoUrl } from '../../helpers/requests';
-import { Tab } from 'semantic-ui-react';
-import CustomedTabPane from '../Ultilities/CustomedTabPane/';
-// import 
+import Transaction from '../Transaction';
+import Profile from '../Profile';
+import Shareholder from '../Shareholder';
+import CapitalAndDividend from '../CapitalAndDividend';
+import News from '../News';
+import Price from '../Price';
+import Financials from '../Financials';
+import TechnicalAnalysis from '../TechnicalAnalysis';
+import { Tab } from 'semantic-ui-react'
+import CustomedTab from '../Ultilities/CustomedTab/CustomedTab';
 
 const panes = [
-    { menuItem: 'Transaction', render: () => <CustomedTabPane title='Transaction' /> },
-    { menuItem: 'Profile', render: () => <CustomedTabPane title='Profile' /> },
-    { menuItem: 'Shareholders', render: () => <CustomedTabPane title='Shareholders' /> },
-    { menuItem: 'Capital and Dividend', render: () => <CustomedTabPane title='Capital and Dividend' /> },
-    { menuItem: 'News', render: () => <CustomedTabPane title='News' /> },
-    { menuItem: 'Price', render: () => <CustomedTabPane title='Price' /> },
-    { menuItem: 'Financials', render: () => <CustomedTabPane title='Financials' /> },
-    { menuItem: 'Technical Analysis', render: () => <CustomedTabPane title='Technical Analysis' /> },
+    { menuItem: 'Transaction', render: () => <Tab.Pane> <Transaction /></Tab.Pane> },
+    { menuItem: 'Profile', render: () => <Tab.Pane> <Profile /></Tab.Pane> },
+    { menuItem: 'Shareholders', render: () => <Tab.Pane> <Shareholder /></Tab.Pane> },
+    { menuItem: 'Capital and Dividend', render: () => <Tab.Pane> <CapitalAndDividend /></Tab.Pane> },
+    { menuItem: 'News', render: () => <Tab.Pane> <News /></Tab.Pane> },
+    { menuItem: 'Price', render: () => <Tab.Pane> <Price /></Tab.Pane> },
+    { menuItem: 'Financials', render: () => <Tab.Pane> <Financials /></Tab.Pane> },
+    { menuItem: 'Technical Analysis', render: () => <Tab.Pane> <TechnicalAnalysis /></Tab.Pane> },
 ]
 const interest = 1.2
 // const stoploss = 0.93
@@ -50,7 +56,7 @@ class DetailOrder extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='detailOrder'>
                 {/* <div className='row'>
                     <div>
                         Price
@@ -91,6 +97,7 @@ class DetailOrder extends React.Component {
                     </AgGridReact>
                 </div> */}
                 <Tab panes={panes} />
+                <CustomedTab panes={panes} />
             </div>
         )
     }

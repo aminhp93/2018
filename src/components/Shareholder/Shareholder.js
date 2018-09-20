@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { getMajorHoldersUrl, getTimescaleMarksUrl } from '../../helpers/requests';
 import { Tab } from 'semantic-ui-react';
-import CustomedTabPane from '../Ultilities/CustomedTabPane/';
+// import CustomedTab from '../Ultilities/CustomedTab/';
 
 
 export default class Shareholder extends React.Component {
@@ -14,9 +14,9 @@ export default class Shareholder extends React.Component {
         }
 
         this.panes = [
-            { menuItem: 'Tat ca', render: () => <CustomedTabPane title='AllShareholders' data={this.state.majorHoldersObj} /> },
-            { menuItem: 'Ca nhan', render: () => <CustomedTabPane title='Individuals' /> },
-            { menuItem: 'To chuc', render: () => <CustomedTabPane title='Organizations' /> }
+            { menuItem: 'Tat ca', render: () => <Tab.Pane ></Tab.Pane> },
+            { menuItem: 'Ca nhan', render: () => <Tab.Pane></Tab.Pane> },
+            { menuItem: 'To chuc', render: () => <Tab.Pane></Tab.Pane> }
         ]
     }
 

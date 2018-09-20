@@ -9,84 +9,41 @@ export default class CapitalAndDividend extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cashDividendObj: {},
-            stockDividendObj: {},
-            stockHolderEquityObj: {},
-            totalAssetsObj: {}
-        }
-
-        this.chartCashDividendOptions = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'CỔ TỨC BẰNG TIỀN'
-            },
-            series: [{
-                data: this.state.cashDividendObj.data || []
-            }]
-        }
-
-        this.chartStockDividendOptions = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'CỔ TỨC BẰNG CỔ PHIẾU'
-            },
-            series: [{
-                data: this.state.stockDividendObj.data || []
-            }]
-        }
-
-        this.chartStockHolderEquityOptions = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'VỐN CHỦ SỞ HỮU (TỶ)'
-            },
-            series: [{
-                data: this.state.stockHolderEquityObj.data || []
-            }]
-        }
-
-        this.chartTotalAssetsOptions = {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'TÀI SẢN (TỶ)'
-            },
-            series: [{
-                data: this.state.totalAssetsObj.data || []
-            }]
+            chartCashDividendOptions: {},
+            chartStockDividendOptions: {},
+            chartStockHolderEquityOptions: {},
+            chartTotalAssetsOptions: {}
         }
     }
+
     render() {
-        if (!this.state.cashDividendObj || !this.state.cashDividendObj.data) return ''
         return (
             <div>
                 CapitalAndDividend
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.chartCashDividendOptions}
-                />
-
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.chartStockDividendOptions}
-                />
-
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.chartStockHolderEquityOptions}
-                />
-
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.chartTotalAssetsOptions}
-                />
+                {
+                    this.state.chartCashDividendOptions.series ? <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartCashDividendOptions}
+                    /> : null
+                }
+                {
+                    this.state.chartStockDividendOptions.series ? <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartStockDividendOptions}
+                    /> : null
+                }
+                {
+                    this.state.chartStockHolderEquityOptions.series ? <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartStockHolderEquityOptions}
+                    /> : null
+                }
+                {
+                    this.state.chartTotalAssetsOptions.series ? <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartTotalAssetsOptions}
+                    /> : null
+                }
             </div>
         );
     }
@@ -129,11 +86,59 @@ export default class CapitalAndDividend extends React.Component {
                             totalAssetsObj.data.push(response.data[i].TotalAssets)
                         }
                     }
+                    this.chartCashDividendOptions = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'CỔ TỨC BẰNG TIỀN'
+                        },
+                        series: [{
+                            data: cashDividendObj.data || []
+                        }]
+                    }
+
+                    this.chartStockDividendOptions = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'CỔ TỨC BẰNG CỔ PHIẾU'
+                        },
+                        series: [{
+                            data: stockDividendObj.data || []
+                        }]
+                    }
+
+                    this.chartStockHolderEquityOptions = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'VỐN CHỦ SỞ HỮU (TỶ)'
+                        },
+                        series: [{
+                            data: stockHolderEquityObj.data || []
+                        }]
+                    }
+
+                    this.chartTotalAssetsOptions = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'TÀI SẢN (TỶ)'
+                        },
+                        series: [{
+                            data: totalAssetsObj.data || []
+                        }]
+                    }
+
                     this.setState({
-                        cashDividendObj: cashDividendObj,
-                        stockDividendObj: stockDividendObj,
-                        stockHolderEquityObj: stockHolderEquityObj,
-                        totalAssetsObj: totalAssetsObj
+                        chartCashDividendOptions: this.chartCashDividendOptions,
+                        chartStockDividendOptions: this.chartStockDividendOptions,
+                        chartStockHolderEquityOptions: this.chartStockHolderEquityOptions,
+                        chartTotalAssetsOptions: this.chartTotalAssetsOptions
                     })
                 }
             })

@@ -1,6 +1,0 @@
-{
-    "name": "CustomedTabPane",
-    "version": "0.0.0",
-    "private": true,
-    "main": "./CustomedTabPane.js"
-}
