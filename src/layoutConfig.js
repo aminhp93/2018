@@ -11,6 +11,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                     'isClosable': true,
                     'reorderEnabled': true,
                     'title': 'App'
+                },
+                {
+                    'type': 'component',
+                    'component': 'Book',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'Book'
                 }
             ]
         }

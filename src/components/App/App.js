@@ -10,7 +10,7 @@ class App extends React.Component {
         return (
             <div>
                 <Header />
-                <DetailOrder />
+                {/* <DetailOrder /> */}
                 {/* <I18n>
                     {
                         (t, { i18n }) => (

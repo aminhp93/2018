@@ -5,6 +5,7 @@ import GoldenLayout from 'golden-layout';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import App from './App';
+import Book from './Book';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 
@@ -17,7 +18,7 @@ class GoldenLayoutWrapper extends React.Component {
         this.initGoldenLayout = this.initGoldenLayout.bind(this);
     }
     componentDidMount() {
-        // this.initGoldenLayout();
+        this.initGoldenLayout();
     }
     initGoldenLayout() {
         new Promise((resolve) => {
@@ -28,7 +29,7 @@ class GoldenLayoutWrapper extends React.Component {
             const cbFunc = layout => {
                 config = {
                     dimensions: {
-                        headerHeight: 32,
+                        // headerHeight: 32,
                         borderWidth: 8,
                         minItemHeight: 192,
                         minItemWidth: 300
@@ -59,6 +60,9 @@ class GoldenLayoutWrapper extends React.Component {
                 this.goldenLayout = new GoldenLayout(config, this.layout);
                 this.goldenLayout.registerComponent('App',
                     wrapComponent(App, this.context.store)
+                );
+                this.goldenLayout.registerComponent('Book',
+                    wrapComponent(Book, this.context.store)
                 );
 
                 /// Callback for every created stack
@@ -95,8 +99,8 @@ class GoldenLayoutWrapper extends React.Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    {/* <div className='goldenLayout' ref={input => this.layout = input} /> */}
-                    <App />
+                    <div className='goldenLayout' ref={input => this.layout = input} />
+                    {/* <App /> */}
                 </div>
 
             </MuiThemeProvider>
