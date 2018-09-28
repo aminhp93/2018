@@ -46,3 +46,7 @@
   height: 100%;
   overflow: auto;
 }
+
+.wrapComponent {
+  color: white;
+}

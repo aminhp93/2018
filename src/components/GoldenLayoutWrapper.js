@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import App from './App';
 import Book from './Book';
+import DetailSymbol from './DetailSymbol';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 
@@ -63,6 +64,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('Book',
                     wrapComponent(Book, this.context.store)
+                );
+                this.goldenLayout.registerComponent('DetailSymbol',
+                    wrapComponent(DetailSymbol, this.context.store)
                 );
 
                 /// Callback for every created stack
