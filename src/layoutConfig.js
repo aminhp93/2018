@@ -6,6 +6,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
             'content': [
                 {
                     'type': 'component',
+                    'component': 'DailyWatchlist',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'DailyWatchlist'
+                },
+                {
+                    'type': 'component',
                     'component': 'DetailSymbol',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
