@@ -2,7 +2,7 @@ export function getCompanyInfoUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/CompanyInfo?symbol=' + symbol
 }
 
-export function getLastestFinancialInfoUrl(symbol) {
+export function getLatestFinancialInfoUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialInfo?symbol=' + symbol
 }
 

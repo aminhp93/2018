@@ -3,20 +3,17 @@
   height: 100%;
 }
 
-#root>div>div {
+.goldenLayout {
   position: fixed;
-  top: 0;
+  top: 20px;
   left: 0;
   bottom: 0;
   right: 0;
-}
-
-.goldenLayout {
     flex: 1;
     min-width: 0;
     min-height: 0;
     overflow: hidden;
-    margin-top: 8px;
+    /* margin-top: 8px; */
 }
 
 .lm_header {
@@ -49,4 +46,12 @@
 
 .wrapComponent {
   color: white;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
 }

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import App from './App';
 import Book from './Book';
+import Header from './Header';
 import DetailSymbol from './DetailSymbol';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
@@ -16,6 +17,10 @@ window.ReactDOM = ReactDOM;
 class GoldenLayoutWrapper extends React.Component {
     constructor(props) {
         super(props);
+        this.goldenLayout = null;
+        this.state = {
+
+        }
         this.initGoldenLayout = this.initGoldenLayout.bind(this);
     }
     componentDidMount() {
@@ -99,10 +104,50 @@ class GoldenLayoutWrapper extends React.Component {
         });
     }
 
+    addComponentToStack(index, state = { 'test': 'test' }) {
+        let title = ''
+        switch (index) {
+            default:
+                title = index
+                break;
+        }
+        var newItemConfig = {
+            'type': 'component',
+            'component': index,
+            'componentName': 'lm-react-component',
+            'isClosable': true,
+            'reorderEnabled': true,
+            'title': title,
+            'componentState': state
+        };
+        let stack = this.goldenLayout.root.getItemsByType('stack');
+        if (!stack.length) {
+            this.goldenLayout.root.addChild(newItemConfig);
+        } else {
+            let maxH = 0;
+            let maxW = 0;
+            let stackParent = null;
+            for (let i = 0; i < stack.length; i++) {
+                const dom = stack[i].element[0];
+                if (dom.clientWidth > maxW) {
+                    maxW = dom.clientWidth;
+                    maxH = dom.clientHeight;
+                    stackParent = stack[i];
+                } else if (dom.clientWidth === maxW) {
+                    if (dom.clientHeight > maxH) {
+                        stackParent = stack[i];
+                    }
+                }
+            }
+            stackParent.addChild(newItemConfig)
+        }
+    }
+
     render() {
         return (
             <MuiThemeProvider>
                 <div>
+                    <Header addComponentToStack={this.addComponentToStack.bind(this)} />
                     <div className='goldenLayout' ref={input => this.layout = input} />
                     {/* <App /> */}
                 </div>

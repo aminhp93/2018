@@ -9,7 +9,6 @@ export default class SearchSymbol extends React.Component {
     }
 
     handleOnChange(e) {
-        console.log(e)
         const symbol = e.target.value;
         if (symbol) {
             this.setState({
@@ -23,6 +22,7 @@ export default class SearchSymbol extends React.Component {
         return (
             <div>
                 <input
+                    placeholder='Search Symbol'
                     onChange={this.handleOnChange.bind(this)} />
                 <div>
                     {this.state.symbolObj}
