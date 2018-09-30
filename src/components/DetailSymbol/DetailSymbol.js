@@ -3,11 +3,24 @@ import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import ChartSymbol from '../ChartSymbol/ChartSymbol';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
+import { translate, Trans } from 'react-i18next';
 
-export default class DetailSymbol extends React.Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as symbolActions from '../../actions/symbol.actions';
+
+class DetailSymbol extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.symbol) {
+            this.setState({
+                symbol: nextProps.symbol
+            })
         }
     }
 
@@ -28,3 +41,17 @@ export default class DetailSymbol extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        symbol: state.symbol.symbol
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(symbolActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate('translations')(DetailSymbol));

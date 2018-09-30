@@ -2,10 +2,10 @@
 import { combineReducers } from 'redux';
 
 // import reducer
-import { theme } from './theme.reducer';
+import { symbol } from './symbol.reducer';
 
 const rootReducer = combineReducers({
-    theme
+    symbol
 });
 
 export default rootReducer;

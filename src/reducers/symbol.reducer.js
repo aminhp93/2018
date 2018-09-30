@@ -1,9 +1,9 @@
-export const theme = (state = {}, action) => {
+export const symbol = (state = {}, action) => {
     switch (action.type) {
-        case 'CHANGE_THEME':
+        case 'CHANGE_SYMBOL':
             return {
                 ...state,
-                theme: action.theme
+                symbol: action.symbol
             }
         default:
             return state
