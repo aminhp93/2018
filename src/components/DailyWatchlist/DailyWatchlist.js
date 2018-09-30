@@ -16,9 +16,9 @@ class DailyWatchlist extends React.Component {
         super(props);
         this.state = {
             columnDefs: [
-                {
-                    headerName: "Id", field: "id"
-                },
+                // {
+                //     headerName: "Id", field: "id"
+                // },
                 {
                     headerName: "Symbol",
                     field: "symbol",

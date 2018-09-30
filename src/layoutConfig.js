@@ -35,6 +35,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                     //     'isClosable': true,
                     //     'reorderEnabled': true,
                     //     'title': 'Book'
+                },
+                {
+                    'type': 'component',
+                    'component': 'Tennis',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'Tennis'
                 }
             ]
         }
