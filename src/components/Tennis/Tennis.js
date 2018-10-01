@@ -9,7 +9,7 @@ export default class Tennis extends React.Component {
     render() {
         return (
             <div>
-                Tennis
+
             </div>
         );
     }

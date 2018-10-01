@@ -70,6 +70,10 @@ export function getMovingAveragesUrl() {
     return 'https://www.fireant.vn/api/Data/Technical/MovingAverages'
 }
 
-export function getAccountManagement() {
+export function getAccountManagementUrl() {
     return 'https://trade-api.vndirect.com.vn/accounts/v2/0001069456/assets'
+}
+
+export function getTradingStatisticUrl() {
+    return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
 }

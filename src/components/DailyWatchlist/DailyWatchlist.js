@@ -2,12 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
-
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { translate, Trans } from 'react-i18next';
-
 import config from '../../config';
 
 class DailyWatchlist extends React.Component {
@@ -15,9 +13,6 @@ class DailyWatchlist extends React.Component {
         super(props);
         this.state = {
             columnDefs: [
-                // {
-                //     headerName: "Id", field: "id"
-                // },
                 {
                     headerName: "Symbol",
                     field: "symbol",
@@ -28,11 +23,12 @@ class DailyWatchlist extends React.Component {
             ],
             rowData: []
         }
+        // this.handleChangeCategory = this.handleChangeCategory.bind(this)
     }
 
-    initClient = () => {
-        // 2. Initialize the JavaScript client library.
+    initClient(sheet) {
         const that = this;
+        // if (!window.gapi.client) return;
         window.gapi.client
             .init({
                 apiKey: config.apiKey,
@@ -42,8 +38,8 @@ class DailyWatchlist extends React.Component {
             })
             .then((error) => {
                 window.gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '13N4g7RtKQ2nr47ZDEqGkkRMwcVBCDjoVb-Sxf00elRY',
-                    range: 'Potentials!A:A',
+                    spreadsheetId: '1vXd3YLlYHbSH0J_zo0W2w7cfxqFp9MIiK5y-rYDkbO4',
+                    range: `${sheet ? sheet : 'Potentials'}!A:A`,
                 }).then(function (response) {
                     const rowData = response.result.values
                     if (rowData) {
@@ -52,32 +48,59 @@ class DailyWatchlist extends React.Component {
                         })
                     }
                 }, function (response) {
-                    // appendPre('Error: ' + response.result.error.message);
                 });
             });
     };
 
     onRowClicked(row) {
-        console.log(row)
         if (row.data && row.data.length) {
             const symbol = row.data[0]
             this.props.actions.changeSymbol(symbol)
         }
     }
 
+    handleChangeCategory(category) {
+        if (!category) return
+        switch (category) {
+            case 'daily':
+                // this.initClient('1/10')
+                break;
+            case 'potentials':
+                // this.initClient('Potentials')
+                break;
+            case 'onmarket':
+                // this.initClient('OnMarket')
+                break;
+            case 'filter':
+                // this.initClient('OnMarket')
+                break;
+            default:
+                // this.initClient('Potentials')
+                break;
+        }
+    }
+
     render() {
         return (
             <div>
-                <div>
-                    DailyWatchlist
+                <div onClick={this.handleChangeCategory('daily')}>
+                    Daily
+                </div>
+                <div onClick={this.handleChangeCategory('potentials')}>
+                    Potentials
+                </div>
+                <div onClick={this.handleChangeCategory('onmarket')}>
+                    OnMarkets
+                </div>
+                <div onClick={this.handleChangeCategory('filter')}>
+                    Filter
                 </div>
                 <div
                     className="ag-theme-balham"
                     style={{
                         height: '500px',
                         width: '600px'
-                    }}
-                >
+                    }}>
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}
@@ -88,7 +111,7 @@ class DailyWatchlist extends React.Component {
     }
 
     componentDidMount() {
-        window.gapi.load("client", this.initClient);
+        window.gapi.load("client", this.initClient.bind(this));
     }
 }
 
