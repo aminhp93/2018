@@ -7,4 +7,7 @@ https://console.developers.google.com/apis/credentials?project=project-2018-stoc
 3. Note:
 Khi so sanh 2 co phieu deu tot, ty le % lai cao hon || ty le % lai nhanh hon || do dam bao lai.
 
-Quan ly dong tien: luon luon giu 20% tien mat du phong
+- Quan ly dong tien: luon luon giu 20% tien mat du phong
+- API financial report of single symbol
+- Get all symbol have volume > 100000
+
