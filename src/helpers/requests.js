@@ -69,3 +69,7 @@ export function getTechnicalIndicatorsUrl() {
 export function getMovingAveragesUrl() {
     return 'https://www.fireant.vn/api/Data/Technical/MovingAverages'
 }
+
+export function getAccountManagement() {
+    return 'https://trade-api.vndirect.com.vn/accounts/v2/0001069456/assets'
+}

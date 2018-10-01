@@ -43,6 +43,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                     'isClosable': true,
                     'reorderEnabled': true,
                     'title': 'Tennis'
+                },
+                {
+                    'type': 'component',
+                    'component': 'AccountManagement',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'AccountManagement'
                 }
             ]
         }

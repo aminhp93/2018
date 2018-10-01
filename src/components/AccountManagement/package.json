@@ -1,0 +1,6 @@
+{
+    "name": "AccountManagement",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./AccountManagement.js"
+}

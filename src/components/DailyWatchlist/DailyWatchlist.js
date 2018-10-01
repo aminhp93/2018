@@ -9,7 +9,6 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { translate, Trans } from 'react-i18next';
 
 import config from '../../config';
-import { load } from '../../helpers/spreadsheet';
 
 class DailyWatchlist extends React.Component {
     constructor(props) {

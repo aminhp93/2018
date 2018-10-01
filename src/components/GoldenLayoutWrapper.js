@@ -9,6 +9,7 @@ import Book from './Book';
 import Header from './Header';
 import DetailSymbol from './DetailSymbol';
 import DailyWatchlist from './DailyWatchlist';
+import AccountManagement from './AccountManagement';
 import Tennis from './Tennis';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
@@ -80,6 +81,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('Tennis',
                     wrapComponent(Tennis, this.context.store)
+                );
+                this.goldenLayout.registerComponent('AccountManagement',
+                    wrapComponent(AccountManagement, this.context.store)
                 );
 
                 /// Callback for every created stack
