@@ -13,6 +13,9 @@ import AccountManagement from './AccountManagement';
 import Tennis from './Tennis';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
+import axios from 'axios';
+import { getTradingStatisticUrl } from '../helpers/requests';
+import dataStorage from '../dataStorage';
 
 window.React = React;
 window.ReactDOM = ReactDOM;
@@ -26,9 +29,8 @@ class GoldenLayoutWrapper extends React.Component {
         }
         this.initGoldenLayout = this.initGoldenLayout.bind(this);
     }
-    componentDidMount() {
-        this.initGoldenLayout();
-    }
+
+
     initGoldenLayout() {
         new Promise((resolve) => {
             let config = {
@@ -39,9 +41,9 @@ class GoldenLayoutWrapper extends React.Component {
                 config = {
                     dimensions: {
                         // headerHeight: 32,
-                        borderWidth: 8,
-                        minItemHeight: 192,
-                        minItemWidth: 300
+                        // borderWidth: 8,
+                        // minItemHeight: 192,
+                        // minItemWidth: 300
                     },
                     content: layout
                 }
@@ -159,13 +161,32 @@ class GoldenLayoutWrapper extends React.Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <Header addComponentToStack={this.addComponentToStack.bind(this)} />
+                    {/* <Header addComponentToStack={this.addComponentToStack.bind(this)} /> */}
                     <div className='goldenLayout' ref={input => this.layout = input} />
                     {/* <App /> */}
                 </div>
 
             </MuiThemeProvider>
         );
+    }
+
+    componentDidMount() {
+        this.initGoldenLayout();
+        const url = getTradingStatisticUrl();
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let allSymbolsArray = response.data;
+                    let allSymbolsString = ''
+                    for (let i = 0; i < allSymbolsArray.length; i++) {
+                        allSymbolsString += ',' + allSymbolsArray[i].Symbol
+                    }
+                    dataStorage.allSymbolsString = allSymbolsString
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 }
 

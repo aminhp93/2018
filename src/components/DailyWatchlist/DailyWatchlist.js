@@ -2,12 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
-
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { translate, Trans } from 'react-i18next';
-
 import config from '../../config';
 
 class DailyWatchlist extends React.Component {
@@ -15,9 +13,6 @@ class DailyWatchlist extends React.Component {
         super(props);
         this.state = {
             columnDefs: [
-                // {
-                //     headerName: "Id", field: "id"
-                // },
                 {
                     headerName: "Symbol",
                     field: "symbol",
@@ -28,11 +23,12 @@ class DailyWatchlist extends React.Component {
             ],
             rowData: []
         }
+        // this.handleChangeCategory = this.handleChangeCategory.bind(this)
     }
 
     initClient(sheet) {
-        // 2. Initialize the JavaScript client library.
         const that = this;
+        // if (!window.gapi.client) return;
         window.gapi.client
             .init({
                 apiKey: config.apiKey,
@@ -52,7 +48,6 @@ class DailyWatchlist extends React.Component {
                         })
                     }
                 }, function (response) {
-                    // appendPre('Error: ' + response.result.error.message);
                 });
             });
     };
@@ -69,16 +64,47 @@ class DailyWatchlist extends React.Component {
         if (sheet && sheet.length > 3) {
             this.initClient(sheet)
         }
+
+    }
+    handleChangeCategory(category) {
+        if (!category) return
+        switch (category) {
+            case 'daily':
+                this.initClient('1/10')
+                break;
+            case 'potentials':
+                this.initClient('Potentials')
+                break;
+            case 'onmarket':
+                this.initClient('OnMarket')
+                break;
+            case 'filter':
+                this.initClient('OnMarket')
+                break;
+            default:
+                this.initClient('Potentials')
+                break;
+        }
     }
 
     render() {
         return (
             <div>
-                <div>
-                    DailyWatchlist
-                    <input
-                        placeholder='Add sheet'
-                        onChange={this.handleOnChangeSheet.bind(this)} />
+
+                <input
+                    placeholder='Add sheet'
+                    onChange={this.handleOnChangeSheet.bind(this)} />
+                <div onClick={() => this.handleChangeCategory('daily')}>
+                    Daily
+                </div>
+                <div onClick={() => this.handleChangeCategory('potentials')}>
+                    Potentials
+                </div>
+                <div onClick={() => this.handleChangeCategory('onmarket')}>
+                    OnMarkets
+                </div>
+                <div onClick={() => this.handleChangeCategory('filter')}>
+                    Filter
                 </div>
 
                 <div
@@ -86,8 +112,7 @@ class DailyWatchlist extends React.Component {
                     style={{
                         height: '500px',
                         width: '600px'
-                    }}
-                >
+                    }}>
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}

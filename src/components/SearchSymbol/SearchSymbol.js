@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { getTradingStatisticUrl } from '../../helpers/requests';
+import dataStorage from '../../dataStorage';
 
 export default class SearchSymbol extends React.Component {
     constructor(props) {
@@ -10,6 +13,7 @@ export default class SearchSymbol extends React.Component {
 
     handleOnChange(e) {
         const symbol = e.target.value;
+        console.log(dataStorage)
         if (symbol) {
             this.setState({
                 symbolObj: symbol
@@ -29,5 +33,9 @@ export default class SearchSymbol extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    componentDidMount() {
+
     }
 }

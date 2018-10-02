@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAccountManagement } from '../../helpers/requests';
+import { getAccountManagementUrl } from '../../helpers/requests';
 import dataStorage from '../../dataStorage';
 import axios from 'axios';
 
@@ -11,16 +11,27 @@ export default class AccountManagement extends React.Component {
         }
     }
 
+    renderContent() {
+        let result = []
+        for (let key in this.state.accountManagementObj) {
+            result.push(<div key={key}>
+                {key}: {this.state.accountManagementObj[key]}
+            </div>)
+        }
+        return result
+
+    }
+
     render() {
         return (
             <div>
-                AccountManagement: {this.state.accountManagementObj.netAssetValue}
+                {this.renderContent()}
             </div>
         );
     }
 
     componentDidMount() {
-        const url = getAccountManagement()
+        const url = getAccountManagementUrl()
         const headers = {
             headers: {
                 'Content-Type': 'application/json',
