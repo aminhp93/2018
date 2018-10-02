@@ -57,6 +57,10 @@ export default class FilterSystem extends React.Component {
             ],
             rowData: []
         }
+
+        this.defaultColDef = {
+            width: 100
+        }
     }
 
     renderContent() {
@@ -69,29 +73,31 @@ export default class FilterSystem extends React.Component {
         //         )
         //     }
         // }
-        // if (result.length > 0) {
-        //     return result
-        // } else {
-        //     return <div>No data</div>
-        // }
-        return (
-            <div
-                className="ag-theme-balham"
-                style={{
-                    height: '500px',
-                    width: '600px'
-                }}>
-                <AgGridReact
-                    columnDefs={this.state.columnDefs}
-                    rowData={this.state.allSymbolsArray}
-                />
-            </div>
-        )
+        if (this.state.allSymbolsArray.length > 0) {
+            return (
+                <div
+                    className="ag-theme-balham"
+                    style={{
+                        height: '100%'
+                    }}
+                >
+                    <AgGridReact
+                        columnDefs={this.state.columnDefs}
+                        rowData={this.state.allSymbolsArray}
+                        defaultColDef={this.defaultColDef}
+
+                    />
+                </ div >
+            )
+        } else {
+            return <div>No data</div>
+        }
+
     }
 
     render() {
         return (
-            <div>
+            <div className='filterSystem'>
                 FilterSystem
                 {this.renderContent()}
             </div>

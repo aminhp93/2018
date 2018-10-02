@@ -47,6 +47,10 @@
 
 .wrapComponent {
   color: white;
+  height: 100%;
+}
+.wrapComponent > div {
+  height: 100%;
 }
 
 .green {
@@ -55,4 +59,8 @@
 
 .red {
   color: red;
+}
+
+.filterSystem {
+  width: 100%;
 }
