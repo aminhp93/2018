@@ -15,7 +15,8 @@ export function getAlertsUrl() {
 }
 
 export function getIntradayQuotesUrl(symbol) {
-    return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/IntradayQuotes?symbol=' + symbol
+    return 'https://svr2.fireant.vn/api/Data/Markets/IntradayQuotes?symbol=' + symbol
+    // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/IntradayQuotes?symbol=' + symbol
 }
 
 export function getMajorHolderTransactionsRangeUrl(symbol) {
@@ -35,7 +36,8 @@ export function getEquityAndDividendsUrl(symbol) {
 }
 
 export function getCompanyNewsUrl(symbol) {
-    return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/News/CompanyNews?symbol=' + symbol + '&startIndex=0&count=10'
+    return 'https://www.fireant.vn/api/Data/News/CompanyNews?symbol=' + symbol + '&startIndex=0&count=10'
+    // return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/News/CompanyNews?symbol=' + symbol + '&startIndex=0&count=10'
 }
 
 export function getCompanyNewsCountUrl(symbol) {
@@ -43,7 +45,8 @@ export function getCompanyNewsCountUrl(symbol) {
 }
 
 export function getHistoricalQuotesUrl(symbol) {
-    return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
+    return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
+    // return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
 }
 
 export function getYearlyFinancialInfoUrl(symbol) {
@@ -75,5 +78,6 @@ export function getAccountManagementUrl() {
 }
 
 export function getTradingStatisticUrl() {
-    return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
+    // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
+    return 'https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
 }
