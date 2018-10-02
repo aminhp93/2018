@@ -30,7 +30,7 @@ class DailyWatchlist extends React.Component {
         }
     }
 
-    initClient = () => {
+    initClient(sheet) {
         // 2. Initialize the JavaScript client library.
         const that = this;
         window.gapi.client
@@ -42,8 +42,8 @@ class DailyWatchlist extends React.Component {
             })
             .then((error) => {
                 window.gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '13N4g7RtKQ2nr47ZDEqGkkRMwcVBCDjoVb-Sxf00elRY',
-                    range: 'Potentials!A:A',
+                    spreadsheetId: '1vXd3YLlYHbSH0J_zo0W2w7cfxqFp9MIiK5y-rYDkbO4',
+                    range: `${sheet ? sheet : 'Potentials'}!A:A`,
                 }).then(function (response) {
                     const rowData = response.result.values
                     if (rowData) {
@@ -58,10 +58,16 @@ class DailyWatchlist extends React.Component {
     };
 
     onRowClicked(row) {
-        console.log(row)
         if (row.data && row.data.length) {
             const symbol = row.data[0]
             this.props.actions.changeSymbol(symbol)
+        }
+    }
+
+    handleOnChangeSheet(e) {
+        const sheet = e.target.value;
+        if (sheet && sheet.length > 3) {
+            this.initClient(sheet)
         }
     }
 
@@ -70,7 +76,11 @@ class DailyWatchlist extends React.Component {
             <div>
                 <div>
                     DailyWatchlist
+                    <input
+                        placeholder='Add sheet'
+                        onChange={this.handleOnChangeSheet.bind(this)} />
                 </div>
+
                 <div
                     className="ag-theme-balham"
                     style={{
@@ -88,7 +98,7 @@ class DailyWatchlist extends React.Component {
     }
 
     componentDidMount() {
-        window.gapi.load("client", this.initClient);
+        window.gapi.load("client", this.initClient.bind(this));
     }
 }
 
