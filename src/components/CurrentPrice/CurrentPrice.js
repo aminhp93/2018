@@ -57,6 +57,7 @@ export default class CurrentPrice extends React.Component {
             filter: 'agTextColumnFilter'
         }
         this.setTimeOutID = null
+        this.handleOnChangeFilter = this.handleOnChangeFilter.bind(this);
     }
 
     onGridReady(params) {
@@ -96,11 +97,21 @@ export default class CurrentPrice extends React.Component {
 
     }
 
-    handleOnChangeVolume(e) {
+    handleOnChangeFilter(e, title) {
         e.persist()
+        let volume = 0;
+        switch (title) {
+            case 'volume':
+                volume = e.target.value
+                if (volume.length < 4) return
+                break;
+            case 'price':
+                break;
+            default:
+                break;
+        }
         this.setTimeOutID && clearTimeout(this.setTimeOutID);
-        (e.target.value + '').length >= 4 ? this.setTimeOutID = setTimeout(() => {
-            console.log(123)
+        this.setTimeOutID = setTimeout(() => {
             let promise = null;
             let listPromise = [];
             for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
@@ -120,7 +131,7 @@ export default class CurrentPrice extends React.Component {
             }
             Promise.all(listPromise)
                 .then(response => {
-                    let filterVolume = response.filter(item => item.Volume > Number(e.target.value))
+                    let filterVolume = response.filter(item => item.Volume > Number(volume))
                     this.setState({
                         rowData: filterVolume
                     })
@@ -128,7 +139,7 @@ export default class CurrentPrice extends React.Component {
                 .catch(error => {
                     console.log(error.response)
                 });
-        }, 3000) : this.setState({ rowData: [] })
+        }, 3000)
     }
 
     render() {
@@ -150,7 +161,7 @@ export default class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
-                <input placeholder='volume' onChange={this.handleOnChangeVolume.bind(this)} />
+                <input placeholder='volume' onChange={(e) => this.handleOnChangeFilter(e, 'volume')} />
                 {this.renderContent()}
             </div>
         );
