@@ -180,15 +180,24 @@ class GoldenLayoutWrapper extends React.Component {
 
     componentDidMount() {
         this.initGoldenLayout();
-        const url = getTradingStatisticUrl();
+        // const url = getTradingStatisticUrl();
         // axios.get(url)
         //     .then(response => {
         //         if (response.data) {
         //             let allSymbolsArray = response.data;
         //             for (let i = 0; i < allSymbolsArray.length; i++) {
         //                 dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
+        //                 if (allSymbolsArray[i].Exchange === 'HOSTC') {
+        //                     dataStorage.allSymbolsString_HOSE.push(allSymbolsArray[i].Symbol)
+        //                 }
+        //                 if (allSymbolsArray[i].Exchange === 'HASTC') {
+        //                     dataStorage.allSymbolsString_HNX.push(allSymbolsArray[i].Symbol)
+        //                 }
+        //                 if (allSymbolsArray[i].Exchange === 'UPCOM') {
+        //                     dataStorage.allSymbolsString_UPCOM.push(allSymbolsArray[i].Symbol)
+        //                 }
         //             }
-
+        //             console.log(dataStorage)
         //         }
         //     })
         //     .catch(error => {

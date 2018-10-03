@@ -56,6 +56,7 @@ export default class CurrentPrice extends React.Component {
             editable: true,
             filter: 'agTextColumnFilter'
         }
+        this.setTimeOutID = null
     }
 
     onGridReady(params) {
@@ -95,6 +96,41 @@ export default class CurrentPrice extends React.Component {
 
     }
 
+    handleOnChangeVolume(e) {
+        e.persist()
+        this.setTimeOutID && clearTimeout(this.setTimeOutID);
+        (e.target.value + '').length >= 4 ? this.setTimeOutID = setTimeout(() => {
+            console.log(123)
+            let promise = null;
+            let listPromise = [];
+            for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
+                promise = new Promise(resolve => {
+                    const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
+                    axios.get(url).then(response => {
+                        if (response && response.data) {
+                            resolve(response.data[response.data.length - 1])
+                        } else {
+                            resolve([]);
+                        }
+                    }).catch(() => {
+                        resolve([]);
+                    })
+                })
+                listPromise.push(promise);
+            }
+            Promise.all(listPromise)
+                .then(response => {
+                    let filterVolume = response.filter(item => item.Volume > Number(e.target.value))
+                    this.setState({
+                        rowData: filterVolume
+                    })
+                })
+                .catch(error => {
+                    console.log(error.response)
+                });
+        }, 3000) : this.setState({ rowData: [] })
+    }
+
     render() {
         return (
             <div className='filterSystem'>
@@ -114,6 +150,7 @@ export default class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
+                <input placeholder='volume' onChange={this.handleOnChangeVolume.bind(this)} />
                 {this.renderContent()}
             </div>
         );
@@ -124,7 +161,7 @@ export default class CurrentPrice extends React.Component {
         let listPromise = [];
         for (let i = 0; i < dataStorage.allSymbolsString.length; i++) {
             promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString[i]);
+                const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
                 axios.get(url).then(response => {
                     if (response && response.data) {
                         resolve(response.data[response.data.length - 1])
