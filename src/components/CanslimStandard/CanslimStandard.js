@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getHistoricalQuotesUrl, getCompanyNewsUrl } from '../../helpers/requests';
+import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl } from '../../helpers/requests';
 import { Table } from 'semantic-ui-react'
 
 export default class CanslimStandard extends React.Component {
@@ -44,7 +44,7 @@ export default class CanslimStandard extends React.Component {
                 .catch(error => {
                     console.log(error.response)
                 });
-            url = getHistoricalQuotesUrl(nextProps.symbol)
+            url = getCompanyHistoricalQuotesUrl(nextProps.symbol)
             await axios.get(url)
                 .then(response => {
                     if (response.data && response.data.length) {

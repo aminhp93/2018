@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { getHistoricalQuotesUrl } from '../../helpers/requests';
+import { getCompanyHistoricalQuotesUrl } from '../../helpers/requests';
 export default class Price extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +32,7 @@ export default class Price extends React.Component {
     }
 
     componentDidMount() {
-        let url = getHistoricalQuotesUrl('FPT')
+        let url = getCompanyHistoricalQuotesUrl('FPT')
         axios.get(url)
             .then(response => {
                 if (response.data) {

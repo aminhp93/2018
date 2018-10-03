@@ -52,13 +52,21 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                 //     'reorderEnabled': true,
                 //     'title': 'AccountManagement'
                 // },
+                // {
+                //     'type': 'component',
+                //     'component': 'FilterSystem',
+                //     'componentName': 'lm-react-component',
+                //     'isClosable': true,
+                //     'reorderEnabled': true,
+                //     'title': 'FilterSystem'
+                // },
                 {
                     'type': 'component',
-                    'component': 'FilterSystem',
+                    'component': 'CurrentPrice',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'FilterSystem'
+                    'title': 'CurrentPrice'
                 }
             ]
         }

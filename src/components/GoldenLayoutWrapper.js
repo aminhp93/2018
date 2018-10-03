@@ -12,6 +12,7 @@ import DailyWatchlist from './DailyWatchlist';
 import AccountManagement from './AccountManagement';
 import FilterSystem from './FilterSystem';
 import Tennis from './Tennis';
+import CurrentPrice from './CurrentPrice';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
@@ -90,6 +91,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('FilterSystem',
                     wrapComponent(FilterSystem, this.context.store)
+                );
+                this.goldenLayout.registerComponent('CurrentPrice',
+                    wrapComponent(CurrentPrice, this.context.store)
                 );
 
                 /// Callback for every created stack
@@ -176,16 +180,15 @@ class GoldenLayoutWrapper extends React.Component {
 
     componentDidMount() {
         this.initGoldenLayout();
-        // const url = getTradingStatisticUrl();
+        const url = getTradingStatisticUrl();
         // axios.get(url)
         //     .then(response => {
         //         if (response.data) {
         //             let allSymbolsArray = response.data;
-        //             let allSymbolsString = ''
         //             for (let i = 0; i < allSymbolsArray.length; i++) {
-        //                 allSymbolsString += ',' + allSymbolsArray[i].Symbol
+        //                 dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
         //             }
-        //             dataStorage.allSymbolsString = allSymbolsString
+
         //         }
         //     })
         //     .catch(error => {

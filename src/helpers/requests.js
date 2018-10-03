@@ -19,6 +19,10 @@ export function getIntradayQuotesUrl(symbol) {
     // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/IntradayQuotes?symbol=' + symbol
 }
 
+export function getMarketHistoricalQuotesUrl(symbol) {
+    return 'https://svr1.fireant.vn/api/Data/Markets/HistoricalQuotes?symbol=' + symbol + '&startDate=2017-10-8&endDate=2018-10-3'
+}
+
 export function getMajorHolderTransactionsRangeUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/MajorHolderTransactionsRange?symbol=' + symbol + '&startDate=2017-9-25&endDate=2037-1-1'
 }
@@ -44,8 +48,8 @@ export function getCompanyNewsCountUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/News/CompanyNewsCount?symbol=' + symbol
 }
 
-export function getHistoricalQuotesUrl(symbol) {
-    return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
+export function getCompanyHistoricalQuotesUrl(symbol) {
+    return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2017-10-8&endDate=2018-10-3'
     // return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'
 }
 

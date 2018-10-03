@@ -12,7 +12,10 @@ export default class FilterSystem extends React.Component {
             columnDefs: [
                 {
                     headerName: "Symbol",
-                    field: "Symbol"
+                    field: "Symbol",
+                    getQuickFilterText: function (params) {
+                        return params.data.Symbol;
+                    }
                 },
                 {
                     headerName: "AvgPrice5d",
@@ -51,6 +54,58 @@ export default class FilterSystem extends React.Component {
                     field: "SellQuantity1w"
                 },
                 {
+                    headerName: "AvgTradingSpeed10d",
+                    field: "AvgTradingSpeed10d"
+                },
+                {
+                    headerName: "SharesOutStanding",
+                    field: "SharesOutStanding"
+                },
+                {
+                    headerName: "AvgPrice4d",
+                    field: "AvgPrice4d"
+                },
+                {
+                    headerName: "StdEV19d",
+                    field: "StdEV19d"
+                },
+                {
+                    headerName: "EMA5d",
+                    field: "EMA5d"
+                },
+                {
+                    headerName: "DEMA5d",
+                    field: "DEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
+                    headerName: "TEMA5d",
+                    field: "TEMA5d"
+                },
+                {
                     headerName: "Date",
                     field: "Date"
                 }
@@ -59,8 +114,14 @@ export default class FilterSystem extends React.Component {
         }
 
         this.defaultColDef = {
-            width: 100
+            width: 120,
+            editable: true,
+            filter: 'agTextColumnFilter'
         }
+    }
+
+    onGridReady(params) {
+        this.gridApi = params;
     }
 
     renderContent() {
@@ -85,7 +146,7 @@ export default class FilterSystem extends React.Component {
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.allSymbolsArray}
                         defaultColDef={this.defaultColDef}
-
+                        onGridReady={this.onGridReady.bind(this)}
                     />
                 </ div >
             )
@@ -96,9 +157,15 @@ export default class FilterSystem extends React.Component {
     }
 
     render() {
+        const that = this
         return (
             <div className='filterSystem'>
                 FilterSystem
+                <input onChange={(e) => {
+                    if (e.target.value) {
+                        that.gridApi && that.gridApi.api.setQuickFilter(e.target.value)
+                    }
+                }} />
                 {this.renderContent()}
             </div>
         );
