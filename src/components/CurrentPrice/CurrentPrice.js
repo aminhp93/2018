@@ -46,11 +46,31 @@ export default class CurrentPrice extends React.Component {
                     field: "Value"
                 },
                 {
+                    headerName: "Gain",
+                    field: "Gain"
+                },
+                {
+                    headerName: "Loss",
+                    field: "Loss"
+                },
+                {
+                    headerName: "AverageGain",
+                    field: "AverageGain"
+                },
+                {
+                    headerName: "AverageLoss",
+                    field: "AverageLoss"
+                },
+                {
+                    headerName: "RSI",
+                    field: "RSI"
+                },
+                {
                     headerName: 'ratioVolume',
                     field: 'ratioVolume',
-                    cellRenderer: function (params) {
-                        return params.data.ratioVolume.toFixed(1)
-                    }
+                    // cellRenderer: function (params) {
+                    //     return params.data.ratioVolume.toFixed(1)
+                    // }
                 },
                 {
                     headerName: "Date",
@@ -63,7 +83,7 @@ export default class CurrentPrice extends React.Component {
         }
 
         this.defaultColDef = {
-            width: 90,
+            width: 120,
             editable: true,
             filter: 'agTextColumnFilter'
         }
@@ -191,7 +211,71 @@ export default class CurrentPrice extends React.Component {
             default:
                 break
         }
+    }
 
+    calculateRSI() {
+        let promise = null;
+        let listPromise = [];
+
+        // for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
+        promise = new Promise(resolve => {
+            const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[0]);
+
+            axios.get(url).then(response => {
+                if (response && response.data) {
+                    // let length = 100
+                    let data = response.data;
+                    let sumGain = 0;
+                    let sumLoss = 0
+                    // if (response.data.length > 100) {
+                    //     data = response.data.slice(data.length - 100)
+                    // }
+                    for (let i = 1; i < data.length; i++) {
+                        let change = data[i].Close - data[i - 1].Close;
+                        if (change > 0) {
+                            data[i].Gain = change
+                            data[i].Loss = 0
+                        }
+                        if (change < 0) {
+                            data[i].Loss = -change
+                            data[i].Gain = 0
+                        }
+                        if (change === 0) {
+                            data[i].Loss = 0
+                            data[i].Gain = 0
+                        }
+                        sumGain += data[i].Gain || 0
+                        sumLoss += data[i].Loss || 0
+                        if (i < 14) {
+                            data[i].AverageGain = sumGain / 14
+                            data[i].AverageLoss = sumLoss / 14
+                        } else {
+                            data[i].AverageGain = (data[i - 1].AverageGain * 13 + data[i].Gain) / 14
+                            data[i].AverageLoss = (data[i - 1].AverageLoss * 13 + data[i].Loss) / 14
+                            data[i].RSI = 100 - 100 / (1 + (data[i].AverageGain) / (data[i].AverageLoss))
+                        }
+
+                    }
+                    resolve(data)
+                } else {
+                    resolve([]);
+                }
+            }).catch(() => {
+                resolve([]);
+            })
+        })
+        listPromise.push(promise);
+        // }
+        Promise.all(listPromise)
+            .then(response => {
+
+                this.setState({
+                    rowData: response[0]
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 
     render() {
@@ -234,6 +318,7 @@ export default class CurrentPrice extends React.Component {
     }
 
     componentDidMount() {
-        this.filterVolume('allSymbolsString_HOSE')
+        // this.filterVolume('allSymbolsString_HOSE')
+        this.calculateRSI()
     }
 }
