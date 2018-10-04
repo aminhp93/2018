@@ -18,6 +18,7 @@ import layoutConfig from '../layoutConfig';
 import axios from 'axios';
 import { getTradingStatisticUrl } from '../helpers/requests';
 import dataStorage from '../dataStorage';
+import moment from 'moment';
 
 window.React = React;
 window.ReactDOM = ReactDOM;
@@ -179,6 +180,7 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     componentDidMount() {
+
         this.initGoldenLayout();
         // const url = getTradingStatisticUrl();
         // axios.get(url)

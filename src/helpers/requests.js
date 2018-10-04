@@ -1,3 +1,7 @@
+var moment = require('moment');
+
+const todayDate = moment().format('YYYY-M-DD')
+
 export function getCompanyInfoUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/CompanyInfo?symbol=' + symbol
 }
@@ -20,7 +24,7 @@ export function getIntradayQuotesUrl(symbol) {
 }
 
 export function getMarketHistoricalQuotesUrl(symbol) {
-    return 'https://svr1.fireant.vn/api/Data/Markets/HistoricalQuotes?symbol=' + symbol + '&startDate=2017-10-8&endDate=2018-10-3'
+    return 'https://svr1.fireant.vn/api/Data/Markets/HistoricalQuotes?symbol=' + symbol + '&startDate=2017-10-8&endDate=' + todayDate
 }
 
 export function getMajorHolderTransactionsRangeUrl(symbol) {

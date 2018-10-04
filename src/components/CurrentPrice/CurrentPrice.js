@@ -46,6 +46,13 @@ export default class CurrentPrice extends React.Component {
                     field: "Value"
                 },
                 {
+                    headerName: 'ratioVolume',
+                    field: 'ratioVolume',
+                    cellRenderer: function (params) {
+                        return params.data.ratioVolume.toFixed(1)
+                    }
+                },
+                {
                     headerName: "Date",
                     field: "Date",
                     sort: 'desc'
@@ -56,7 +63,7 @@ export default class CurrentPrice extends React.Component {
         }
 
         this.defaultColDef = {
-            width: 160,
+            width: 90,
             editable: true,
             filter: 'agTextColumnFilter'
         }
@@ -101,58 +108,90 @@ export default class CurrentPrice extends React.Component {
 
     }
 
+    filterVolume(market) {
+        let volume = 100000;
+        let ratioVolume = 2;
+        let averageNumberDay = 20;
+        let promise = null;
+        let listPromise = [];
+
+        for (let i = 0; i < dataStorage[market].length; i++) {
+            promise = new Promise(resolve => {
+                const url = getMarketHistoricalQuotesUrl(dataStorage[market][i]);
+
+                axios.get(url).then(response => {
+                    if (response && response.data) {
+                        let average1monthVolume = 0;
+                        let sum1monthVolume = 0
+                        for (let j = 1; j < (averageNumberDay + 1); j++) {
+                            sum1monthVolume += response.data[response.data.length - 1 - j].Volume
+                        }
+                        average1monthVolume = sum1monthVolume / averageNumberDay
+                        response.data[response.data.length - 1].average1monthVolume = average1monthVolume
+                        response.data[response.data.length - 1].ratioVolume = response.data[response.data.length - 1].Volume / average1monthVolume
+                        resolve(response.data[response.data.length - 1])
+                    } else {
+                        resolve([]);
+                    }
+                }).catch(() => {
+                    resolve([]);
+                })
+            })
+            listPromise.push(promise);
+        }
+        Promise.all(listPromise)
+            .then(response => {
+                let filterVolume = response.filter(item => {
+                    return (item.Volume > volume && item.Volume > ratioVolume * item.average1monthVolume && item.Volume)
+                }).sort(((a, b) => b.ratioVolume - a.ratioVolume))
+                this.setState({
+                    rowData: filterVolume
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+    }
+
+
     handleOnChangeFilter(e, title) {
-        e.persist()
-        let volume = 0;
-        switch (title) {
-            case 'volume':
-                volume = e.target.value
-                if (volume.length < 4) return
+        // e.persist()
+        // this.filterVolume()
+        // switch (title) {
+        //     case 'volume':
+        //         volume = e.target.value
+        //         if (volume.length < 4) return
+        //         break;
+        //     case 'ratioVolume':
+        //         // ratioVolume = e.target.value
+        //         break;
+        //     case 'averageNumberDay':
+        //         // averageNumberDay = e.target.value
+        //         break;
+        //     default:
+        //         break;
+        // }
+        // this.setTimeOutID && clearTimeout(this.setTimeOutID);
+        // this.setTimeOutID = setTimeout(() => {
+
+        // }, 3000)
+    }
+
+    handleOnChangeMarket(index) {
+        switch (index) {
+            case 1:
+                this.filterVolume('allSymbolsString_HOSE')
                 break;
-            case 'price':
+            case 2:
+                this.filterVolume('allSymbolsString_HNX')
+                break;
+            case 3:
+                this.filterVolume('allSymbolsString_UPCOM')
                 break;
             default:
-                break;
+                break
         }
-        this.setTimeOutID && clearTimeout(this.setTimeOutID);
-        this.setTimeOutID = setTimeout(() => {
-            let promise = null;
-            let listPromise = [];
 
-            for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
-                promise = new Promise(resolve => {
-                    const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
-
-                    axios.get(url).then(response => {
-                        if (response && response.data) {
-                            let average1monthVolume = 0;
-                            let sum1monthVolume = 0
-                            for (let j = 0; j < 100; j++) {
-                                sum1monthVolume += response.data[response.data.length - 1 - j].Volume
-                            }
-                            average1monthVolume = sum1monthVolume / 100
-                            response.data[response.data.length - 1].average1monthVolume = average1monthVolume
-                            resolve(response.data[response.data.length - 1])
-                        } else {
-                            resolve([]);
-                        }
-                    }).catch(() => {
-                        resolve([]);
-                    })
-                })
-                listPromise.push(promise);
-            }
-            Promise.all(listPromise)
-                .then(response => {
-                    let filterVolume = response.filter(item => item.Volume > Number(volume))
-                    this.setState({
-                        rowData: filterVolume
-                    })
-                })
-                .catch(error => {
-                    console.log(error.response)
-                });
-        }, 3000)
     }
 
     render() {
@@ -174,39 +213,27 @@ export default class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
-                <input placeholder='volume' onChange={(e) => this.handleOnChangeFilter(e, 'volume')} />
+                {/* <input placeholder='volume' onChange={(e) => this.handleOnChangeFilter(e, 'volume')} /> */}
+                <div>
+                    volume = 100000;
+                    ratioVolume = 2;
+                    averageNumberDay = 20;
+                </div>
+                <div onClick={() => this.handleOnChangeMarket(1)}>
+                    HOSE
+                </div>
+                <div onClick={() => this.handleOnChangeMarket(2)}>
+                    HNX
+                </div>
+                <div onClick={() => this.handleOnChangeMarket(3)}>
+                    UPCOM
+                </div>
                 {this.renderContent()}
             </div>
         );
     }
 
     componentDidMount() {
-        let promise = null;
-        let listPromise = [];
-        for (let i = 0; i < dataStorage.allSymbolsString.length; i++) {
-            promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
-                axios.get(url).then(response => {
-                    if (response && response.data) {
-                        resolve(response.data[response.data.length - 1])
-                    } else {
-                        resolve([]);
-                    }
-                }).catch(() => {
-                    resolve([]);
-                })
-            })
-            listPromise.push(promise);
-        }
-        Promise.all(listPromise)
-            .then(response => {
-                let filterVolume = response.filter(item => item.Volume > 100000)
-                this.setState({
-                    rowData: filterVolume
-                })
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
+        this.filterVolume('allSymbolsString_HOSE')
     }
 }
