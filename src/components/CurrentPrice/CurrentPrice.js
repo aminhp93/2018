@@ -217,60 +217,61 @@ export default class CurrentPrice extends React.Component {
         let promise = null;
         let listPromise = [];
 
-        // for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
-        promise = new Promise(resolve => {
-            const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[0]);
+        for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
+            promise = new Promise(resolve => {
+                const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
 
-            axios.get(url).then(response => {
-                if (response && response.data) {
-                    // let length = 100
-                    let data = response.data;
-                    let sumGain = 0;
-                    let sumLoss = 0
-                    // if (response.data.length > 100) {
-                    //     data = response.data.slice(data.length - 100)
-                    // }
-                    for (let i = 1; i < data.length; i++) {
-                        let change = data[i].Close - data[i - 1].Close;
-                        if (change > 0) {
-                            data[i].Gain = change
-                            data[i].Loss = 0
+                axios.get(url).then(response => {
+                    if (response && response.data) {
+                        let data = response.data;
+                        let sumGain = 0;
+                        let sumLoss = 0
+                        for (let j = 1; j < data.length; j++) {
+                            let change = data[j].Close - data[j - 1].Close;
+                            if (change > 0) {
+                                data[j].Gain = change
+                                data[j].Loss = 0
+                            }
+                            if (change < 0) {
+                                data[j].Loss = -change
+                                data[j].Gain = 0
+                            }
+                            if (change === 0) {
+                                data[j].Loss = 0
+                                data[j].Gain = 0
+                            }
+                            sumGain += data[j].Gain || 0
+                            sumLoss += data[j].Loss || 0
+                            if (j < 14) {
+                                data[j].AverageGain = sumGain / 14
+                                data[j].AverageLoss = sumLoss / 14
+                            } else {
+                                data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
+                                data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
+                                data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
+                            }
+
                         }
-                        if (change < 0) {
-                            data[i].Loss = -change
-                            data[i].Gain = 0
-                        }
-                        if (change === 0) {
-                            data[i].Loss = 0
-                            data[i].Gain = 0
-                        }
-                        sumGain += data[i].Gain || 0
-                        sumLoss += data[i].Loss || 0
-                        if (i < 14) {
-                            data[i].AverageGain = sumGain / 14
-                            data[i].AverageLoss = sumLoss / 14
+                        if (data[data.length - 1].RSI >= 60) {
+                            resolve(data[data.length - 1])
                         } else {
-                            data[i].AverageGain = (data[i - 1].AverageGain * 13 + data[i].Gain) / 14
-                            data[i].AverageLoss = (data[i - 1].AverageLoss * 13 + data[i].Loss) / 14
-                            data[i].RSI = 100 - 100 / (1 + (data[i].AverageGain) / (data[i].AverageLoss))
+                            resolve({})
                         }
 
+                    } else {
+                        resolve({});
                     }
-                    resolve(data)
-                } else {
-                    resolve([]);
-                }
-            }).catch(() => {
-                resolve([]);
+                }).catch(() => {
+                    resolve({});
+                })
             })
-        })
-        listPromise.push(promise);
-        // }
+            listPromise.push(promise);
+        }
         Promise.all(listPromise)
             .then(response => {
-
+                const filteredResponse = response.filter(item => item.Symbol).sort((a, b) => b.RSI - a.RSI)
                 this.setState({
-                    rowData: response[0]
+                    rowData: filteredResponse
                 })
             })
             .catch(error => {
