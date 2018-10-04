@@ -38,6 +38,10 @@ export default class CurrentPrice extends React.Component {
                     field: "Volume"
                 },
                 {
+                    headerName: "average1monthVolume",
+                    field: "average1monthVolume"
+                },
+                {
                     headerName: "Value",
                     field: "Value"
                 },
@@ -114,11 +118,20 @@ export default class CurrentPrice extends React.Component {
         this.setTimeOutID = setTimeout(() => {
             let promise = null;
             let listPromise = [];
+
             for (let i = 0; i < dataStorage.allSymbolsString_HOSE.length; i++) {
                 promise = new Promise(resolve => {
                     const url = getMarketHistoricalQuotesUrl(dataStorage.allSymbolsString_HOSE[i]);
+
                     axios.get(url).then(response => {
                         if (response && response.data) {
+                            let average1monthVolume = 0;
+                            let sum1monthVolume = 0
+                            for (let j = 0; j < 100; j++) {
+                                sum1monthVolume += response.data[response.data.length - 1 - j].Volume
+                            }
+                            average1monthVolume = sum1monthVolume / 100
+                            response.data[response.data.length - 1].average1monthVolume = average1monthVolume
                             resolve(response.data[response.data.length - 1])
                         } else {
                             resolve([]);
