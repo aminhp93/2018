@@ -252,7 +252,7 @@ export default class CurrentPrice extends React.Component {
                             }
 
                         }
-                        if (data[data.length - 1].RSI >= 60) {
+                        if ((data[data.length - 1].RSI >= 60) && (data[data.length - 2].RSI < data[data.length - 1].RSI)) {
                             resolve(data[data.length - 1])
                         } else {
                             resolve({})
@@ -269,7 +269,7 @@ export default class CurrentPrice extends React.Component {
         }
         Promise.all(listPromise)
             .then(response => {
-                const filteredResponse = response.filter(item => item.Symbol).sort((a, b) => b.RSI - a.RSI)
+                const filteredResponse = response.filter(item => item.Symbol && item.Volume > 10000).sort((a, b) => b.RSI - a.RSI)
                 this.setState({
                     rowData: filteredResponse
                 })
