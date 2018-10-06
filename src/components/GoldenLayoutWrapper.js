@@ -170,7 +170,7 @@ class GoldenLayoutWrapper extends React.Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    {/* <Header addComponentToStack={this.addComponentToStack.bind(this)} /> */}
+                    <Header addComponentToStack={this.addComponentToStack.bind(this)} />
                     <div className='goldenLayout' ref={input => this.layout = input} />
                     {/* <App /> */}
                 </div>

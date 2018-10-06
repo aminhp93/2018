@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAccountManagementUrl } from '../../helpers/requests';
+import { getAccountAssetsUrl, getAccountLoanUrl, getAccountPortfolioUrl, getHeaderRequest } from '../../helpers/requests';
 import dataStorage from '../../dataStorage';
 import axios from 'axios';
 
@@ -7,44 +7,90 @@ export default class AccountManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountManagementObj: {}
+            accountAssetsObj: {},
+            accountLoanObj: {},
+            accountPortfolioObj: {}
         }
     }
 
-    renderContent() {
+    renderAccountAssetsContent() {
         let result = []
-        for (let key in this.state.accountManagementObj) {
+        for (let key in this.state.accountAssetsObj) {
             result.push(<div key={key}>
-                {key}: {this.state.accountManagementObj[key]}
+                {key}: {this.state.accountAssetsObj[key]}
             </div>)
         }
         return result
+    }
 
+    renderAccountLoanContent() {
+        let result = []
+        for (let key in this.state.accountLoanObj) {
+            result.push(<div key={key}>
+                {key}: {this.state.accountLoanObj[key]}
+            </div>)
+        }
+        return result
+    }
+
+    renderAccountPortfolioContent() {
+        let result = []
+        for (let key in this.state.accountPortfolioObj) {
+            if (key !== 'stocks') {
+                result.push(<div key={key}>
+                    {key}: {this.state.accountPortfolioObj[key]}
+                </div>)
+            }
+
+        }
+        return result
     }
 
     render() {
         return (
             <div>
-                {this.renderContent()}
+                {this.renderAccountAssetsContent()}
+                {this.renderAccountLoanContent()}
+                {this.renderAccountPortfolioContent()}
             </div>
         );
     }
 
     componentDidMount() {
-        const url = getAccountManagementUrl()
-        const headers = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'X-Auth-Token': dataStorage.accessToken
-            }
-        };
-        axios.get(url, headers)
+        let url = getAccountAssetsUrl()
+
+        axios.get(url, getHeaderRequest())
+            .then(response => {
+                if (response.data) {
+                    this.setState({
+                        accountAssetsObj: response.data
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+
+        url = getAccountLoanUrl()
+        axios.get(url, getHeaderRequest())
+            .then(response => {
+                if (response.data) {
+                    this.setState({
+                        accountLoanObj: response.data
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+
+        url = getAccountPortfolioUrl()
+        axios.get(url, getHeaderRequest())
             .then(response => {
                 console.log(response)
                 if (response.data) {
                     this.setState({
-                        accountManagementObj: response.data
+                        accountPortfolioObj: response.data
                     })
                 }
             })

@@ -64,3 +64,7 @@
 .filterSystem {
   width: 100%;
 }
+.menu{
+  display: flex;
+  justify-content: space-between;
+}

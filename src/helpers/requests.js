@@ -1,6 +1,18 @@
+import dataStorage from '../dataStorage';
 var moment = require('moment');
 
+const accountNumber = dataStorage.accountNumber;
 const todayDate = moment().format('YYYY-M-DD')
+
+export function getHeaderRequest() {
+    return {
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache',
+            'X-Auth-Token': dataStorage.accessToken
+        }
+    }
+}
 
 export function getCompanyInfoUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/CompanyInfo?symbol=' + symbol
@@ -81,11 +93,19 @@ export function getMovingAveragesUrl() {
     return 'https://www.fireant.vn/api/Data/Technical/MovingAverages'
 }
 
-export function getAccountManagementUrl() {
-    return 'https://trade-api.vndirect.com.vn/accounts/v2/0001069456/assets'
+export function getAccountAssetsUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/v2/' + accountNumber + '/assets'
 }
 
 export function getTradingStatisticUrl() {
     // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
     return 'https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
+}
+
+export function getAccountLoanUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber + '/loan'
+}
+
+export function getAccountPortfolioUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/v3/' + accountNumber + '/portfolio'
 }
