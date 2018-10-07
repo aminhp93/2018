@@ -1,31 +1,28 @@
 import React from 'react';
 import { translate, Trans } from 'react-i18next';
-
+import uuidv4 from 'uuid/v4';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import Datafeeds from './datafeeds';
 
+class ChartTV extends React.Component {
+    constructor(props) {
+        super(props);
+        this.id = uuidv4();
+    }
 
-class ChartTv extends React.Component {
-    componentDidMount() {
-        console.warn('componentDidMount');
-        /* global TradingView */
-        // TradingView.onready(function () {
-        console.warn('onReady');
+    initChart() {
         let data = null;
-        // data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com');
-        data = new Datafeeds.UDFCompatibleDatafeed();
+        data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', this.chartTV);
         const option = {
             fullscreen: true,
             symbol: 'AAPL',
             interval: 'D',
-            container_id: 'tv_chart_container',
-            //	BEWARE: no trailing slash is expected in feed URL
+            container_id: this.id,
             datafeed: data,
             library_path: 'charting_library/',
             locale: 'en',
-            //	Regression Trend-related functionality is not implemented yet, so it's hidden for a while
             drawings_access: { type: 'black', tools: [{ name: 'Regression Trend' }] },
             enabled_features: ['chart_property_page_trading'],
             // charts_storage_url: 'http://saveload.tradingview.com',
@@ -35,13 +32,28 @@ class ChartTv extends React.Component {
             disabled_features: ['use_localstorage_for_settings', 'study_templates', 'dome_widget', 'header_layouttoggle', 'header_screenshot', 'move_logo_to_main_pane', 'snapshot_trading_drawings', 'show_logo_on_all_charts'],
             user_id: 'public_user_id'
         };
-        const TV = TradingView.widget;
-        const abc = new TV(option);
-        // });
+        if (this.chartTV) {
+            this.widget = new TradingView.widget(option);
+        }
+        // const that = this;
+        // this.widget && this.widget.onChartReady && this.widget.onChartReady(() => {
+        //     that.widget && that.widget.chart()
+        // })
+    }
+
+    componentDidMount() {
+        /* global TradingView */
+        // if (!this.widget) {
+        this.initChart()
+        // } else {
+        //     if (this.widget && this.widget.chart()) {
+        //         this.widget.chart()
+        //     }
+        // }
     }
 
     render() {
-        return <article id='tv_chart_container' />;
+        return <article id={this.id} ref={dom => this.chartTV = dom} />;
     }
 }
 
@@ -57,4 +69,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate('translations')(ChartTv));
+export default connect(mapStateToProps, mapDispatchToProps)(translate('translations')(ChartTV));
