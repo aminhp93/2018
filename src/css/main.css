@@ -68,3 +68,8 @@
   display: flex;
   justify-content: space-between;
 }
+
+.filterOption{
+  display: flex;
+  justify-content: space-between;
+}

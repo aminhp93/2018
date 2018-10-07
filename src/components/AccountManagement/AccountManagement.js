@@ -87,7 +87,6 @@ export default class AccountManagement extends React.Component {
         url = getAccountPortfolioUrl()
         axios.get(url, getHeaderRequest())
             .then(response => {
-                console.log(response)
                 if (response.data) {
                     this.setState({
                         accountPortfolioObj: response.data

@@ -13,6 +13,7 @@ import AccountManagement from './AccountManagement';
 import FilterSystem from './FilterSystem';
 import Tennis from './Tennis';
 import CurrentPrice from './CurrentPrice';
+import NewOrder from './NewOrder';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
@@ -95,6 +96,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('CurrentPrice',
                     wrapComponent(CurrentPrice, this.context.store)
+                );
+                this.goldenLayout.registerComponent('NewOrder',
+                    wrapComponent(NewOrder, this.context.store)
                 );
 
                 /// Callback for every created stack
@@ -190,13 +194,13 @@ class GoldenLayoutWrapper extends React.Component {
         //             for (let i = 0; i < allSymbolsArray.length; i++) {
         //                 dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
         //                 if (allSymbolsArray[i].Exchange === 'HOSTC') {
-        //                     dataStorage.allSymbolsString_HOSE.push(allSymbolsArray[i].Symbol)
+        //                     dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
         //                 }
         //                 if (allSymbolsArray[i].Exchange === 'HASTC') {
-        //                     dataStorage.allSymbolsString_HNX.push(allSymbolsArray[i].Symbol)
+        //                     dataStorage.allSymbolsArray_HNX.push(allSymbolsArray[i].Symbol)
         //                 }
         //                 if (allSymbolsArray[i].Exchange === 'UPCOM') {
-        //                     dataStorage.allSymbolsString_UPCOM.push(allSymbolsArray[i].Symbol)
+        //                     dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
         //                 }
         //             }
         //             console.log(dataStorage)

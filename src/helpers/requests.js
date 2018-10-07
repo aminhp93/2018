@@ -2,6 +2,7 @@ import dataStorage from '../dataStorage';
 var moment = require('moment');
 
 const accountNumber = dataStorage.accountNumber;
+const currentTime = moment()
 const todayDate = moment().format('YYYY-M-DD')
 
 export function getHeaderRequest() {
@@ -93,13 +94,17 @@ export function getMovingAveragesUrl() {
     return 'https://www.fireant.vn/api/Data/Technical/MovingAverages'
 }
 
-export function getAccountAssetsUrl() {
-    return 'https://trade-api.vndirect.com.vn/accounts/v2/' + accountNumber + '/assets'
-}
-
 export function getTradingStatisticUrl() {
     // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
     return 'https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
+}
+
+export function getAccountUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber
+}
+
+export function getAccountAssetsUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/v2/' + accountNumber + '/assets'
 }
 
 export function getAccountLoanUrl() {
@@ -108,4 +113,24 @@ export function getAccountLoanUrl() {
 
 export function getAccountPortfolioUrl() {
     return 'https://trade-api.vndirect.com.vn/accounts/v3/' + accountNumber + '/portfolio'
+}
+
+export function getAccountAftypeUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber + '/aftype'
+}
+
+export function getAccountStocksUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/v3/' + accountNumber + '/stocks'
+}
+
+export function getAccountCommissionsUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber + '/commissions'
+}
+
+export function getNotificationsUrl() {
+    return 'https://notiv2.vndirect.com.vn/notisocket/notifications?page=0&size=500'
+}
+
+export function getAccountNewOrderRequestUrl() {
+    return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber + '/orders/new_order_requests?t=' + currentTime
 }
