@@ -1,6 +1,0 @@
-{
-    "name": "ChartSymbol",
-    "version": "0.0.0",
-    "private": true,
-    "main": "./ChartSymbol.js"
-}

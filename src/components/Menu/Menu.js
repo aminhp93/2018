@@ -33,6 +33,9 @@ export default class Menu extends React.Component {
                 <div onClick={this.handleOnClick.bind(this)}>
                     NewOrder
                 </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    ChartTV
+                </div>
             </div>
         );
     }

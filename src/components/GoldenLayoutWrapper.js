@@ -14,6 +14,7 @@ import FilterSystem from './FilterSystem';
 import Tennis from './Tennis';
 import CurrentPrice from './CurrentPrice';
 import NewOrder from './NewOrder';
+import ChartTV from './ChartTV';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
@@ -99,6 +100,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('NewOrder',
                     wrapComponent(NewOrder, this.context.store)
+                );
+                this.goldenLayout.registerComponent('ChartTV',
+                    wrapComponent(ChartTV, this.context.store)
                 );
 
                 /// Callback for every created stack
