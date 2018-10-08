@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import Datafeeds from './datafeeds';
 import axios from 'axios';
+import chartTV_constants from '../../constants/chartTV_constants';
 
 class ChartTV extends React.Component {
     constructor(props) {
@@ -15,32 +16,47 @@ class ChartTV extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps)
-        if (nextProps.symbol) {
-            // url = getIntradayQuotesUrl(nextProps.symbol)
-            let url = 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + nextProps.symbol + '&resolution=D&from=1507883566&to=1538987626'
+        if (!nextProps.symbol) return
+        if (nextProps.symbol && nextProps.symbol.length && nextProps.symbol.length < 2) return
+        this.showChart(nextProps.symbol)
+    }
 
-            axios.get(url)
-                .then(response => {
-                    if (response.data) {
-                        console.log(response.data)
-                        this.initChart(response.data)
-                    }
-                })
-                .catch(error => {
-                    console.log(error.response)
-                });
+    showChart(code) {
+        if (!this.widget || !this.widget.chart) {
+            this.getDataChart()
+        } else {
+            const chartObj = this.widget.chart();
+            chartObj.setSymbol(code, (response) => {
+                console.log(response)
+            })
         }
+        // url = getIntradayQuotesUrl(nextProps.symbol)
+        // let url = 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + code + '&resolution=D&from=1507883566&to=1538987626'
+
+        // axios.get(url)
+        //     .then(response => {
+        //         if (response.data) {
+        //             console.log(response.data)
+        //             this.initChart(response.data)
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log(error.response)
+        // });
+    }
+
+    getDataChart() {
+        this.initChart(chartTV_constants.defaultConfig)
     }
 
     initChart(dataFeed) {
-        let data = null;
-        data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', this.chartTV);
+        let data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', '', dataFeed, this.callbackSearch.bind(this), this.cbSymbol.bind(this), this.chartTV);
         const option = {
             fullscreen: true,
-            symbol: 'PDR',
+            // symbol: 'PDR',
             interval: 'D',
             container_id: this.id,
-            datafeed: dataFeed ? dataFeed : data,
+            datafeed: data,
             library_path: 'charting_library/',
             locale: 'en',
             drawings_access: { type: 'black', tools: [{ name: 'Regression Trend' }] },
@@ -61,6 +77,14 @@ class ChartTV extends React.Component {
         // })
     }
 
+    callbackSearch(response) {
+        console.log(response)
+    }
+
+    cbSymbol(response) {
+        console.log(response)
+    }
+
     componentDidMount() {
         /* global TradingView */
         // if (!this.widget) {
@@ -71,7 +95,7 @@ class ChartTV extends React.Component {
         //     }
         // }
         setTimeout(() => {
-            this.initChart()
+            this.initChart(chartTV_constants.defaultConfig)
         }, 0)
     }
 

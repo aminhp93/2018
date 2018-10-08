@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import dataFeed from './datafeed';
+import dataStorage from '../../dataStorage';
 /*
 	This class implements interaction with UDF-compatible datafeed.
 
@@ -17,7 +17,10 @@ function parseJSONorNot(mayBeJSON) {
 
 var Datafeeds = {};
 
-Datafeeds.UDFCompatibleDatafeed = function (datafeedURL, updateFrequency) {
+Datafeeds.UDFCompatibleDatafeed = function (datafeedURL, updateFrequency, dataFeed, loadChartSuccessCb, cbSymbol) {
+    this.dataFeed = dataFeed;
+    this.loadChartSuccessCb = loadChartSuccessCb;
+    this.cbSymbol = cbSymbol;
     this._datafeedURL = datafeedURL;
     this._configuration = undefined;
 
@@ -47,8 +50,6 @@ Datafeeds.UDFCompatibleDatafeed.prototype.getServerTime = function (callback) {
     if (this._configuration.supports_time) {
         this._send(this._datafeedURL + '/time', {})
             .done(function (response) {
-                console.log('response');
-                console.log(response);
                 var time = +response;
                 if (!isNaN(time)) {
                     callback(time);
@@ -91,7 +92,7 @@ Datafeeds.UDFCompatibleDatafeed.prototype._logMessage = function (message) {
     }
 };
 
-Datafeeds.UDFCompatibleDatafeed.prototype._send = function (url, params) {
+Datafeeds.UDFCompatibleDatafeed.prototype._send = function (url, params, token) {
     var request = url;
     if (params) {
         for (var i = 0; i < Object.keys(params).length; ++i) {
@@ -106,18 +107,19 @@ Datafeeds.UDFCompatibleDatafeed.prototype._send = function (url, params) {
     return $.ajax({
         type: 'GET',
         url: request,
-        contentType: 'text/plain'
+        contentType: 'text/plain',
+        headers: token ? {
+            Authorization: `Bearer ${dataStorage.accessToken}`,
+            'Cache-Control': 'no-cache'
+        } : {}
     });
 };
 
 Datafeeds.UDFCompatibleDatafeed.prototype._initialize = function () {
     var that = this;
-
     // this._send(this._datafeedURL + '/config')
     //     .done(function (response) {
-    const response = dataFeed.init;
-    console.log('response');
-    console.log(response);
+    const response = this.dataFeed.init;
     var configurationData = parseJSONorNot(response);
     that._setupWithConfiguration(configurationData);
     // })
@@ -185,13 +187,11 @@ Datafeeds.UDFCompatibleDatafeed.prototype.getMarks = function (symbolInfo, range
         //     resolution: resolution
         // })
         //     .done(function (response) {
-        const response = dataFeed.markData;
-        console.log('response');
-        console.log(response);
-        onDataCallback(parseJSONorNot(response));
+        const response = this.dataFeed.markData;
+        // onDataCallback(parseJSONorNot(response));
         // })
         // .fail(function () {
-        //     onDataCallback([]);
+        onDataCallback([]);
         // });
     }
 };
@@ -205,13 +205,11 @@ Datafeeds.UDFCompatibleDatafeed.prototype.getTimescaleMarks = function (symbolIn
         //     resolution: resolution
         // })
         //     .done(function (response) {
-        const response = dataFeed.timeScaleMax;
-        console.log('response');
-        console.log(response);
-        onDataCallback(parseJSONorNot(response));
+        const response = this.dataFeed.timeScaleMax;
+        // onDataCallback(parseJSONorNot(response));
         // })
         // .fail(function () {
-        //     onDataCallback([]);
+        onDataCallback([]);
         // });
     }
 };
@@ -225,9 +223,8 @@ Datafeeds.UDFCompatibleDatafeed.prototype.searchSymbols = function (searchString
     }
 
     if (this._configuration.supports_search) {
-        this._send(this._datafeedURL + '/search', {
-            limit: MAX_SEARCH_RESULTS,
-            query: searchString.toUpperCase(),
+        this._send('https://dchart-api.vndirect.com.vn/dchart/history?symbol=', {
+            symbol: searchString.toUpperCase(),
             type: type,
             exchange: exchange
         })
@@ -310,11 +307,13 @@ Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function (symbolName, 
         //     symbol: symbolName ? symbolName.toUpperCase() : ''
         // })
         //     .done(function (response) {
-        const response = dataFeed.groupRequest;
+        const response = this.dataFeed.groupRequest;
 
         console.log('response');
         console.log(response);
-        var data = parseJSONorNot(response);
+        let groupRequest = '{ "data_status": "delayed_streaming","name":"AAPL","exchange-traded":"NasdaqNM","exchange - listed":"NasdaqNM","timezone":"Australia/Sydney","minmov":1,"minmov2":0,"pointvalue":1,"session":"0930 - 1630","has_intraday":false,"has_no_volume":false,"description":"AppleInc.","type":"stock","supported_resolutions":["D","2D","5D","W","3W","M","3M","6M","12M"],"pricescale":100,"ticker":"AAPL"}'
+
+        var data = parseJSONorNot(groupRequest);
 
         if (data.s && data.s !== 'ok') {
             onResolveErrorCallback('unknown_symbol');
@@ -344,7 +343,7 @@ Datafeeds.UDFCompatibleDatafeed.prototype.getBars = function (symbolInfo, resolu
     if (rangeStartDate > 0 && (rangeStartDate + '').length > 10) {
         throw new Error(['Got a JS time instead of Unix one.', rangeStartDate, rangeEndDate]);
     }
-    const response = dataFeed.barData;
+    const response = this.dataFeed.barData;
     // this._send(this._datafeedURL + this._historyURL, {
     //     symbol: symbolInfo.ticker.toUpperCase(),
     //     resolution: resolution,

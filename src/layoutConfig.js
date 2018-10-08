@@ -12,14 +12,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                 //     'reorderEnabled': true,
                 //     'title': 'DailyWatchlist'
                 // },
-                // {
-                //     'type': 'component',
-                //     'component': 'DetailSymbol',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'DetailSymbol'
-                // },
+                {
+                    'type': 'component',
+                    'component': 'DetailSymbol',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'DetailSymbol'
+                },
                 // {
                 //     'type': 'component',
                 //     'component': 'App',
