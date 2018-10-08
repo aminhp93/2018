@@ -27,6 +27,7 @@ class DetailSymbol extends React.Component {
         this.setState({
             symbol: symbol
         })
+        this.props.actions.changeSymbol(symbol)
     }
 
     render() {

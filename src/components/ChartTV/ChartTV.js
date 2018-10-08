@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import Datafeeds from './datafeeds';
+import axios from 'axios';
 
 class ChartTV extends React.Component {
     constructor(props) {
@@ -12,15 +13,34 @@ class ChartTV extends React.Component {
         this.id = uuidv4();
     }
 
-    initChart() {
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+        if (nextProps.symbol) {
+            // url = getIntradayQuotesUrl(nextProps.symbol)
+            let url = 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + nextProps.symbol + '&resolution=D&from=1507883566&to=1538987626'
+
+            axios.get(url)
+                .then(response => {
+                    if (response.data) {
+                        console.log(response.data)
+                        this.initChart(response.data)
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response)
+                });
+        }
+    }
+
+    initChart(dataFeed) {
         let data = null;
         data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', this.chartTV);
         const option = {
             fullscreen: true,
-            symbol: 'AAPL',
+            symbol: 'PDR',
             interval: 'D',
             container_id: this.id,
-            datafeed: data,
+            datafeed: dataFeed ? dataFeed : data,
             library_path: 'charting_library/',
             locale: 'en',
             drawings_access: { type: 'black', tools: [{ name: 'Regression Trend' }] },
@@ -32,9 +52,9 @@ class ChartTV extends React.Component {
             disabled_features: ['use_localstorage_for_settings', 'study_templates', 'dome_widget', 'header_layouttoggle', 'header_screenshot', 'move_logo_to_main_pane', 'snapshot_trading_drawings', 'show_logo_on_all_charts'],
             user_id: 'public_user_id'
         };
-        if (this.chartTV) {
-            this.widget = new TradingView.widget(option);
-        }
+        // if (this.chartTV) {
+        this.widget = new TradingView.widget(option);
+        // }
         // const that = this;
         // this.widget && this.widget.onChartReady && this.widget.onChartReady(() => {
         //     that.widget && that.widget.chart()
@@ -44,16 +64,19 @@ class ChartTV extends React.Component {
     componentDidMount() {
         /* global TradingView */
         // if (!this.widget) {
-        this.initChart()
+        // this.initChart()
         // } else {
         //     if (this.widget && this.widget.chart()) {
         //         this.widget.chart()
         //     }
         // }
+        setTimeout(() => {
+            this.initChart()
+        }, 0)
     }
 
     render() {
-        return <article id={this.id} ref={dom => this.chartTV = dom} />;
+        return <article id={this.id} />;
     }
 }
 

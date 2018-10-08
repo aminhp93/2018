@@ -61,10 +61,10 @@ class CurrentPrice extends React.Component {
                     field: "Volume",
                     width: 80
                 },
-                // {
-                //     headerName: "average1monthVolume",
-                //     field: "average1monthVolume"
-                // },
+                {
+                    headerName: "average1monthVolume",
+                    field: "average1monthVolume"
+                },
                 {
                     headerName: "Value",
                     field: "Value"
@@ -125,14 +125,14 @@ class CurrentPrice extends React.Component {
                         return params.data.RSI && params.data.RSI.toFixed(1)
                     }
                 },
-                // {
-                //     headerName: 'ratioVolume',
-                //     field: 'ratioVolume',
-                //     width: 80,
-                //     cellRenderer: function (params) {
-                //         return params.data.ratioVolume && params.data.ratioVolume.toFixed(1)
-                //     }
-                // },
+                {
+                    headerName: 'ratioVolume',
+                    field: 'ratioVolume',
+                    width: 80,
+                    cellRenderer: function (params) {
+                        return params.data.ratioVolume && params.data.ratioVolume.toFixed(1)
+                    }
+                },
                 {
                     headerName: "Date",
                     field: "Date",
@@ -386,6 +386,10 @@ class CurrentPrice extends React.Component {
 
     }
 
+    handleFilterVolume() {
+        this.filterVolume('allSymbolsArray_HOSE')
+    }
+
     render() {
         return (
             <div className='filterSystem'>
@@ -426,6 +430,9 @@ class CurrentPrice extends React.Component {
                     </div>
                     <div onClick={this.handleGetCurrentPortfolio.bind(this)}>
                         Current Portfolio
+                    </div>
+                    <div onClick={this.handleFilterVolume.bind(this)}>
+                        Filter Volume >
                     </div>
                 </div>
                 {this.renderContent()}
