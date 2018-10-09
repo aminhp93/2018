@@ -7,9 +7,8 @@ import * as symbolActions from '../../actions/symbol.actions';
 import Datafeeds from './datafeeds';
 import axios from 'axios';
 import chartTV_constants from '../../constants/chartTV_constants';
-import { getSaveTradingViewLayoutUrl } from '../../helpers/requests';
+import { getSaveLayoutChartUrl, getLoadLayoutChartUrl } from '../../helpers/requests';
 import FormData from 'form-data'
-
 
 class ChartTV extends React.Component {
     constructor(props) {
@@ -41,7 +40,7 @@ class ChartTV extends React.Component {
 
     initChart(dataFeed) {
         /* global TradingView */
-
+        const that = this;
         let data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', '', dataFeed, this.callbackSearch.bind(this), this.cbSymbol.bind(this), this.chartTV);
         const option = {
             fullscreen: true,
@@ -64,7 +63,24 @@ class ChartTV extends React.Component {
             // this.widget.chart().createStudy('RSI60', false, true);
             // this.widget.chart().createStudy('MACD_Minh', false, false, [14, 30, "close", 9])
             // this.widget && this.widget.chart().createStudy('OverlayMINH', false, false, ['AAPL']);
+            that.loadLayoutChart()
         });
+    }
+
+    loadLayoutChart() {
+        let url = getLoadLayoutChartUrl()
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    console.log(response.data)
+                    const savedLayout = JSON.parse(JSON.parse(response.data.data.content).content).charts[0]
+                    console.log(savedLayout)
+                    this.widget && this.widget.load && this.widget.load(savedLayout)
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
 
     }
 
@@ -82,14 +98,14 @@ class ChartTV extends React.Component {
         }, 0)
     }
 
-    saveChart() {
+    saveLayoutChart() {
         this.widget && this.widget.save && this.widget.save(savedObj => {
-            const a = savedObj;
-            console.log(a)
-            let url = getSaveTradingViewLayoutUrl()
+            console.log(savedObj)
+            let url = getSaveLayoutChartUrl()
             var formData = new FormData();
             const content = {
                 "publish_request_id": "4pax3wvondy",
+                "id": 33089,
                 "name": "123",
                 "description": "",
                 "resolution": "D",
@@ -99,7 +115,7 @@ class ChartTV extends React.Component {
                 "symbol": "VNM",
                 "short_name": "VNM",
                 "legs": "[{\"symbol\":\"VNM\",\"pro_symbol\":\"VNM\"}]",
-                "content": "{}"
+                "content": savedObj
             }
             formData.append('name', 'minh6');
             formData.append('content', content);
@@ -115,7 +131,6 @@ class ChartTV extends React.Component {
                 .catch(error => {
                     console.log(error.response)
                 });
-
         })
     }
 
@@ -126,7 +141,7 @@ class ChartTV extends React.Component {
                 position: 'absolute',
                 top: 0,
                 color: 'red'
-            }} onClick={this.saveChart.bind(this)}>Save</div>
+            }} onClick={this.saveLayoutChart.bind(this)}>Save</div>
         </div>
 
     }
