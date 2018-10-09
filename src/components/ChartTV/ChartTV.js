@@ -73,7 +73,7 @@ class ChartTV extends React.Component {
             .then(response => {
                 if (response.data) {
                     console.log(response.data)
-                    const savedLayout = JSON.parse(JSON.parse(response.data.data.content).content).charts[0]
+                    const savedLayout = JSON.parse(response.data.data.content).content
                     console.log(savedLayout)
                     this.widget && this.widget.load && this.widget.load(savedLayout)
                 }
@@ -104,9 +104,9 @@ class ChartTV extends React.Component {
             let url = getSaveLayoutChartUrl()
             var formData = new FormData();
             const content = {
-                "publish_request_id": "4pax3wvondy",
-                "id": 33089,
-                "name": "123",
+                "publish_request_id": uuidv4().substring(0, 12),
+                "id": 33095,
+                "name": "basic_layout",
                 "description": "",
                 "resolution": "D",
                 "symbol_type": "stock",
@@ -117,9 +117,9 @@ class ChartTV extends React.Component {
                 "legs": "[{\"symbol\":\"VNM\",\"pro_symbol\":\"VNM\"}]",
                 "content": savedObj
             }
-            formData.append('name', 'minh6');
-            formData.append('content', content);
-            formData.append('symbol', 'VHM');
+            formData.append('name', 'basic_layout');
+            formData.append('content', JSON.stringify(content));
+            formData.append('symbol', 'VNM');
             formData.append('resolution', 'D');
 
             axios.post(url, formData)
