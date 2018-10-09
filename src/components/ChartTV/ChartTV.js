@@ -72,8 +72,22 @@ class ChartTV extends React.Component {
         }, 0)
     }
 
+    saveChart() {
+        this.widget && this.widget.save && this.widget.save(savedObj => {
+            const a = savedObj;
+            console.log(a)
+        })
+    }
+
     render() {
-        return <article className='chartTV' id={this.id} />;
+        return <div>
+            <article className='chartTV' id={this.id} />
+            <div style={{
+                position: 'absolute',
+                top: 0
+            }} onClick={this.saveChart.bind(this)}>Save</div>
+        </div>
+
     }
 }
 

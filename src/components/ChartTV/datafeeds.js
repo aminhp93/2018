@@ -264,6 +264,7 @@ Datafeeds.UDFCompatibleDatafeed.prototype._symbolResolveURL = '/symbols';
 
 //	BEWARE: this function does not consider symbol's exchange
 Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    if (symbolName.includes(':')) return
     var that = this;
 
     if (!this._initializationFinished) {
