@@ -73,3 +73,10 @@
   display: flex;
   justify-content: space-between;
 }
+
+.chartTV {
+  height: 100%;
+}
+.chartTV > iframe {
+  height: 100% !important;
+}

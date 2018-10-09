@@ -73,7 +73,7 @@ class ChartTV extends React.Component {
     }
 
     render() {
-        return <article id={this.id} />;
+        return <article className='chartTV' id={this.id} />;
     }
 }
 
