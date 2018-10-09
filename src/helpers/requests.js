@@ -138,3 +138,7 @@ export function getAccountNewOrderRequestUrl() {
 export function getDataHistoryUrl(symbol, resolution, fromDate, toDate) {
     return 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + symbol + '&resolution=' + resolution + '&from=' + fromDate + '&to=' + toDate
 }
+
+export function getSaveTradingViewLayoutUrl() {
+    return 'https://chart-api.vndirect.com.vn/1.1/charts?client=vnds_trading_view&user=vnds-0001813109'
+}

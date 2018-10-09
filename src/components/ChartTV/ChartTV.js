@@ -7,6 +7,9 @@ import * as symbolActions from '../../actions/symbol.actions';
 import Datafeeds from './datafeeds';
 import axios from 'axios';
 import chartTV_constants from '../../constants/chartTV_constants';
+import { getSaveTradingViewLayoutUrl } from '../../helpers/requests';
+import FormData from 'form-data'
+
 
 class ChartTV extends React.Component {
     constructor(props) {
@@ -56,6 +59,13 @@ class ChartTV extends React.Component {
             user_id: 'public_user_id'
         };
         this.widget = new TradingView.widget(option);
+        this.widget && this.widget.onChartReady && this.widget.onChartReady(function () {
+            // createStudy(name, forceOverlay, lock, inputs, callback, overrides, options)
+            // this.widget.chart().createStudy('RSI60', false, true);
+            // this.widget.chart().createStudy('MACD_Minh', false, false, [14, 30, "close", 9])
+            // this.widget && this.widget.chart().createStudy('OverlayMINH', false, false, ['AAPL']);
+        });
+
     }
 
     callbackSearch(response) {
@@ -76,6 +86,36 @@ class ChartTV extends React.Component {
         this.widget && this.widget.save && this.widget.save(savedObj => {
             const a = savedObj;
             console.log(a)
+            let url = getSaveTradingViewLayoutUrl()
+            var formData = new FormData();
+            const content = {
+                "publish_request_id": "4pax3wvondy",
+                "name": "123",
+                "description": "",
+                "resolution": "D",
+                "symbol_type": "stock",
+                "exchange": "HOSE",
+                "listed_exchange": "",
+                "symbol": "VNM",
+                "short_name": "VNM",
+                "legs": "[{\"symbol\":\"VNM\",\"pro_symbol\":\"VNM\"}]",
+                "content": "{}"
+            }
+            formData.append('name', 'minh6');
+            formData.append('content', content);
+            formData.append('symbol', 'VHM');
+            formData.append('resolution', 'D');
+
+            axios.post(url, formData)
+                .then(response => {
+                    if (response.data) {
+                        console.log(response.data)
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response)
+                });
+
         })
     }
 
@@ -84,7 +124,8 @@ class ChartTV extends React.Component {
             <article className='chartTV' id={this.id} />
             <div style={{
                 position: 'absolute',
-                top: 0
+                top: 0,
+                color: 'red'
             }} onClick={this.saveChart.bind(this)}>Save</div>
         </div>
 
