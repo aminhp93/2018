@@ -293,7 +293,9 @@ Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function (symbolName, 
         axios.get(url)
             .then(response => {
                 if (response.data) {
+
                     let symbolObj = response.data.data[0];
+                    this.cbSymbol(symbolObj)
                     const groupRequest = {
                         'name': symbolObj.symbol,
                         'exchange-traded': symbolObj.floor,
