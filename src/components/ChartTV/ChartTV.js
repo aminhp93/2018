@@ -30,19 +30,6 @@ class ChartTV extends React.Component {
                 console.log(response)
             })
         }
-        // url = getIntradayQuotesUrl(nextProps.symbol)
-        // let url = 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + code + '&resolution=D&from=1507883566&to=1538987626'
-
-        // axios.get(url)
-        //     .then(response => {
-        //         if (response.data) {
-        //             console.log(response.data)
-        //             this.initChart(response.data)
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.log(error.response)
-        // });
     }
 
     getDataChart() {
@@ -50,10 +37,11 @@ class ChartTV extends React.Component {
     }
 
     initChart(dataFeed) {
+        /* global TradingView */
+
         let data = new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com', '', dataFeed, this.callbackSearch.bind(this), this.cbSymbol.bind(this), this.chartTV);
         const option = {
             fullscreen: true,
-            // symbol: 'PDR',
             interval: 'D',
             container_id: this.id,
             datafeed: data,
@@ -61,20 +49,13 @@ class ChartTV extends React.Component {
             locale: 'en',
             drawings_access: { type: 'black', tools: [{ name: 'Regression Trend' }] },
             enabled_features: ['chart_property_page_trading'],
-            // charts_storage_url: 'http://saveload.tradingview.com',
             charts_storage_api_version: '1.1',
             client_id: 'abc.com',
             footer_screenshot: false,
             disabled_features: ['use_localstorage_for_settings', 'study_templates', 'dome_widget', 'header_layouttoggle', 'header_screenshot', 'move_logo_to_main_pane', 'snapshot_trading_drawings', 'show_logo_on_all_charts'],
             user_id: 'public_user_id'
         };
-        // if (this.chartTV) {
         this.widget = new TradingView.widget(option);
-        // }
-        // const that = this;
-        // this.widget && this.widget.onChartReady && this.widget.onChartReady(() => {
-        //     that.widget && that.widget.chart()
-        // })
     }
 
     callbackSearch(response) {
@@ -86,14 +67,6 @@ class ChartTV extends React.Component {
     }
 
     componentDidMount() {
-        /* global TradingView */
-        // if (!this.widget) {
-        // this.initChart()
-        // } else {
-        //     if (this.widget && this.widget.chart()) {
-        //         this.widget.chart()
-        //     }
-        // }
         setTimeout(() => {
             this.initChart(chartTV_constants.defaultConfig)
         }, 0)

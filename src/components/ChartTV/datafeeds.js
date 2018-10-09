@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import dataStorage from '../../dataStorage';
+import axios from 'axios';
+import { getDataHistoryUrl } from '../../helpers/requests'
 /*
 	This class implements interaction with UDF-compatible datafeed.
 
@@ -223,31 +225,15 @@ Datafeeds.UDFCompatibleDatafeed.prototype.searchSymbols = function (searchString
     }
 
     if (this._configuration.supports_search) {
-        this._send('https://dchart-api.vndirect.com.vn/dchart/history?symbol=', {
-            symbol: searchString.toUpperCase(),
-            type: type,
-            exchange: exchange
-        })
-            .done(function (response) {
-                console.log('response');
-                console.log(response);
-                var data = parseJSONorNot(response);
-
-                for (var i = 0; i < data.length; ++i) {
-                    if (!data[i].params) {
-                        data[i].params = [];
-                    }
-
-                    data[i].exchange = data[i].exchange || '';
-                }
-
-                if (typeof data.s === 'undefined' || data.s !== 'error') {
-                    onResultReadyCallback(data);
-                } else {
-                    onResultReadyCallback([]);
+        let url = 'https://dchart-api.vndirect.com.vn/dchart/search?limit=30&query=' + searchString + '&type=&exchange='
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    onResultReadyCallback(response.data)
                 }
             })
-            .fail(function (reason) {
+            .catch(error => {
+                console.log(error.response)
                 onResultReadyCallback([]);
             });
     } else {
@@ -303,28 +289,61 @@ Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function (symbolName, 
     }
 
     if (!this._configuration.supports_group_request) {
-        // this._send(this._datafeedURL + this._symbolResolveURL, {
-        //     symbol: symbolName ? symbolName.toUpperCase() : ''
-        // })
-        //     .done(function (response) {
-        const response = this.dataFeed.groupRequest;
-
-        console.log('response');
-        console.log(response);
-        let groupRequest = '{ "data_status": "delayed_streaming","name":"AAPL","exchange-traded":"NasdaqNM","exchange - listed":"NasdaqNM","timezone":"Australia/Sydney","minmov":1,"minmov2":0,"pointvalue":1,"session":"0930 - 1630","has_intraday":false,"has_no_volume":false,"description":"AppleInc.","type":"stock","supported_resolutions":["D","2D","5D","W","3W","M","3M","6M","12M"],"pricescale":100,"ticker":"AAPL"}'
-
-        var data = parseJSONorNot(groupRequest);
-
-        if (data.s && data.s !== 'ok') {
-            onResolveErrorCallback('unknown_symbol');
-        } else {
-            onResultReady(data);
-        }
-        // })
-        // .fail(function (reason) {
-        //     that._logMessage('Error resolving symbol: ' + JSON.stringify([reason]));
-        //     onResolveErrorCallback('unknown_symbol');
-        // });
+        let url = 'https://finfo-api.vndirect.com.vn/stocks?symbol=' + symbolName
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let symbolObj = response.data.data[0];
+                    const groupRequest = {
+                        'name': symbolObj.symbol,
+                        'exchange-traded': symbolObj.floor,
+                        'exchange-listed': symbolObj.floor,
+                        'exchange': symbolObj.floor,
+                        'timezone': 'America/New_York',
+                        'minmov': 1,
+                        'minmov2': 0,
+                        'pointvalue': 1,
+                        'session': '1000-1613',
+                        'has_intraday': true,
+                        'intraday_multipliers': [
+                            '1',
+                            '5',
+                            '30',
+                            '60',
+                            '120',
+                            'D'
+                        ],
+                        'time_frames': [
+                            { text: '1d', resolution: '1', description: '1 Day' },
+                            { text: '1w', resolution: '5', description: '1 Week' },
+                            { text: '1m', resolution: '30', description: '1 Month' },
+                            { text: '3m', resolution: '60', description: '3 Months' },
+                            { text: '6m', resolution: '120', description: '6 Months' },
+                            { text: '1y', resolution: 'D', description: '1 Year' }
+                        ],
+                        'has_no_volume': false,
+                        'description': symbolObj.company,
+                        'type': 'stock',
+                        'supported_resolutions': [
+                            '1',
+                            '5',
+                            '30',
+                            '60',
+                            '120',
+                            'D'
+                        ],
+                        'pricescale': 1000,
+                        'ticker': symbolObj.symbol,
+                        'originSymbol': symbolObj.symbol
+                    }
+                    var data = parseJSONorNot(groupRequest);
+                    onResultReady(data);
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+                onResolveErrorCallback('error');
+            });
     } else {
         if (this._initializationFinished) {
             this._symbolsStorage.resolveSymbol(symbolName, onResultReady, onResolveErrorCallback);
@@ -343,67 +362,43 @@ Datafeeds.UDFCompatibleDatafeed.prototype.getBars = function (symbolInfo, resolu
     if (rangeStartDate > 0 && (rangeStartDate + '').length > 10) {
         throw new Error(['Got a JS time instead of Unix one.', rangeStartDate, rangeEndDate]);
     }
-    const response = this.dataFeed.barData;
-    // this._send(this._datafeedURL + this._historyURL, {
-    //     symbol: symbolInfo.ticker.toUpperCase(),
-    //     resolution: resolution,
-    //     from: rangeStartDate,
-    //     to: rangeEndDate
-    // })
-    //     .done(function (response) {
-    console.log('response');
-    console.log(response);
-    var data = parseJSONorNot(response);
+    if (!symbolInfo.name) return;
+    let url = getDataHistoryUrl(symbolInfo.name, resolution, rangeStartDate, rangeEndDate)
+    axios.get(url)
+        .then(response => {
+            if (response.data) {
+                var data = parseJSONorNot(response.data);
+                var nodata = data.s === 'no_data';
+                var bars = [];
+                //	data is JSON having format {s: "status" (ok, no_data, error),
+                //  v: [volumes], t: [times], o: [opens], h: [highs], l: [lows], c:[closes], nb: "optional_unixtime_if_no_data"}
+                var barsCount = nodata ? 0 : data.t.length;
+                var volumePresent = typeof data.v !== 'undefined';
+                var ohlPresent = typeof data.o !== 'undefined';
 
-    var nodata = data.s === 'no_data';
-
-    if (data.s !== 'ok' && !nodata) {
-        if (onErrorCallback) {
-            onErrorCallback(data.s);
-        }
-
-        return;
-    }
-
-    var bars = [];
-
-    //	data is JSON having format {s: "status" (ok, no_data, error),
-    //  v: [volumes], t: [times], o: [opens], h: [highs], l: [lows], c:[closes], nb: "optional_unixtime_if_no_data"}
-    var barsCount = nodata ? 0 : data.t.length;
-
-    var volumePresent = typeof data.v !== 'undefined';
-    var ohlPresent = typeof data.o !== 'undefined';
-
-    for (var i = 0; i < barsCount; ++i) {
-        var barValue = {
-            time: data.t[i] * 1000,
-            close: +data.c[i]
-        };
-
-        if (ohlPresent) {
-            barValue.open = +data.o[i];
-            barValue.high = +data.h[i];
-            barValue.low = +data.l[i];
-        } else {
-            barValue.open = barValue.high = barValue.low = +barValue.close;
-        }
-
-        if (volumePresent) {
-            barValue.volume = +data.v[i];
-        }
-
-        bars.push(barValue);
-    }
-
-    onDataCallback(bars, { noData: nodata, nextTime: data.nb || data.nextTime });
-    // })
-    // .fail(function (arg) {
-    //     console.warn(['getBars(): HTTP error', arg]);
-
-    //     if (!!onErrorCallback) {
-    //         onErrorCallback('network error: ' + JSON.stringify(arg));
-    //     }
-    // });
+                for (var i = 0; i < barsCount; ++i) {
+                    var barValue = {
+                        time: data.t[i] * 1000,
+                        close: +data.c[i]
+                    };
+                    if (ohlPresent) {
+                        barValue.open = +data.o[i];
+                        barValue.high = +data.h[i];
+                        barValue.low = +data.l[i];
+                    } else {
+                        barValue.open = barValue.high = barValue.low = +barValue.close;
+                    }
+                    if (volumePresent) {
+                        barValue.volume = +data.v[i];
+                    }
+                    bars.push(barValue);
+                }
+                onDataCallback(bars, { noData: nodata, nextTime: data.nb || data.nextTime });
+            }
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
 };
 
 Datafeeds.UDFCompatibleDatafeed.prototype.subscribeBars = function (symbolInfo, resolution, onRealtimeCallback, listenerGUID, onResetCacheNeededCallback) {

@@ -134,3 +134,7 @@ export function getNotificationsUrl() {
 export function getAccountNewOrderRequestUrl() {
     return 'https://trade-api.vndirect.com.vn/accounts/' + accountNumber + '/orders/new_order_requests?t=' + currentTime
 }
+
+export function getDataHistoryUrl(symbol, resolution, fromDate, toDate) {
+    return 'https://dchart-api.vndirect.com.vn/dchart/history?symbol=' + symbol + '&resolution=' + resolution + '&from=' + fromDate + '&to=' + toDate
+}
