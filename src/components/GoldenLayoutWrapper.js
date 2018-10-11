@@ -15,6 +15,9 @@ import Tennis from './Tennis';
 import CurrentPrice from './CurrentPrice';
 import NewOrder from './NewOrder';
 import ChartTV from './ChartTV';
+import Financials from './Financials';
+import PersonalStuffs from './PersonalStuffs';
+import MovieActorSpeech from './MovieActorSpeech';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
@@ -103,6 +106,15 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('ChartTV',
                     wrapComponent(ChartTV, this.context.store)
+                );
+                this.goldenLayout.registerComponent('Financials',
+                    wrapComponent(Financials, this.context.store)
+                );
+                this.goldenLayout.registerComponent('PersonalStuffs',
+                    wrapComponent(PersonalStuffs, this.context.store)
+                );
+                this.goldenLayout.registerComponent('MovieActorSpeech',
+                    wrapComponent(MovieActorSpeech, this.context.store)
                 );
 
                 /// Callback for every created stack

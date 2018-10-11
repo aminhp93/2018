@@ -390,6 +390,10 @@ class CurrentPrice extends React.Component {
         this.filterVolume('allSymbolsArray_HOSE')
     }
 
+    handleFilterEPS() {
+
+    }
+
     render() {
         return (
             <div className='filterSystem'>
@@ -433,6 +437,9 @@ class CurrentPrice extends React.Component {
                     </div>
                     <div onClick={this.handleFilterVolume.bind(this)}>
                         Filter Volume >
+                    </div>
+                    <div onClick={this.handleFilterEPS.bind(this)}>
+                        EPS > 3000
                     </div>
                 </div>
                 {this.renderContent()}

@@ -5,7 +5,7 @@
 
 .goldenLayout {
   position: fixed;
-  top: 20px;
+  top: 0;
   left: 0;
   bottom: 0;
   right: 0;
@@ -67,6 +67,9 @@
 .menu{
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
+  flex-direction: column;
+  color: white;
 }
 
 .filterOption{
@@ -79,4 +82,29 @@
 }
 .chartTV > iframe {
   height: 100% !important;
+}
+
+.header {
+  height: 100%;
+  width: 1px;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 2;
+  background: #171b29;
+}
+
+.header:hover {
+  width: 200px;
+}
+.menu > div {
+  height: 30px;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.menu > div:hover{
+  background: #049ddc;
 }

@@ -15,35 +15,34 @@ export default class Financials extends React.Component {
 
     renderRevenue() {
         return (
-            // <Table celled>
-            //     <Table.Header>
-            //         <Table.Row>
-            //             <Table.HeaderCell></Table.HeaderCell>
-            //             <Table.HeaderCell></Table.HeaderCell>
-            //             <Table.HeaderCell>2015</Table.HeaderCell>
-            //             <Table.HeaderCell>2016</Table.HeaderCell>
-            //             <Table.HeaderCell>2017</Table.HeaderCell>
-            //             <Table.HeaderCell>2018</Table.HeaderCell>
-            //         </Table.Row>
-            //     </Table.Header>
-            //     <Table.Body>
-            //         {
-            //             Object.keys(this.state.revenueObj).map(function (key) {
-            //                 return (
-            //                     <Table.Row>
-            //                         <Table.Cell>Quarter {item.Quarter}</Table.Cell>
-            //                         <Table.Cell>Chart</Table.Cell>
-            //                         <Table.Cell>{(item.NetSales_MRQ / 1000000000).toFixed(2)}</Table.Cell>
-            //                         <Table.Cell>1</Table.Cell>
-            //                         <Table.Cell>1</Table.Cell>
-            //                         <Table.Cell>1</Table.Cell>
-            //                     </Table.Row>
-            //                 )
-            //             })
-            //         }
-            //     </Table.Body>
-            // </Table>
-            <div></div>
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell>2015</Table.HeaderCell>
+                        <Table.HeaderCell>2016</Table.HeaderCell>
+                        <Table.HeaderCell>2017</Table.HeaderCell>
+                        <Table.HeaderCell>2018</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                    {
+                        Object.keys(this.state.revenueObj).map(function (key, item) {
+                            return (
+                                <Table.Row>
+                                    <Table.Cell>Quarter {item.Quarter}</Table.Cell>
+                                    <Table.Cell>Chart</Table.Cell>
+                                    <Table.Cell>{(item.NetSales_MRQ / 1000000000).toFixed(2)}</Table.Cell>
+                                    <Table.Cell>1</Table.Cell>
+                                    <Table.Cell>1</Table.Cell>
+                                    <Table.Cell>1</Table.Cell>
+                                </Table.Row>
+                            )
+                        })
+                    }
+                </Table.Body>
+            </Table>
         )
     }
 
