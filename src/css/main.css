@@ -108,3 +108,11 @@
 .menu > div:hover{
   background: #049ddc;
 }
+
+.stockExchangeContainer {
+  display: flex;
+}
+
+.tabHeaderContainer{
+  display: flex;
+}

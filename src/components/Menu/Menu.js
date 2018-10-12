@@ -45,6 +45,9 @@ export default class Menu extends React.Component {
                 <div onClick={this.handleOnClick.bind(this)}>
                     MovieActorSpeech
                 </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    MarketWatch
+                </div>
             </div>
         );
     }

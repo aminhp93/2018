@@ -15,6 +15,7 @@ import Tennis from './Tennis';
 import CurrentPrice from './CurrentPrice';
 import NewOrder from './NewOrder';
 import ChartTV from './ChartTV';
+import MarketWatch from './MarketWatch';
 import Financials from './Financials';
 import PersonalStuffs from './PersonalStuffs';
 import MovieActorSpeech from './MovieActorSpeech';
@@ -115,6 +116,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('MovieActorSpeech',
                     wrapComponent(MovieActorSpeech, this.context.store)
+                );
+                this.goldenLayout.registerComponent('MarketWatch',
+                    wrapComponent(MarketWatch, this.context.store)
                 );
 
                 /// Callback for every created stack

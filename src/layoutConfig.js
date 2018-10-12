@@ -14,11 +14,11 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                 // },
                 {
                     'type': 'component',
-                    'component': 'DetailSymbol',
+                    'component': 'MarketWatch',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'DetailSymbol'
+                    'title': 'MarketWatch'
                 },
                 // {
                 //     'type': 'component',
@@ -52,22 +52,22 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                 //     'reorderEnabled': true,
                 //     'title': 'AccountManagement'
                 // },
-                {
-                    'type': 'component',
-                    'component': 'ChartTV',
-                    'componentName': 'lm-react-component',
-                    'isClosable': true,
-                    'reorderEnabled': true,
-                    'title': 'ChartTV'
-                    // },
-                    // {
-                    //     'type': 'component',
-                    //     'component': 'CurrentPrice',
-                    //     'componentName': 'lm-react-component',
-                    //     'isClosable': true,
-                    //     'reorderEnabled': true,
-                    //     'title': 'CurrentPrice'
-                }
+                // {
+                //     'type': 'component',
+                //     'component': 'ChartTV',
+                //     'componentName': 'lm-react-component',
+                //     'isClosable': true,
+                //     'reorderEnabled': true,
+                //     'title': 'ChartTV'
+                // },
+                // {
+                //     'type': 'component',
+                //     'component': 'CurrentPrice',
+                //     'componentName': 'lm-react-component',
+                //     'isClosable': true,
+                //     'reorderEnabled': true,
+                //     'title': 'CurrentPrice'
+                // }
             ]
         }
     ]

@@ -1,0 +1,6 @@
+{
+    "name": "MarketWatch",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./MarketWatch.js"
+}
