@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import axios from 'axios';
-import { getHeaderRequest, getTradingStatisticUrl, getMarketHistoricalQuotesUrl, getAccountPortfolioUrl } from '../../helpers/requests';
+import { getHeaderRequest, getTradingStatisticUrl, getMarketHistoricalQuotesUrl, getAccountPortfolioUrl, getDailyWatchlistUrl, postDailyWatchlistUrl, deleteDailyWatchlistUrl } from '../../helpers/requests';
 import dataStorage from '../../dataStorage';
 import { AgGridReact } from 'ag-grid-react';
 import { connect } from 'react-redux';
@@ -20,13 +20,25 @@ class CurrentPrice extends React.Component {
                     field: "Symbol",
                     width: 80,
                     cellRenderer: function (params) {
+                        const that = this;
                         const div = document.createElement('div')
-                        div.innerHTML = params.data.Symbol
+                        div.classList = 'symbolCell'
+                        const divSymbol = document.createElement('div')
+                        divSymbol.innerHTML = params.data.Symbol
                         if (params.data.Open < params.data.Close) {
-                            div.className = 'green'
+                            divSymbol.className = 'green'
                         } else if (params.data.Open > params.data.Close) {
-                            div.className = 'red'
+                            divSymbol.className = 'red'
                         }
+                        const deleteIcon = document.createElement('div')
+                        deleteIcon.innerHTML = 'X'
+                        deleteIcon.className = 'deleteIcon'
+                        deleteIcon.onClick = () => {
+                            console.log('click')
+                            this.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
+                        }
+                        div.appendChild(divSymbol)
+                        div.appendChild(deleteIcon)
                         return div
                     }
                 },
@@ -149,7 +161,7 @@ class CurrentPrice extends React.Component {
 
         this.defaultColDef = {
             width: 120,
-            editable: true,
+            editable: false,
             filter: 'agTextColumnFilter'
         }
         this.setTimeOutID = null
@@ -394,10 +406,85 @@ class CurrentPrice extends React.Component {
 
     }
 
+    renderDailyWatchlist(symbolsArray) {
+        let promise = null;
+        let listPromise = [];
+
+        for (let i = 0; i < symbolsArray.length; i++) {
+            promise = new Promise(resolve => {
+                const url = getMarketHistoricalQuotesUrl(symbolsArray[i]);
+
+                axios.get(url).then(response => {
+                    if (response && response.data) {
+
+                        resolve(response.data[response.data.length - 1])
+                    }
+
+                }).catch(() => {
+                    resolve({});
+                })
+            })
+            listPromise.push(promise);
+        }
+        Promise.all(listPromise)
+            .then(response => {
+                this.setState({
+                    rowData: response
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+    }
+
+    handleGetDailyWatchlist() {
+        const url = getDailyWatchlistUrl()
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    const symbolsArray = response.data.symbols || []
+                    this.renderDailyWatchlist(symbolsArray)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    handleAddSymbolToDailyWatchlist() {
+        if (this.inputSearchDom.value.length === 3) {
+            const url = postDailyWatchlistUrl();
+            const data = {
+                symbol: this.inputSearchDom.value
+            }
+            axios.post(url, data)
+                .then(response => {
+                    if (response.data) {
+                        console.log(response.data)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+
+    handleDeleteSymbolFromDailyWatchlist(symbol) {
+        const url = deleteDailyWatchlistUrl(symbol)
+        axios.delete(url)
+            .then(response => {
+                if (response.data) {
+
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     render() {
         return (
             <div className='filterSystem'>
-                <input onChange={(e) => {
+                <input ref={dom => this.inputSearchDom = dom} onChange={(e) => {
                     if (e.target.value && e.target.value.length > 2) {
                         const url = getMarketHistoricalQuotesUrl(e.target.value);
                         axios.get(url)
@@ -413,6 +500,7 @@ class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
+                <div onClick={this.handleAddSymbolToDailyWatchlist.bind(this)}>Add</div>
                 {/* <input placeholder='volume' onChange={(e) => this.handleOnChangeFilter(e, 'volume')} /> */}
                 {/* <div>
                     volume = 100000;
@@ -440,6 +528,9 @@ class CurrentPrice extends React.Component {
                     </div>
                     <div onClick={this.handleFilterEPS.bind(this)}>
                         EPS > 3000
+                    </div>
+                    <div onClick={this.handleGetDailyWatchlist.bind(this)}>
+                        Daily Watchlist
                     </div>
                 </div>
                 {this.renderContent()}

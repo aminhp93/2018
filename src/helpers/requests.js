@@ -156,3 +156,16 @@ export function getLoadLayoutChartUrl() {
 export function getIntradayMarketStatisticUrl(stockExchange) {
     return 'https://svr2.fireant.vn/api/Data/Markets/IntradayMarketStatistic?symbol=' + stockExchange
 }
+
+
+export function getDailyWatchlistUrl() {
+    return 'https://watchlist-api.vndirect.com.vn/api/watchlists/5bc4c50ab93c4e67cff5e867'
+}
+
+export function postDailyWatchlistUrl() {
+    return 'https://watchlist-api.vndirect.com.vn/api/watchlists/5bc4c50ab93c4e67cff5e867/symbols'
+}
+
+export function deleteDailyWatchlistUrl(symbol) {
+    return 'https://watchlist-api.vndirect.com.vn/api/watchlists/5bc4c50ab93c4e67cff5e867/symbols/' + symbol
+}

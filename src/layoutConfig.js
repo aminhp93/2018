@@ -4,14 +4,14 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
         {
             'type': 'row',
             'content': [
-                // {
-                //     'type': 'component',
-                //     'component': 'DailyWatchlist',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'DailyWatchlist'
-                // },
+                {
+                    'type': 'component',
+                    'component': 'CurrentPrice',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'CurrentPrice'
+                },
                 {
                     'type': 'component',
                     'component': 'MarketWatch',
