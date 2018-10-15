@@ -152,3 +152,7 @@ export function getLoadLayoutChartUrl() {
     // Current layout
     return 'https://chart-api.vndirect.com.vn/1.1/charts?client=vnds_trading_view&user=vnds-0001813109&chart=33095'
 }
+
+export function getIntradayMarketStatisticUrl(stockExchange) {
+    return 'https://svr2.fireant.vn/api/Data/Markets/IntradayMarketStatistic?symbol=' + stockExchange
+}

@@ -8,7 +8,7 @@ export default class FilterSystem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            allSymbolsArray: [],
+            allSymbolsArray: dataStorage.allSymbolsString || [],
             columnDefs: [
                 {
                     headerName: "Symbol",
@@ -125,15 +125,6 @@ export default class FilterSystem extends React.Component {
     }
 
     renderContent() {
-        // const result = []
-        // for (let i = 0; i < this.state.allSymbolsArray.length; i++) {
-        //     const item = this.state.allSymbolsArray[i];
-        //     if (item) {
-        //         result.push(
-        //             <div>{item.Symbol}</div>
-        //         )
-        //     }
-        // }
         if (this.state.allSymbolsArray.length > 0) {
             return (
                 <div
@@ -172,23 +163,5 @@ export default class FilterSystem extends React.Component {
     }
 
     componentDidMount() {
-        const url = getTradingStatisticUrl();
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    let allSymbolsArray = response.data;
-                    let allSymbolsString = ''
-                    for (let i = 0; i < allSymbolsArray.length; i++) {
-                        allSymbolsString += ',' + allSymbolsArray[i].Symbol
-                    }
-                    dataStorage.allSymbolsString = allSymbolsString
-                    this.setState({
-                        allSymbolsArray
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
     }
 }

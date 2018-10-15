@@ -24,13 +24,13 @@ class ChartTV extends React.Component {
     }
 
     showChart(code) {
-        if (!this.widget || !this.widget.chart) {
-            this.getDataChart()
-        } else {
+        if (this.widget && this.widget.chart) {
             const chartObj = this.widget.chart();
             chartObj.setSymbol(code, (response) => {
                 console.log(response)
             })
+        } else {
+            this.getDataChart()
         }
     }
 

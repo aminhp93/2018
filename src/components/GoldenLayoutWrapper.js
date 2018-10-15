@@ -204,31 +204,34 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     componentDidMount() {
-
-        this.initGoldenLayout();
-        // const url = getTradingStatisticUrl();
-        // axios.get(url)
-        //     .then(response => {
-        //         if (response.data) {
-        //             let allSymbolsArray = response.data;
-        //             for (let i = 0; i < allSymbolsArray.length; i++) {
-        //                 dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
-        //                 if (allSymbolsArray[i].Exchange === 'HOSTC') {
-        //                     dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
-        //                 }
-        //                 if (allSymbolsArray[i].Exchange === 'HASTC') {
-        //                     dataStorage.allSymbolsArray_HNX.push(allSymbolsArray[i].Symbol)
-        //                 }
-        //                 if (allSymbolsArray[i].Exchange === 'UPCOM') {
-        //                     dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
-        //                 }
-        //             }
-        //             console.log(dataStorage)
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.log(error.response)
-        //     });
+        const url = getTradingStatisticUrl();
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let allSymbolsString = '';
+                    let allSymbolsArray = response.data;
+                    for (let i = 0; i < allSymbolsArray.length; i++) {
+                        allSymbolsString += ',' + allSymbolsArray[i].Symbol
+                        dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
+                        if (allSymbolsArray[i].Exchange === 'HOSTC') {
+                            dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
+                        }
+                        if (allSymbolsArray[i].Exchange === 'HASTC') {
+                            dataStorage.allSymbolsArray_HNX.push(allSymbolsArray[i].Symbol)
+                        }
+                        if (allSymbolsArray[i].Exchange === 'UPCOM') {
+                            dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
+                        }
+                    }
+                    dataStorage.allSymbolsString = allSymbolsString
+                    console.log(dataStorage)
+                    this.initGoldenLayout();
+                }
+            })
+            .catch(error => {
+                this.initGoldenLayout();
+                console.log(error.response)
+            });
     }
 }
 

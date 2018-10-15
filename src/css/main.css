@@ -111,8 +111,56 @@
 
 .stockExchangeContainer {
   display: flex;
+  height: 30px;
 }
 
-.tabHeaderContainer{
+.tabContainer{
+  color: black;
+  flex: 1;
+}
+.tabContainer .segment,
+.tabContainer .segment > div,
+.tabContainer .segment > div > div{
+  height: 100%;
+}
+
+.tabContainer .segment {
+  display: flex;
+}
+
+.tabContainer .segment > div {
+  display: flex;
+}
+
+.tabContainer .segment > div > div:first-child {
+  width: 80%;
+}
+
+.tabContainer .menu{
+  display: flex;
+  flex-direction: row;
+}
+
+.tabContainer .item{
+  color: white !important;
+}
+
+.tabContainer .active.item{
+  color: blue !important;
+}
+
+.stockExchangeContainer > div {
+  width: 50px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.marketWatch {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.marketInfo{
   display: flex;
 }
