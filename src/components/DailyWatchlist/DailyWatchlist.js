@@ -49,8 +49,8 @@ class DailyWatchlist extends React.Component {
 
 
     onRowClicked(row) {
-        if (row.data && row.data.length) {
-            const symbol = row.data[0]
+        if (row.data) {
+            const symbol = row.data.Symbol
             this.props.actions.changeSymbol(symbol)
         }
     }
