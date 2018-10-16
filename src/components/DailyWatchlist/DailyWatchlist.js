@@ -14,6 +14,7 @@ import { getHeaderRequest, getTradingStatisticUrl, getMarketHistoricalQuotesUrl,
 class DailyWatchlist extends React.Component {
     constructor(props) {
         super(props);
+        const that = this
         this.state = {
             columnDefs: [
                 {
@@ -21,24 +22,19 @@ class DailyWatchlist extends React.Component {
                     field: "Symbol",
                     width: 80,
                     cellRenderer: function (params) {
+
                         if (params.data) {
-                            const that = this;
                             const div = document.createElement('div')
                             div.classList = 'symbolCell'
                             const divSymbol = document.createElement('div')
                             divSymbol.innerHTML = params.data.Symbol
-                            if (params.data.Open < params.data.Close) {
-                                divSymbol.className = 'green'
-                            } else if (params.data.Open > params.data.Close) {
-                                divSymbol.className = 'red'
-                            }
+
                             const deleteIcon = document.createElement('div')
                             deleteIcon.innerHTML = 'X'
                             deleteIcon.className = 'deleteIcon'
-                            deleteIcon.onClick = () => {
-                                console.log('click')
-                                // this.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
-                            }
+                            deleteIcon.addEventListener("click", function () {
+                                that.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
+                            });
                             div.appendChild(divSymbol)
                             div.appendChild(deleteIcon)
                             return div
@@ -49,37 +45,6 @@ class DailyWatchlist extends React.Component {
             ],
             rowData: []
         }
-    }
-
-    renderDailyWatchlist(symbolsArray) {
-        let promise = null;
-        let listPromise = [];
-
-        for (let i = 0; i < symbolsArray.length; i++) {
-            promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(symbolsArray[i]);
-
-                axios.get(url).then(response => {
-                    if (response && response.data) {
-
-                        resolve(response.data[response.data.length - 1])
-                    }
-
-                }).catch(() => {
-                    resolve({});
-                })
-            })
-            listPromise.push(promise);
-        }
-        Promise.all(listPromise)
-            .then(response => {
-                this.setState({
-                    rowData: response
-                })
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
     }
 
 
@@ -94,6 +59,26 @@ class DailyWatchlist extends React.Component {
         this.gridApi = params;
     }
 
+    handleGetSymbolFromDailyWatchlist() {
+        let url = getDailyWatchlistUrl()
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let symbolsArray = response.data.symbols || []
+                    let result = []
+                    for (let i = 0; i < symbolsArray.length; i++) {
+                        result.push({ 'Symbol': symbolsArray[i] })
+                    }
+                    this.setState({
+                        rowData: result
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     handleAddSymbolToDailyWatchlist(e) {
         if (e.key === 'Enter') {
             let url = postDailyWatchlistUrl();
@@ -104,17 +89,7 @@ class DailyWatchlist extends React.Component {
                 .then(response => {
                     if (response.data) {
                         console.log(response.data)
-                        url = getDailyWatchlistUrl()
-                        axios.get(url)
-                            .then(response => {
-                                if (response.data) {
-                                    let symbolsArray = response.data.symbols || []
-                                    this.renderDailyWatchlist(symbolsArray)
-                                }
-                            })
-                            .catch(error => {
-                                console.log(error)
-                            })
+                        this.handleGetSymbolFromDailyWatchlist()
                     }
                 })
                 .catch(error => {
@@ -122,6 +97,19 @@ class DailyWatchlist extends React.Component {
                 })
         }
 
+    }
+
+    handleDeleteSymbolFromDailyWatchlist(symbol) {
+        const url = deleteDailyWatchlistUrl(symbol)
+        axios.delete(url)
+            .then(response => {
+                if (response.data) {
+                    this.handleGetSymbolFromDailyWatchlist()
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     render() {
@@ -141,7 +129,7 @@ class DailyWatchlist extends React.Component {
                             defaultColDef={this.defaultColDef}
                             onGridReady={this.onGridReady.bind(this)}
                             enableSorting
-                            onRowClicked={this.onRowClicked.bind(this)}
+                        // onRowClicked={this.onRowClicked.bind(this)}
                         />
                     </ div >
                 </div>
@@ -153,17 +141,7 @@ class DailyWatchlist extends React.Component {
     }
 
     componentDidMount() {
-        const url = getDailyWatchlistUrl()
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    const symbolsArray = response.data.symbols || []
-                    this.renderDailyWatchlist(symbolsArray)
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        this.handleGetSymbolFromDailyWatchlist()
     }
 }
 

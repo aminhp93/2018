@@ -167,6 +167,11 @@
 
 .deleteIcon{
   display: inline-block !important;
+  color:white;
+  padding-left: 10px;
+}
+.deleteIcon:hover{
+  color: red;
 }
 .symbolCell {
   display: flex;
