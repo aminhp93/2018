@@ -1,5 +1,5 @@
 
-const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
+const getDefaultWorkLayout = (percentHeightTop = 40, percentWidth = 20) => {
     return [
         {
             'type': 'row',
@@ -10,69 +10,74 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'DailyWatchlist'
+                    'title': 'DailyWatchlist',
+                    'width': 10
                 },
                 {
                     'type': 'component',
-                    'component': 'MarketWatch',
+                    'component': 'ChartTV',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'MarketWatch'
-                },
-                // {
-                //     'type': 'component',
-                //     'component': 'App',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'App'
-                // },
-                // {
-                //     'type': 'component',
-                //     'component': 'Book',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'Book'
-                // },
-                // {
-                //     'type': 'component',
-                //     'component': 'Tennis',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'Tennis'
-                // },
-                // {
-                //     'type': 'component',
-                //     'component': 'AccountManagement',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'AccountManagement'
-                // },
-                // {
-                //     'type': 'component',
-                //     'component': 'ChartTV',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'ChartTV'
-                // },
-                // {
-                //     'type': 'component',
-                //     'component': 'CurrentPrice',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'CurrentPrice'
-                // }
+                    'title': 'ChartTV',
+                    'width': 90
+                }
             ]
         }
     ]
 }
 
+const getDefaultLifeLayout = (percentHeightTop = 40, percentWidth = 20) => {
+    return [
+
+        {
+            'type': 'row',
+            'content': [
+                {
+                    'type': 'column',
+                    'height': 50,
+                    'content': [
+                        {
+                            'type': 'component',
+                            'component': 'Tennis',
+                            'componentName': 'lm-react-component',
+                            'isClosable': true,
+                            'reorderEnabled': true,
+                            'title': 'Tennis',
+                            'width': 50
+                        },
+                        {
+                            'type': 'component',
+                            'component': 'Book',
+                            'componentName': 'lm-react-component',
+                            'isClosable': true,
+                            'reorderEnabled': true,
+                            'title': 'Book',
+                            'width': 50
+                        },
+                    ]
+                },
+                {
+                    'type': 'column',
+                    'height': 50,
+                    'content': [
+                        {
+                            'type': 'component',
+                            'component': 'MovieActorSpeech',
+                            'componentName': 'lm-react-component',
+                            'isClosable': true,
+                            'reorderEnabled': true,
+                            'title': 'MovieActorSpeech'
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+}
+
 export default {
-    getDefaultLayout
+    getDefaultWorkLayout,
+    getDefaultLifeLayout
 }

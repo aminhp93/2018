@@ -1,9 +1,18 @@
 import React from 'react';
+import dataStorage from '../../dataStorage';
 
 export default class Menu extends React.Component {
 
     handleOnClick(e) {
         this.props.addComponentToStack(e.target.innerText);
+    }
+
+    handleChangeWorkMode() {
+        dataStorage.goldenLayout.initGoldenLayout('work')
+    }
+
+    handleChangeLifeMode() {
+        dataStorage.goldenLayout.initGoldenLayout('life')
     }
 
     render() {
@@ -47,6 +56,12 @@ export default class Menu extends React.Component {
                 </div>
                 <div onClick={this.handleOnClick.bind(this)}>
                     MarketWatch
+                </div>
+                <div onClick={this.handleChangeWorkMode.bind(this)}>
+                    Work
+                </div>
+                <div onClick={this.handleChangeLifeMode.bind(this)}>
+                    Life
                 </div>
             </div>
         );

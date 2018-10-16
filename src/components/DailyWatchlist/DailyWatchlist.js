@@ -116,7 +116,7 @@ class DailyWatchlist extends React.Component {
         if (this.state.rowData.length > 0) {
             return (
                 <div>
-                    <input ref={dom => this.input = dom} onKeyPress={this.handleAddSymbolToDailyWatchlist.bind(this)} />>
+                    <input ref={dom => this.input = dom} onKeyPress={this.handleAddSymbolToDailyWatchlist.bind(this)} />
                     <div
                         className="ag-theme-balham"
                         style={{
@@ -129,7 +129,7 @@ class DailyWatchlist extends React.Component {
                             defaultColDef={this.defaultColDef}
                             onGridReady={this.onGridReady.bind(this)}
                             enableSorting
-                        // onRowClicked={this.onRowClicked.bind(this)}
+                            onRowClicked={this.onRowClicked.bind(this)}
                         />
                     </ div >
                 </div>

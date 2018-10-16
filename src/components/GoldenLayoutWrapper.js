@@ -32,6 +32,7 @@ window.ReactDOM = ReactDOM;
 class GoldenLayoutWrapper extends React.Component {
     constructor(props) {
         super(props);
+        dataStorage.goldenLayout = this;
         this.goldenLayout = null;
         this.state = {
 
@@ -40,12 +41,17 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
 
-    initGoldenLayout() {
+    initGoldenLayout(mode) {
         new Promise((resolve) => {
             let config = {
                 content: []
             };
-            let layout = layoutConfig.getDefaultLayout();
+            let layout;
+            if (mode === 'work') {
+                layout = layoutConfig.getDefaultWorkLayout();
+            } else {
+                layout = layoutConfig.getDefaultLifeLayout();
+            }
             const cbFunc = layout => {
                 config = {
                     dimensions: {
@@ -228,11 +234,11 @@ class GoldenLayoutWrapper extends React.Component {
                     }
                     dataStorage.allSymbolsString = allSymbolsString
                     console.log(dataStorage)
-                    this.initGoldenLayout();
+                    this.initGoldenLayout('work');
                 }
             })
             .catch(error => {
-                this.initGoldenLayout();
+                this.initGoldenLayout('work');
                 console.log(error.response)
             });
     }
