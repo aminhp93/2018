@@ -180,15 +180,6 @@ class CurrentPrice extends React.Component {
     }
 
     renderContent() {
-        // const result = []
-        // for (let i = 0; i < this.state.allSymbolsArray.length; i++) {
-        //     const item = this.state.allSymbolsArray[i];
-        //     if (item) {
-        //         result.push(
-        //             <div>{item.Symbol}</div>
-        //         )
-        //     }
-        // }
         if (this.state.rowData.length > 0) {
             return (
                 <div
@@ -407,6 +398,35 @@ class CurrentPrice extends React.Component {
     }
 
     renderDailyWatchlist(symbolsArray) {
+        const columnDefs = [
+            {
+                headerName: "Symbol",
+                field: "Symbol",
+                width: 80,
+                cellRenderer: function (params) {
+                    const that = this;
+                    const div = document.createElement('div')
+                    div.classList = 'symbolCell'
+                    const divSymbol = document.createElement('div')
+                    divSymbol.innerHTML = params.data.Symbol
+                    if (params.data.Open < params.data.Close) {
+                        divSymbol.className = 'green'
+                    } else if (params.data.Open > params.data.Close) {
+                        divSymbol.className = 'red'
+                    }
+                    const deleteIcon = document.createElement('div')
+                    deleteIcon.innerHTML = 'X'
+                    deleteIcon.className = 'deleteIcon'
+                    deleteIcon.onClick = () => {
+                        console.log('click')
+                        this.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
+                    }
+                    div.appendChild(divSymbol)
+                    div.appendChild(deleteIcon)
+                    return div
+                }
+            }
+        ]
         let promise = null;
         let listPromise = [];
 
@@ -429,6 +449,7 @@ class CurrentPrice extends React.Component {
         Promise.all(listPromise)
             .then(response => {
                 this.setState({
+                    columnDefs: columnDefs,
                     rowData: response
                 })
             })

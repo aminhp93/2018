@@ -85,10 +85,9 @@
 }
 
 .header {
-  height: 100%;
-  width: 1px;
+  height: 10px;  
+  width: 10px;
   position: fixed;
-  top: 0px;
   bottom: 0px;
   left: 0px;
   z-index: 2;
@@ -97,6 +96,7 @@
 
 .header:hover {
   width: 200px;
+  height: 100%;
 }
 .menu > div {
   height: 30px;

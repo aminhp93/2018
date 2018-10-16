@@ -167,6 +167,9 @@ class GoldenLayoutWrapper extends React.Component {
             'title': title,
             'componentState': state
         };
+        if (index === 'DailyWatchlist') {
+            newItemConfig.width = '200px'
+        }
         let stack = this.goldenLayout.root.getItemsByType('stack');
         if (!stack.length) {
             this.goldenLayout.root.addChild(newItemConfig);
