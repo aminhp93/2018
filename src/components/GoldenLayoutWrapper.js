@@ -25,6 +25,9 @@ import axios from 'axios';
 import { getTradingStatisticUrl, getMarketHistoricalQuotesUrl } from '../helpers/requests';
 import dataStorage from '../dataStorage';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as checkFilterReady from '../actions/filterReady.actions';
 
 window.React = React;
 window.ReactDOM = ReactDOM;
@@ -206,6 +209,9 @@ class GoldenLayoutWrapper extends React.Component {
             <MuiThemeProvider>
                 <div>
                     <Header addComponentToStack={this.addComponentToStack.bind(this)} />
+                    <div onClick={() => this.props.actions.checkFilterReady()}>
+                        Clcik
+                    </div>
                     <div className='goldenLayout' ref={input => this.layout = input} />
                     {/* <App /> */}
                 </div>
@@ -303,6 +309,7 @@ class GoldenLayoutWrapper extends React.Component {
                     }
                     // Promise.all(listPromise)
                     //     .then(response => {
+
                     dataStorage.tradingStatisticObj = allSymbolsArray
                     dataStorage.allSymbolsString = allSymbolsString
                     console.log(dataStorage)
@@ -325,4 +332,11 @@ GoldenLayoutWrapper.contextTypes = {
     store: PropTypes.object.isRequired
 };
 
-export default GoldenLayoutWrapper
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(checkFilterReady, dispatch)
+    }
+}
+
+export default connect(null, mapDispatchToProps)(GoldenLayoutWrapper)
