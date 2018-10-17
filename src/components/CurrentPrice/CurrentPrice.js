@@ -8,142 +8,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import { translate, Trans } from 'react-i18next';
+import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
 
 class CurrentPrice extends React.Component {
     constructor(props) {
         super(props);
+        console.log(dataStorage.tradingStatisticObj)
         this.state = {
             allSymbolsArray: [],
             columnDefs: [
                 {
                     headerName: "Symbol",
                     field: "Symbol",
-                    width: 80,
-                    cellRenderer: function (params) {
-                        const that = this;
-                        const div = document.createElement('div')
-                        div.classList = 'symbolCell'
-                        const divSymbol = document.createElement('div')
-                        divSymbol.innerHTML = params.data.Symbol
-                        if (params.data.Open < params.data.Close) {
-                            divSymbol.className = 'green'
-                        } else if (params.data.Open > params.data.Close) {
-                            divSymbol.className = 'red'
-                        }
-                        const deleteIcon = document.createElement('div')
-                        deleteIcon.innerHTML = 'X'
-                        deleteIcon.className = 'deleteIcon'
-                        deleteIcon.onClick = () => {
-                            console.log('click')
-                            this.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
-                        }
-                        div.appendChild(divSymbol)
-                        div.appendChild(deleteIcon)
-                        return div
-                    }
-                },
-                {
-                    headerName: "Close",
-                    field: "Close",
-                    width: 80,
-                    cellRenderer: function (params) {
-                        return params.data.Close || 'close'
-                    }
-                },
-                {
-                    headerName: "Open",
-                    field: "Open",
-                    width: 80,
-                    // cellRenderer: function (params) {
-                    //     return params.data.Open && params.data.Open.toFixed(1)
-                    // }
-                },
-                {
-                    headerName: "High",
-                    field: "High",
                     width: 80
                 },
-                {
-                    headerName: "Low",
-                    field: "Low",
-                    width: 80
-                },
-                {
-                    headerName: "Volume",
-                    field: "Volume",
-                    width: 80
-                },
-                {
-                    headerName: "average1monthVolume",
-                    field: "average1monthVolume"
-                },
-                {
-                    headerName: "Value",
-                    field: "Value"
-                },
-                {
-                    headerName: "CostPrice",
-                    field: "CostPrice",
-                    width: 80
-                },
-                {
-                    headerName: "HoldingQuantity",
-                    field: "HoldingQuantity",
-                    width: 80
-                },
-                {
-                    headerName: "GainLoss",
-                    field: "GainLoss",
-                    width: 80
-                },
-                {
-                    headerName: "GainLossRatio",
-                    field: "GainLossRatio",
-                    width: 80,
-                    cellRenderer: function (params) {
-                        const div = document.createElement('div')
-                        div.innerHTML = params.data.GainLossRatio && ((params.data.GainLossRatio * 100).toFixed(1) + '%')
-                        if (params.data.GainLossRatio) {
-                            if (params.data.GainLossRatio > 0) {
-                                div.className = 'green'
-                            } else if (params.data.GainLossRatio < 0) {
-                                div.className = 'red'
-                            }
-                        }
-                        return div
-                    }
-                },
-                // {
-                //     headerName: "Gain",
-                //     field: "Gain"
-                // },
-                // {
-                //     headerName: "Loss",
-                //     field: "Loss"
-                // },
-                // {
-                //     headerName: "AverageGain",
-                //     field: "AverageGain"
-                // },
-                // {
-                //     headerName: "AverageLoss",
-                //     field: "AverageLoss"
-                // },
                 {
                     headerName: "RSI",
-                    field: "RSI",
+                    field: "RSI_14",
                     width: 80,
-                    cellRenderer: function (params) {
-                        return params.data.RSI && params.data.RSI.toFixed(1)
-                    }
-                },
-                {
-                    headerName: 'ratioVolume',
-                    field: 'ratioVolume',
-                    width: 80,
-                    cellRenderer: function (params) {
-                        return params.data.ratioVolume && params.data.ratioVolume.toFixed(1)
-                    }
+                    filter: "agNumberColumnFilter"
                 },
                 {
                     headerName: "Date",
@@ -165,11 +48,10 @@ class CurrentPrice extends React.Component {
             filter: 'agTextColumnFilter'
         }
         this.setTimeOutID = null
-        this.handleOnChangeFilter = this.handleOnChangeFilter.bind(this);
     }
 
     onGridReady(params) {
-        this.gridApi = params;
+        this.gridApi = params.api;
     }
 
     onRowClicked(row) {
@@ -193,15 +75,15 @@ class CurrentPrice extends React.Component {
                         rowData={this.state.rowData}
                         defaultColDef={this.defaultColDef}
                         onGridReady={this.onGridReady.bind(this)}
-                        enableSorting
+                        enableSorting={true}
                         onRowClicked={this.onRowClicked.bind(this)}
+                        enableFilter={true}
                     />
                 </ div >
             )
         } else {
             return <div>No data</div>
         }
-
     }
 
     filterVolume(market) {
@@ -249,30 +131,6 @@ class CurrentPrice extends React.Component {
             });
     }
 
-
-    handleOnChangeFilter(e, title) {
-        // e.persist()
-        // this.filterVolume()
-        // switch (title) {
-        //     case 'volume':
-        //         volume = e.target.value
-        //         if (volume.length < 4) return
-        //         break;
-        //     case 'ratioVolume':
-        //         // ratioVolume = e.target.value
-        //         break;
-        //     case 'averageNumberDay':
-        //         // averageNumberDay = e.target.value
-        //         break;
-        //     default:
-        //         break;
-        // }
-        // this.setTimeOutID && clearTimeout(this.setTimeOutID);
-        // this.setTimeOutID = setTimeout(() => {
-
-        // }, 3000)
-    }
-
     handleOnChangeMarket(index) {
         switch (index) {
             case 1:
@@ -287,219 +145,6 @@ class CurrentPrice extends React.Component {
             default:
                 break
         }
-    }
-
-    calculateRSI(stringSymbols = dataStorage.allSymbolsArray_HOSE) {
-        let promise = null;
-        let listPromise = [];
-
-        for (let i = 0; i < stringSymbols.length; i++) {
-            promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(stringSymbols[i]);
-
-                axios.get(url).then(response => {
-                    if (response && response.data) {
-                        let data = response.data;
-                        let sumGain = 0;
-                        let sumLoss = 0
-                        for (let j = 1; j < data.length; j++) {
-                            let change = data[j].Close - data[j - 1].Close;
-                            if (change > 0) {
-                                data[j].Gain = change
-                                data[j].Loss = 0
-                            }
-                            if (change < 0) {
-                                data[j].Loss = -change
-                                data[j].Gain = 0
-                            }
-                            if (change === 0) {
-                                data[j].Loss = 0
-                                data[j].Gain = 0
-                            }
-                            sumGain += data[j].Gain || 0
-                            sumLoss += data[j].Loss || 0
-                            if (j < 14) {
-                                data[j].AverageGain = sumGain / 14
-                                data[j].AverageLoss = sumLoss / 14
-                            } else {
-                                data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
-                                data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
-                                data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
-                            }
-                        }
-                        if (stringSymbols === dataStorage.allSymbolsArray_HOSE) {
-                            if ((data[data.length - 1].RSI >= 60) && (data[data.length - 2].RSI < data[data.length - 1].RSI)) {
-                                resolve(data[data.length - 1])
-                            } else {
-                                resolve({})
-                            }
-                        } else {
-                            data[data.length - 1].HoldingQuantity = dataStorage.currentSymbolsObj[data[data.length - 1].Symbol].quantity
-                            data[data.length - 1].CostPrice = dataStorage.currentSymbolsObj[data[data.length - 1].Symbol].costPrice
-                            data[data.length - 1].GainLoss = (data[data.length - 1].Close - data[data.length - 1].CostPrice) * data[data.length - 1].HoldingQuantity
-                            data[data.length - 1].GainLossRatio = (data[data.length - 1].Close - data[data.length - 1].CostPrice) / data[data.length - 1].CostPrice
-                            resolve(data[data.length - 1])
-                        }
-                    } else {
-                        resolve({});
-                    }
-                }).catch(() => {
-                    resolve({});
-                })
-            })
-            listPromise.push(promise);
-        }
-        Promise.all(listPromise)
-            .then(response => {
-                let filteredResponse = []
-                if (stringSymbols === dataStorage.allSymbolsArray_HOSE) {
-                    filteredResponse = response.filter(item => item.Symbol && item.Volume > 10000).sort((a, b) => b.RSI - a.RSI)
-                } else {
-                    filteredResponse = response
-                }
-                this.setState({
-                    rowData: filteredResponse
-                })
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-    }
-
-    handleGetCurrentPortfolio() {
-        let url = getAccountPortfolioUrl()
-        axios.get(url, getHeaderRequest())
-            .then(response => {
-                if (response.data && response.data.stocks) {
-                    const stocks = response.data.stocks;
-                    let symbolsArray = [];
-                    for (let i = 0; i < stocks.length; i++) {
-                        symbolsArray.push(stocks[i].symbol)
-                        dataStorage.currentSymbolsObj[stocks[i].symbol] = stocks[i]
-                    }
-                    this.calculateRSI(symbolsArray)
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-    }
-
-    handleFilterRSI() {
-
-    }
-
-    handleFilterVolume() {
-        this.filterVolume('allSymbolsArray_HOSE')
-    }
-
-    handleFilterEPS() {
-
-    }
-
-    renderDailyWatchlist(symbolsArray) {
-        const columnDefs = [
-            {
-                headerName: "Symbol",
-                field: "Symbol",
-                width: 80,
-                cellRenderer: function (params) {
-                    const that = this;
-                    const div = document.createElement('div')
-                    div.classList = 'symbolCell'
-                    const divSymbol = document.createElement('div')
-                    divSymbol.innerHTML = params.data.Symbol
-                    if (params.data.Open < params.data.Close) {
-                        divSymbol.className = 'green'
-                    } else if (params.data.Open > params.data.Close) {
-                        divSymbol.className = 'red'
-                    }
-                    const deleteIcon = document.createElement('div')
-                    deleteIcon.innerHTML = 'X'
-                    deleteIcon.className = 'deleteIcon'
-                    deleteIcon.onClick = () => {
-                        console.log('click')
-                        this.handleDeleteSymbolFromDailyWatchlist(params.data.Symbol)
-                    }
-                    div.appendChild(divSymbol)
-                    div.appendChild(deleteIcon)
-                    return div
-                }
-            }
-        ]
-        let promise = null;
-        let listPromise = [];
-
-        for (let i = 0; i < symbolsArray.length; i++) {
-            promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(symbolsArray[i]);
-
-                axios.get(url).then(response => {
-                    if (response && response.data) {
-
-                        resolve(response.data[response.data.length - 1])
-                    }
-
-                }).catch(() => {
-                    resolve({});
-                })
-            })
-            listPromise.push(promise);
-        }
-        Promise.all(listPromise)
-            .then(response => {
-                this.setState({
-                    columnDefs: columnDefs,
-                    rowData: response
-                })
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-    }
-
-    handleGetDailyWatchlist() {
-        const url = getDailyWatchlistUrl()
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    const symbolsArray = response.data.symbols || []
-                    this.renderDailyWatchlist(symbolsArray)
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-    handleAddSymbolToDailyWatchlist() {
-        if (this.inputSearchDom.value.length === 3) {
-            const url = postDailyWatchlistUrl();
-            const data = {
-                symbol: this.inputSearchDom.value
-            }
-            axios.post(url, data)
-                .then(response => {
-                    if (response.data) {
-                        console.log(response.data)
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        }
-    }
-
-    handleDeleteSymbolFromDailyWatchlist(symbol) {
-        const url = deleteDailyWatchlistUrl(symbol)
-        axios.delete(url)
-            .then(response => {
-                if (response.data) {
-
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })
     }
 
     render() {
@@ -521,47 +166,56 @@ class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
-                <div onClick={this.handleAddSymbolToDailyWatchlist.bind(this)}>Add</div>
-                {/* <input placeholder='volume' onChange={(e) => this.handleOnChangeFilter(e, 'volume')} /> */}
-                {/* <div>
-                    volume = 100000;
-                    ratioVolume = 2;
-                    averageNumberDay = 20;
-                </div>
-                <div onClick={() => this.handleOnChangeMarket(1)}>
-                    HOSE
-                </div>
-                <div onClick={() => this.handleOnChangeMarket(2)}>
-                    HNX
-                </div>
-                <div onClick={() => this.handleOnChangeMarket(3)}>
-                    UPCOM
-                </div> */}
                 <div className='filterOption'>
-                    <div onClick={this.handleFilterRSI.bind(this)}>
+                    <div onClick={() => this.filter('RSI_60')}>
                         Filter with RSI > 60
                     </div>
-                    <div onClick={this.handleGetCurrentPortfolio.bind(this)}>
-                        Current Portfolio
-                    </div>
-                    <div onClick={this.handleFilterVolume.bind(this)}>
+                    <div>
                         Filter Volume >
                     </div>
-                    <div onClick={this.handleFilterEPS.bind(this)}>
+                    <div>
                         EPS > 3000
                     </div>
-                    <div onClick={this.handleGetDailyWatchlist.bind(this)}>
-                        Daily Watchlist
+                    <div>
+                        Current Portfolio
                     </div>
+                    <div onClick={() => {
+                        this.setState({
+                            rowData: dataStorage.tradingStatisticObj
+                        })
+                    }}>Get data</div>
                 </div>
                 {this.renderContent()}
             </div>
         );
     }
 
+    filter(condition) {
+        let result = []
+        if (condition === 'RSI_60') {
+            var ageFilterComponent = this.gridApi.getFilterInstance("RSI_14");
+            ageFilterComponent.setModel({
+
+                type: "greaterThan",
+                filter: 60,
+                filterTo: null
+
+            });
+            this.gridApi.onFilterChanged();
+
+
+            // console.log(dataStorage.tradingStatisticObj)
+            // result = dataStorage.tradingStatisticObj.filter(a => a.RSI_14 > 60)
+            // this.setState({
+            //     rowData: result
+            // })
+
+        }
+
+        const filterSymbol = []
+    }
+
     componentDidMount() {
-        // this.filterVolume('allSymbolsArray_HOSE')
-        this.calculateRSI()
     }
 }
 

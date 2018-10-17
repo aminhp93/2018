@@ -22,7 +22,7 @@ import MovieActorSpeech from './MovieActorSpeech';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
-import { getTradingStatisticUrl } from '../helpers/requests';
+import { getTradingStatisticUrl, getMarketHistoricalQuotesUrl } from '../helpers/requests';
 import dataStorage from '../dataStorage';
 import moment from 'moment';
 
@@ -215,13 +215,21 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     componentDidMount() {
-        const url = getTradingStatisticUrl();
+        let url = getTradingStatisticUrl();
+        let promise = null;
+        let listPromise = [];
+        let volume = 100000;
+        let ratioVolume = 2;
+        let averageNumberDay = 20;
+
         axios.get(url)
             .then(response => {
                 if (response.data) {
                     let allSymbolsString = '';
                     let allSymbolsArray = response.data;
+                    let currentSymbolObj = {}
                     for (let i = 0; i < allSymbolsArray.length; i++) {
+                        currentSymbolObj = allSymbolsArray[i]
                         allSymbolsString += ',' + allSymbolsArray[i].Symbol
                         dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
                         if (allSymbolsArray[i].Exchange === 'HOSTC') {
@@ -233,10 +241,77 @@ class GoldenLayoutWrapper extends React.Component {
                         if (allSymbolsArray[i].Exchange === 'UPCOM') {
                             dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
                         }
+
+
+                        promise = new Promise(resolve => {
+                            url = getMarketHistoricalQuotesUrl(allSymbolsArray[i].Symbol);
+
+                            axios.get(url).then(response => {
+                                if (response && response.data) {
+                                    let data = response.data;
+                                    // Calculate Average Volume
+                                    let average1monthVolume = 0;
+                                    let sum1monthVolume = 0
+                                    for (let j = 1; j < (averageNumberDay + 1); j++) {
+                                        sum1monthVolume += data[data.length - 1 - j].Volume
+                                    }
+                                    average1monthVolume = sum1monthVolume / averageNumberDay
+                                    data[data.length - 1].Average1monthVolume = average1monthVolume
+                                    data[data.length - 1].RatioVolume = data[data.length - 1].Volume / average1monthVolume
+
+                                    // Calculate RSI
+                                    let sumGain = 0;
+                                    let sumLoss = 0
+                                    for (let j = 1; j < data.length; j++) {
+                                        let change = data[j].Close - data[j - 1].Close;
+                                        if (change > 0) {
+                                            data[j].Gain = change
+                                            data[j].Loss = 0
+                                        }
+                                        if (change < 0) {
+                                            data[j].Loss = -change
+                                            data[j].Gain = 0
+                                        }
+                                        if (change === 0) {
+                                            data[j].Loss = 0
+                                            data[j].Gain = 0
+                                        }
+                                        sumGain += data[j].Gain || 0
+                                        sumLoss += data[j].Loss || 0
+                                        if (j < 14) {
+                                            data[j].AverageGain = sumGain / 14
+                                            data[j].AverageLoss = sumLoss / 14
+                                        } else {
+                                            data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
+                                            data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
+                                            data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
+
+                                        }
+                                    }
+                                    allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
+                                    allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
+                                    allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
+
+                                } else {
+                                    resolve({});
+                                }
+                            }).catch(() => {
+                                resolve({});
+                            })
+                        })
+                        listPromise.push(promise);
                     }
+                    // Promise.all(listPromise)
+                    //     .then(response => {
+                    dataStorage.tradingStatisticObj = allSymbolsArray
                     dataStorage.allSymbolsString = allSymbolsString
                     console.log(dataStorage)
                     this.initGoldenLayout('filterSymbol');
+                    // })
+                    // .catch(error => {
+                    //     console.log(error.response)
+                    // });
+
                 }
             })
             .catch(error => {
