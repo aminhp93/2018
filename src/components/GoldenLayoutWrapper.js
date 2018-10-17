@@ -27,7 +27,7 @@ import dataStorage from '../dataStorage';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as checkFilterReady from '../actions/filterReady.actions';
+import * as checkFilterReady from '../actions/checkFilterReady.actions';
 
 window.React = React;
 window.ReactDOM = ReactDOM;
@@ -209,11 +209,7 @@ class GoldenLayoutWrapper extends React.Component {
             <MuiThemeProvider>
                 <div>
                     <Header addComponentToStack={this.addComponentToStack.bind(this)} />
-                    <div onClick={() => this.props.actions.checkFilterReady()}>
-                        Clcik
-                    </div>
                     <div className='goldenLayout' ref={input => this.layout = input} />
-                    {/* <App /> */}
                 </div>
 
             </MuiThemeProvider>
@@ -221,6 +217,7 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     componentDidMount() {
+        this.initGoldenLayout('filterSymbol');
         let url = getTradingStatisticUrl();
         let promise = null;
         let listPromise = [];
@@ -235,18 +232,18 @@ class GoldenLayoutWrapper extends React.Component {
                     let allSymbolsArray = response.data;
                     let currentSymbolObj = {}
                     for (let i = 0; i < allSymbolsArray.length; i++) {
-                        currentSymbolObj = allSymbolsArray[i]
-                        allSymbolsString += ',' + allSymbolsArray[i].Symbol
-                        dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
-                        if (allSymbolsArray[i].Exchange === 'HOSTC') {
-                            dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
-                        }
-                        if (allSymbolsArray[i].Exchange === 'HASTC') {
-                            dataStorage.allSymbolsArray_HNX.push(allSymbolsArray[i].Symbol)
-                        }
-                        if (allSymbolsArray[i].Exchange === 'UPCOM') {
-                            dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
-                        }
+                        //                     currentSymbolObj = allSymbolsArray[i]
+                        //                     allSymbolsString += ',' + allSymbolsArray[i].Symbol
+                        //                     dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
+                        //                     if (allSymbolsArray[i].Exchange === 'HOSTC') {
+                        //                         dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
+                        //                     }
+                        //                     if (allSymbolsArray[i].Exchange === 'HASTC') {
+                        //                         dataStorage.allSymbolsArray_HNX.push(allSymbolsArray[i].Symbol)
+                        //                     }
+                        //                     if (allSymbolsArray[i].Exchange === 'UPCOM') {
+                        //                         dataStorage.allSymbolsArray_UPCOM.push(allSymbolsArray[i].Symbol)
+                        //                     }
 
 
                         promise = new Promise(resolve => {
@@ -297,35 +294,77 @@ class GoldenLayoutWrapper extends React.Component {
                                     allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
                                     allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
                                     allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
-
-                                } else {
-                                    resolve({});
                                 }
+                                resolve({});
                             }).catch(() => {
                                 resolve({});
                             })
                         })
                         listPromise.push(promise);
                     }
-                    // Promise.all(listPromise)
-                    //     .then(response => {
-
-                    dataStorage.tradingStatisticObj = allSymbolsArray
-                    dataStorage.allSymbolsString = allSymbolsString
-                    console.log(dataStorage)
-                    this.initGoldenLayout('filterSymbol');
-                    // })
-                    // .catch(error => {
-                    //     console.log(error.response)
-                    // });
+                    Promise.all(listPromise)
+                        .then(response => {
+                            dataStorage.tradingStatisticObj = allSymbolsArray
+                            dataStorage.allSymbolsString = allSymbolsString
+                            this.props.actions.checkFilterReady()
+                        })
+                        .catch(error => {
+                            console.log(error.response)
+                        });
 
                 }
             })
             .catch(error => {
-                this.initGoldenLayout('filterSymbol');
                 console.log(error.response)
             });
     }
+    filterVolume(market) {
+        let volume = 100000;
+        let ratioVolume = 2;
+        let averageNumberDay = 20;
+        let promise = null;
+        let listPromise = [];
+
+        for (let i = 0; i < dataStorage[market].length; i++) {
+            promise = new Promise(resolve => {
+                const url = getMarketHistoricalQuotesUrl(dataStorage[market][i]);
+
+                axios.get(url).then(response => {
+                    if (response && response.data) {
+                        let average1monthVolume = 0;
+                        let sum1monthVolume = 0
+                        for (let j = 1; j < (averageNumberDay + 1); j++) {
+                            sum1monthVolume += response.data[response.data.length - 1 - j].Volume
+                        }
+                        average1monthVolume = sum1monthVolume / averageNumberDay
+                        response.data[response.data.length - 1].average1monthVolume = average1monthVolume
+                        response.data[response.data.length - 1].ratioVolume = response.data[response.data.length - 1].Volume / average1monthVolume
+                        resolve(response.data[response.data.length - 1])
+                    } else {
+                        resolve([]);
+                    }
+                }).catch(() => {
+                    resolve([]);
+                })
+            })
+            listPromise.push(promise);
+        }
+        Promise.all(listPromise)
+            .then(response => {
+                let filterVolume = response.filter(item => {
+                    return (item.Volume > volume && item.Volume > ratioVolume * item.average1monthVolume && item.Volume)
+                }).sort(((a, b) => b.ratioVolume - a.ratioVolume))
+                this.setState({
+                    rowData: filterVolume
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+    }
+    // componentDidMount() {
+    // this.filterVolume('allSymbolsArray_HOSE')
+    // }
 }
 
 GoldenLayoutWrapper.contextTypes = {

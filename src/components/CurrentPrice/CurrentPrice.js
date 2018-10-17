@@ -7,8 +7,12 @@ import { AgGridReact } from 'ag-grid-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
+import * as checkFilterReady from '../../actions/checkFilterReady.actions'
 import { translate, Trans } from 'react-i18next';
 import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
+
+const actionsTemps = { ...symbolActions, ...checkFilterReady }
+
 
 class CurrentPrice extends React.Component {
     constructor(props) {
@@ -39,7 +43,8 @@ class CurrentPrice extends React.Component {
                 }
             ],
             rowData: [],
-            symbolSearch: 'FPT'
+            symbolSearch: 'FPT',
+            checkFilterReady: false
         }
 
         this.defaultColDef = {
@@ -50,6 +55,13 @@ class CurrentPrice extends React.Component {
         this.setTimeOutID = null
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.checkFilterReady && nextProps.checkFilterReady.checkFilterReady) {
+            this.setState({
+                checkFilterReady: true
+            })
+        }
+    }
     onGridReady(params) {
         this.gridApi = params.api;
     }
@@ -173,17 +185,26 @@ class CurrentPrice extends React.Component {
                     <div>
                         Filter Volume >
                     </div>
-                    <div>
+                    <div onClick={() => {
+                    }}>
                         EPS > 3000
                     </div>
                     <div>
                         Current Portfolio
                     </div>
-                    <div onClick={() => {
-                        this.setState({
-                            rowData: dataStorage.tradingStatisticObj
-                        })
-                    }}>Get data</div>
+                    <div onClick={() => this.handleOnChangeMarket(1)}>
+                        handleOnChangeMarket
+                    </div>
+                    {
+                        this.state.checkFilterReady
+                            ? <div onClick={() => {
+                                this.setState({
+                                    rowData: dataStorage.tradingStatisticObj
+                                })
+                            }}>Get data</div>
+                            : <div>No ready</div>
+                    }
+
                 </div>
                 {this.renderContent()}
             </div>
@@ -220,14 +241,16 @@ class CurrentPrice extends React.Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state)
     return {
-        symbol: state.symbol.symbol
+        symbol: state.symbol.symbol,
+        checkFilterReady: state.checkFilterReady
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(symbolActions, dispatch)
+        actions: bindActionCreators(actionsTemps, dispatch)
     }
 }
 

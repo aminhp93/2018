@@ -1,9 +1,9 @@
-export const filterReady = (state = {}, action) => {
+export const checkFilterReady = (state = {}, action) => {
     switch (action.type) {
         case 'CHECK_FILTER_READY':
             return {
                 ...state,
-                filterReady: true
+                checkFilterReady: true
             }
         default:
             return state
