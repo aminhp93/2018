@@ -68,14 +68,25 @@ class CurrentPrice extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.checkFilterReady && nextProps.checkFilterReady.checkFilterReady) {
+        if (nextProps.checkFilterReady && nextProps.checkFilterReady.checkFilterReady && !this.state.checkFilterReady) {
             this.setState({
                 checkFilterReady: true
             })
         }
     }
+
+    // shouldComponentUpdate(nextProps) {
+    // if (nextProps.checkFilterReady && nextProps.checkFilterReady.checkFilterReady && nextProps.checkFilterReady.checkFilterReady !== this.state.checkFilterReady) {
+    //     return true
+    // }
+    // return false
+    // }
+
     onGridReady(params) {
         this.gridApi = params.api;
+        this.filter('RSI_60')
+        this.filter('Volume_100000')
+        this.filter('EPS_3000')
     }
 
     onRowClicked(row) {
