@@ -22,7 +22,7 @@ import MovieActorSpeech from './MovieActorSpeech';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
-import { getTradingStatisticUrl, getMarketHistoricalQuotesUrl } from '../helpers/requests';
+import { getTradingStatisticUrl, getMarketHistoricalQuotesUrl, getLatestFinancialInfoUrl } from '../helpers/requests';
 import dataStorage from '../dataStorage';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -219,7 +219,8 @@ class GoldenLayoutWrapper extends React.Component {
     componentDidMount() {
         this.initGoldenLayout('filterSymbol');
         let url = getTradingStatisticUrl();
-        let promise = null;
+        let promise1 = null;
+        let promise2 = null;
         let listPromise = [];
         let volume = 100000;
         let ratioVolume = 2;
@@ -246,61 +247,85 @@ class GoldenLayoutWrapper extends React.Component {
                         //                     }
 
 
-                        promise = new Promise(resolve => {
+                        promise1 = new Promise(resolve => {
                             url = getMarketHistoricalQuotesUrl(allSymbolsArray[i].Symbol);
 
-                            axios.get(url).then(response => {
-                                if (response && response.data) {
-                                    let data = response.data;
-                                    // Calculate Average Volume
-                                    let average1monthVolume = 0;
-                                    let sum1monthVolume = 0
-                                    for (let j = 1; j < (averageNumberDay + 1); j++) {
-                                        sum1monthVolume += data[data.length - 1 - j].Volume
-                                    }
-                                    average1monthVolume = sum1monthVolume / averageNumberDay
-                                    data[data.length - 1].Average1monthVolume = average1monthVolume
-                                    data[data.length - 1].RatioVolume = data[data.length - 1].Volume / average1monthVolume
+                            axios.get(url)
+                                .then(response => {
+                                    if (response.data) {
+                                        let data = response.data;
+                                        // Calculate Average Volume
+                                        let average1monthVolume = 0;
+                                        let sum1monthVolume = 0
+                                        for (let j = 1; j < (averageNumberDay + 1); j++) {
+                                            sum1monthVolume += data[data.length - 1 - j].Volume
+                                        }
+                                        average1monthVolume = sum1monthVolume / averageNumberDay
+                                        data[data.length - 1].Average1monthVolume = average1monthVolume
+                                        data[data.length - 1].RatioVolume = data[data.length - 1].Volume / average1monthVolume
 
-                                    // Calculate RSI
-                                    let sumGain = 0;
-                                    let sumLoss = 0
-                                    for (let j = 1; j < data.length; j++) {
-                                        let change = data[j].Close - data[j - 1].Close;
-                                        if (change > 0) {
-                                            data[j].Gain = change
-                                            data[j].Loss = 0
-                                        }
-                                        if (change < 0) {
-                                            data[j].Loss = -change
-                                            data[j].Gain = 0
-                                        }
-                                        if (change === 0) {
-                                            data[j].Loss = 0
-                                            data[j].Gain = 0
-                                        }
-                                        sumGain += data[j].Gain || 0
-                                        sumLoss += data[j].Loss || 0
-                                        if (j < 14) {
-                                            data[j].AverageGain = sumGain / 14
-                                            data[j].AverageLoss = sumLoss / 14
-                                        } else {
-                                            data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
-                                            data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
-                                            data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
+                                        // Calculate RSI
+                                        let sumGain = 0;
+                                        let sumLoss = 0
+                                        for (let j = 1; j < data.length; j++) {
+                                            let change = data[j].Close - data[j - 1].Close;
+                                            if (change > 0) {
+                                                data[j].Gain = change
+                                                data[j].Loss = 0
+                                            }
+                                            if (change < 0) {
+                                                data[j].Loss = -change
+                                                data[j].Gain = 0
+                                            }
+                                            if (change === 0) {
+                                                data[j].Loss = 0
+                                                data[j].Gain = 0
+                                            }
+                                            sumGain += data[j].Gain || 0
+                                            sumLoss += data[j].Loss || 0
+                                            if (j < 14) {
+                                                data[j].AverageGain = sumGain / 14
+                                                data[j].AverageLoss = sumLoss / 14
+                                            } else {
+                                                data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
+                                                data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
+                                                data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
 
+                                            }
                                         }
+
+                                        allSymbolsArray[i].Volume = data[data.length - 1].Volume
+                                        allSymbolsArray[i].Open = data[data.length - 1].Open
+                                        allSymbolsArray[i].Close = data[data.length - 1].Close
+                                        allSymbolsArray[i].High = data[data.length - 1].High
+                                        allSymbolsArray[i].Low = data[data.length - 1].Low
+                                        allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
+                                        allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
+                                        allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
                                     }
-                                    allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
-                                    allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
-                                    allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
-                                }
-                                resolve({});
-                            }).catch(() => {
-                                resolve({});
-                            })
+                                    resolve({});
+                                })
+                                .catch(error => {
+                                    resolve({});
+                                    console.log(error)
+                                })
                         })
-                        listPromise.push(promise);
+                        promise2 = new Promise(resolve => {
+                            url = getLatestFinancialInfoUrl(allSymbolsArray[i].Symbol);
+                            axios.get(url)
+                                .then(response => {
+                                    if (response.data) {
+                                        allSymbolsArray[i].BasicEPS = response.data.BasicEPS
+                                    }
+                                    resolve({})
+                                })
+                                .catch(error => {
+                                    resolve({});
+                                    console.log(error)
+                                })
+                        })
+                        listPromise.push(promise1)
+                        listPromise.push(promise2);
                     }
                     Promise.all(listPromise)
                         .then(response => {
@@ -311,60 +336,12 @@ class GoldenLayoutWrapper extends React.Component {
                         .catch(error => {
                             console.log(error.response)
                         });
-
                 }
             })
             .catch(error => {
                 console.log(error.response)
             });
     }
-    filterVolume(market) {
-        let volume = 100000;
-        let ratioVolume = 2;
-        let averageNumberDay = 20;
-        let promise = null;
-        let listPromise = [];
-
-        for (let i = 0; i < dataStorage[market].length; i++) {
-            promise = new Promise(resolve => {
-                const url = getMarketHistoricalQuotesUrl(dataStorage[market][i]);
-
-                axios.get(url).then(response => {
-                    if (response && response.data) {
-                        let average1monthVolume = 0;
-                        let sum1monthVolume = 0
-                        for (let j = 1; j < (averageNumberDay + 1); j++) {
-                            sum1monthVolume += response.data[response.data.length - 1 - j].Volume
-                        }
-                        average1monthVolume = sum1monthVolume / averageNumberDay
-                        response.data[response.data.length - 1].average1monthVolume = average1monthVolume
-                        response.data[response.data.length - 1].ratioVolume = response.data[response.data.length - 1].Volume / average1monthVolume
-                        resolve(response.data[response.data.length - 1])
-                    } else {
-                        resolve([]);
-                    }
-                }).catch(() => {
-                    resolve([]);
-                })
-            })
-            listPromise.push(promise);
-        }
-        Promise.all(listPromise)
-            .then(response => {
-                let filterVolume = response.filter(item => {
-                    return (item.Volume > volume && item.Volume > ratioVolume * item.average1monthVolume && item.Volume)
-                }).sort(((a, b) => b.ratioVolume - a.ratioVolume))
-                this.setState({
-                    rowData: filterVolume
-                })
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
-    }
-    // componentDidMount() {
-    // this.filterVolume('allSymbolsArray_HOSE')
-    // }
 }
 
 GoldenLayoutWrapper.contextTypes = {

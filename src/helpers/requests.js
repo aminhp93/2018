@@ -20,7 +20,7 @@ export function getCompanyInfoUrl(symbol) {
 }
 
 export function getLatestFinancialInfoUrl(symbol) {
-    return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/Finance/LastestFinancialInfo?symbol=' + symbol
+    return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialInfo?symbol=' + symbol
 }
 
 export function getAllIndustryFinancialInfoUrl() {

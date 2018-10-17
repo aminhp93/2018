@@ -33,6 +33,18 @@ class CurrentPrice extends React.Component {
                     filter: "agNumberColumnFilter"
                 },
                 {
+                    headerName: "Volume",
+                    field: "Volume",
+                    width: 80,
+                    filter: "agNumberColumnFilter"
+                },
+                {
+                    headerName: "BasicEPS",
+                    field: "BasicEPS",
+                    width: 80,
+                    filter: "agNumberColumnFilter"
+                },
+                {
                     headerName: "Date",
                     field: "Date",
                     sort: 'desc',
@@ -180,29 +192,26 @@ class CurrentPrice extends React.Component {
                 }} />
                 <div className='filterOption'>
                     <div onClick={() => this.filter('RSI_60')}>
-                        Filter with RSI > 60
+                        RSI > 60
                     </div>
-                    <div>
-                        Filter Volume >
+                    <div onClick={() => this.filter('Volume_100000')}>
+                        Volume > 100000
                     </div>
-                    <div onClick={() => {
-                    }}>
+                    <div onClick={() => this.filter('EPS_3000')}>
                         EPS > 3000
                     </div>
                     <div>
                         Current Portfolio
                     </div>
-                    <div onClick={() => this.handleOnChangeMarket(1)}>
-                        handleOnChangeMarket
-                    </div>
                     {
                         this.state.checkFilterReady
                             ? <div onClick={() => {
+                                console.log(dataStorage.tradingStatisticObj)
                                 this.setState({
                                     rowData: dataStorage.tradingStatisticObj
                                 })
                             }}>Get data</div>
-                            : <div>No ready</div>
+                            : <div>Not ready</div>
                     }
 
                 </div>
@@ -214,26 +223,30 @@ class CurrentPrice extends React.Component {
     filter(condition) {
         let result = []
         if (condition === 'RSI_60') {
-            var ageFilterComponent = this.gridApi.getFilterInstance("RSI_14");
-            ageFilterComponent.setModel({
-
+            var RSIFilterComponent = this.gridApi.getFilterInstance("RSI_14");
+            RSIFilterComponent.setModel({
                 type: "greaterThan",
                 filter: 60,
                 filterTo: null
-
             });
             this.gridApi.onFilterChanged();
-
-
-            // console.log(dataStorage.tradingStatisticObj)
-            // result = dataStorage.tradingStatisticObj.filter(a => a.RSI_14 > 60)
-            // this.setState({
-            //     rowData: result
-            // })
-
+        } else if (condition === 'Volume_100000') {
+            var VolumeFilterComponent = this.gridApi.getFilterInstance("Volume");
+            VolumeFilterComponent.setModel({
+                type: "greaterThan",
+                filter: 100000,
+                filterTo: null
+            });
+            this.gridApi.onFilterChanged();
+        } else if (condition === 'EPS_3000') {
+            var BasicEPSFilterComponent = this.gridApi.getFilterInstance("BasicEPS");
+            BasicEPSFilterComponent.setModel({
+                type: "greaterThan",
+                filter: 3000,
+                filterTo: null
+            });
+            this.gridApi.onFilterChanged();
         }
-
-        const filterSymbol = []
     }
 
     componentDidMount() {
@@ -241,7 +254,6 @@ class CurrentPrice extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state)
     return {
         symbol: state.symbol.symbol,
         checkFilterReady: state.checkFilterReady
