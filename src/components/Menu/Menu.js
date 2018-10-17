@@ -14,6 +14,9 @@ export default class Menu extends React.Component {
     handleChangeLifeMode() {
         dataStorage.goldenLayout.initGoldenLayout('life')
     }
+    handleChangeFilterSymbolMode() {
+        dataStorage.goldenLayout.initGoldenLayout('filterSymbol')
+    }
 
     render() {
         return (
@@ -62,6 +65,9 @@ export default class Menu extends React.Component {
                 </div>
                 <div onClick={this.handleChangeLifeMode.bind(this)}>
                     Life
+                </div>
+                <div onClick={this.handleChangeFilterSymbolMode.bind(this)}>
+                    FilterSymbolMode
                 </div>
             </div>
         );

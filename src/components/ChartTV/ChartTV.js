@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { translate, Trans } from 'react-i18next';
 import uuidv4 from 'uuid/v4';
 import { connect } from 'react-redux';
@@ -63,6 +64,19 @@ class ChartTV extends React.Component {
             // this.widget.chart().createStudy('RSI60', false, true);
             // this.widget.chart().createStudy('MACD_Minh', false, false, [14, 30, "close", 9])
             // this.widget && this.widget.chart().createStudy('OverlayMINH', false, false, ['AAPL']);
+            const div = document.createElement('div');
+            ReactDOM.render(
+                <div className='saveChart'>
+                    Save
+                </div >
+                , div);
+
+
+            that.widget.createButton()
+                .append(div);
+            div.parentNode.parentNode.addEventListener('click', function () {
+                that.saveLayoutChart();
+            })
             that.loadLayoutChart()
         });
     }
@@ -137,11 +151,6 @@ class ChartTV extends React.Component {
     render() {
         return <div>
             <article className='chartTV' id={this.id} />
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                color: 'red'
-            }} onClick={this.saveLayoutChart.bind(this)}>Save</div>
         </div>
 
     }

@@ -77,7 +77,28 @@ const getDefaultLifeLayout = (percentHeightTop = 40, percentWidth = 20) => {
     ]
 }
 
+const getDefaultFilterSymbolLayout = (percentHeightTop = 40, percentWidth = 20) => {
+    return [
+
+        {
+            'type': 'row',
+            'content': [
+                {
+                    'type': 'component',
+                    'component': 'CurrentPrice',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'CurrentPrice'
+                }
+
+            ]
+        }
+    ]
+}
+
 export default {
     getDefaultWorkLayout,
-    getDefaultLifeLayout
+    getDefaultLifeLayout,
+    getDefaultFilterSymbolLayout
 }

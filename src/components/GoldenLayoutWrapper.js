@@ -49,6 +49,8 @@ class GoldenLayoutWrapper extends React.Component {
             let layout;
             if (mode === 'work') {
                 layout = layoutConfig.getDefaultWorkLayout();
+            } else if (mode === 'filterSymbol') {
+                layout = layoutConfig.getDefaultFilterSymbolLayout();
             } else {
                 layout = layoutConfig.getDefaultLifeLayout();
             }
@@ -234,11 +236,11 @@ class GoldenLayoutWrapper extends React.Component {
                     }
                     dataStorage.allSymbolsString = allSymbolsString
                     console.log(dataStorage)
-                    this.initGoldenLayout('work');
+                    this.initGoldenLayout('filterSymbol');
                 }
             })
             .catch(error => {
-                this.initGoldenLayout('work');
+                this.initGoldenLayout('filterSymbol');
                 console.log(error.response)
             });
     }
