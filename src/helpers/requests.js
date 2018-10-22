@@ -24,7 +24,8 @@ export function getLatestFinancialInfoUrl(symbol) {
 }
 
 export function getAllIndustryFinancialInfoUrl() {
-    return 'https://www.fireant.vn/api/Data/Finance/AllIndustryFinancialInfo'
+    // return 'https://www.fireant.vn/api/Data/Finance/AllIndustryFinancialInfo'
+    return 'https://project-2018-backend.herokuapp.com/'
 }
 
 export function getAlertsUrl() {
@@ -97,6 +98,7 @@ export function getMovingAveragesUrl() {
 export function getTradingStatisticUrl() {
     // return 'https://cors-anywhere.herokuapp.com/https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
     return 'https://svr2.fireant.vn/api/Data/Markets/TradingStatistic'
+    // return 'https://project-2018-backend.herokuapp.com/trading-statistic'
 }
 
 export function getAccountUrl() {

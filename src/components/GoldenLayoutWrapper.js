@@ -229,12 +229,12 @@ class GoldenLayoutWrapper extends React.Component {
         axios.get(url)
             .then(response => {
                 if (response.data) {
-                    let allSymbolsString = '';
+                    let allSymbolsString = [];
                     let allSymbolsArray = response.data;
                     let currentSymbolObj = {}
                     for (let i = 0; i < allSymbolsArray.length; i++) {
-                        //                     currentSymbolObj = allSymbolsArray[i]
-                        //                     allSymbolsString += ',' + allSymbolsArray[i].Symbol
+                        currentSymbolObj = allSymbolsArray[i]
+                        allSymbolsString.push(allSymbolsArray[i].Symbol)
                         //                     dataStorage.allSymbolsString.push(allSymbolsArray[i].Symbol)
                         //                     if (allSymbolsArray[i].Exchange === 'HOSTC') {
                         //                         dataStorage.allSymbolsArray_HOSE.push(allSymbolsArray[i].Symbol)
@@ -331,6 +331,7 @@ class GoldenLayoutWrapper extends React.Component {
                         .then(response => {
                             dataStorage.tradingStatisticObj = allSymbolsArray
                             dataStorage.allSymbolsString = allSymbolsString
+                            console.log(dataStorage)
                             this.props.actions.checkFilterReady()
                         })
                         .catch(error => {

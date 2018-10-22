@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { getAllIndustryFinancialInfoUrl } from '../../helpers/requests'
+import dataStorage from '../../dataStorage';
 
 class Book extends React.Component {
     render() {
@@ -19,6 +22,34 @@ class Book extends React.Component {
             </div>
 
         )
+    }
+
+    componentDidMount() {
+        // const url = getAllIndustryFinancialInfoUrl()
+        let url1 = ''
+        let url2 = ''
+        let symbol = ''
+        for (let i = 0; i < dataStorage.allSymbolsString.length; i++) {
+            symbol = dataStorage.allSymbolsString[i]
+            console.log(symbol)
+            url1 = 'http://localhost:8000/historical-quote/insert/' + symbol
+            url2 = 'https://project-2018-backend.herokuapp.com/historical-quote/insert/' + symbol
+            axios.get(url1)
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            axios.get(url2)
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+
     }
 }
 
