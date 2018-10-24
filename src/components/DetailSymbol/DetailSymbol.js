@@ -3,6 +3,8 @@ import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
 import { translate, Trans } from 'react-i18next';
+import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl } from '../../helpers/requests';
+import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -30,6 +32,23 @@ class DetailSymbol extends React.Component {
             symbol: symbol
         })
         this.props.actions && this.props.actions.changeSymbol(symbol)
+        let url = getLatestFinancialInfoUrl(symbol)
+        // let latestFinancialInfoObj = {}
+        // let intradayQuotesArray = []
+        // let historicalQuotesArray = []
+        // let companyNewsArray = []
+
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    // latestFinancialInfoObj = response.data
+                    console.log(response)
+
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 
     render() {
@@ -37,10 +56,30 @@ class DetailSymbol extends React.Component {
             <div>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
                 {/* <Transaction symbol={this.state.symbol} /> */}
-                <CanslimStandard symbol={this.state.symbol} />
+                {/* <CanslimStandard symbol={this.state.symbol} /> */}
                 {/* {this.props.symbol} */}
             </div>
         );
+    }
+
+    componentDidMount() {
+        let url = getLatestFinancialInfoUrl(this.state.symbol)
+        // let latestFinancialInfoObj = {}
+        // let intradayQuotesArray = []
+        // let historicalQuotesArray = []
+        // let companyNewsArray = []
+
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    // latestFinancialInfoObj = response.data
+                    console.log(response)
+
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
 }
 
