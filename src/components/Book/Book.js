@@ -4,6 +4,14 @@ import { getAllIndustryFinancialInfoUrl } from '../../helpers/requests'
 import dataStorage from '../../dataStorage';
 
 class Book extends React.Component {
+    constructor(props) {
+        super(props);
+        this.allSymbolArray = dataStorage.allSymbolsString
+        this.state = {
+            currentList: this.allSymbolArray || []
+        }
+    }
+
     render() {
         return (
             <div>
@@ -19,18 +27,20 @@ class Book extends React.Component {
                 <div>
                     git log --before="7 month ago" --pretty=format:"%h%x09%an%x09%ad%x09%s"
                 </div>
+                <div onClick={this.handleInsertData.bind(this)}>
+                    Insert Data: {this.state.currentList.length} - {this.state.currentList}
+                </div>
             </div>
 
         )
     }
 
-    componentDidMount() {
-        // const url = getAllIndustryFinancialInfoUrl()
-        let url1 = ''
-        let url2 = ''
-        let symbol = ''
-        for (let i = 0; i < dataStorage.allSymbolsString.length; i++) {
-            symbol = dataStorage.allSymbolsString[i]
+    handleInsertData() {
+        let i = 0
+        const intervalId = setInterval(() => {
+            let url1 = ''
+            let url2 = ''
+            let symbol = this.state.currentList[i]
             console.log(symbol)
             url1 = 'http://localhost:8000/historical-quote/insert/' + symbol
             url2 = 'https://project-2018-backend.herokuapp.com/historical-quote/insert/' + symbol
@@ -48,8 +58,12 @@ class Book extends React.Component {
                 .catch(error => {
                     console.log(error)
                 })
-        }
+            if (i === this.state.currentList.length) clearInterval(intervalId)
+            i++
+        }, 5000)
+    }
 
+    componentDidMount() {
     }
 }
 

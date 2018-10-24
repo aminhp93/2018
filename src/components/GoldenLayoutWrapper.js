@@ -315,8 +315,9 @@ class GoldenLayoutWrapper extends React.Component {
                             axios.get(url)
                                 .then(response => {
                                     if (response.data) {
-                                        allSymbolsArray[i].BasicEPS = response.data.BasicEPS
+                                        allSymbolsArray[i].EPS = response.data.EPS
                                         allSymbolsArray[i].MarketCapitalization = response.data.MarketCapitalization
+                                        allSymbolsArray[i].ROE = response.data.ROE
                                     }
                                     resolve({})
                                 })

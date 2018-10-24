@@ -10,8 +10,10 @@ import * as symbolActions from '../../actions/symbol.actions';
 
 class DetailSymbol extends React.Component {
     constructor(props) {
+        console.log('detailsymbol')
         super(props);
         this.state = {
+            symbol: props.Symbol
         }
     }
 
@@ -27,7 +29,7 @@ class DetailSymbol extends React.Component {
         this.setState({
             symbol: symbol
         })
-        this.props.actions.changeSymbol(symbol)
+        this.props.actions && this.props.actions.changeSymbol(symbol)
     }
 
     render() {
@@ -36,6 +38,7 @@ class DetailSymbol extends React.Component {
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
                 {/* <Transaction symbol={this.state.symbol} /> */}
                 <CanslimStandard symbol={this.state.symbol} />
+                {/* {this.props.symbol} */}
             </div>
         );
     }
@@ -53,4 +56,5 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate('translations')(DetailSymbol));
+// export default connect(mapStateToProps, mapDispatchToProps)(DetailSymbol);
+export default DetailSymbol
