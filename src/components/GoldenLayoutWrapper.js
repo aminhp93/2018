@@ -316,6 +316,7 @@ class GoldenLayoutWrapper extends React.Component {
                                 .then(response => {
                                     if (response.data) {
                                         allSymbolsArray[i].BasicEPS = response.data.BasicEPS
+                                        allSymbolsArray[i].MarketCapitalization = response.data.MarketCapitalization
                                     }
                                     resolve({})
                                 })
