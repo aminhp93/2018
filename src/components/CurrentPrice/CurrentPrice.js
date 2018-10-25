@@ -11,6 +11,7 @@ import * as checkFilterReady from '../../actions/checkFilterReady.actions'
 import { translate, Trans } from 'react-i18next';
 import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
 import ReactDOM from 'react-dom';
+import showModal from './../Modal';
 import DetailSymbol from '../DetailSymbol';
 const actionsTemps = { ...symbolActions, ...checkFilterReady }
 
@@ -30,15 +31,10 @@ class CurrentPrice extends React.Component {
                         const div = document.createElement('div')
                         div.innerHTML = params.data.Symbol
                         console.log('mouseover')
-
-                        const detailSymbolContainer = document.createElement('div')
-                        detailSymbolContainer.className = 'detailSymbolContainer'
-                        ReactDOM.render(<DetailSymbol symbol={params.data.Symbol} />, detailSymbolContainer)
-                        div.addEventListener('mouseenter', function () {
-                            div.appendChild(detailSymbolContainer)
-                        })
-                        div.addEventListener('mouseleave', function () {
-                            div.removeChild(detailSymbolContainer)
+                        div.addEventListener('click', function () {
+                            showModal({
+                                component: DetailSymbol
+                            });
                         })
                         return div
                     }

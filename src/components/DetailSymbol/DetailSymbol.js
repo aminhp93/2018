@@ -53,7 +53,7 @@ class DetailSymbol extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='detailSymbol'>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
                 {/* <Transaction symbol={this.state.symbol} /> */}
                 {/* <CanslimStandard symbol={this.state.symbol} /> */}

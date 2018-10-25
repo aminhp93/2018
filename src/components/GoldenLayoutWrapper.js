@@ -14,6 +14,7 @@ import FilterSystem from './FilterSystem';
 import Tennis from './Tennis';
 import CurrentPrice from './CurrentPrice';
 import NewOrder from './NewOrder';
+import showModal from './Modal';
 import ChartTV from './ChartTV';
 import MarketWatch from './MarketWatch';
 import Financials from './Financials';
@@ -163,6 +164,12 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     addComponentToStack(index, state = { 'test': 'test' }) {
+        if (index === 'DetailSymbol') {
+            showModal({
+                component: DetailSymbol
+            });
+            return
+        }
         let title = ''
         switch (index) {
             default:

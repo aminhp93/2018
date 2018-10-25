@@ -193,3 +193,27 @@
   /* width: 100px; */
   /* background: red; */
 }
+
+#modal{
+  height: calc(100%);
+  width: 100%;
+  position: fixed;
+  background: #2f3241;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 10000;
+  background: rgba(19, 23, 34, 0.7);
+}
+
+#modal > div{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
