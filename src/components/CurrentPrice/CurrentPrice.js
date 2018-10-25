@@ -33,7 +33,10 @@ class CurrentPrice extends React.Component {
                         console.log('mouseover')
                         div.addEventListener('click', function () {
                             showModal({
-                                component: DetailSymbol
+                                component: DetailSymbol,
+                                props: {
+                                    symbol: params.data.Symbol
+                                }
                             });
                         })
                         return div

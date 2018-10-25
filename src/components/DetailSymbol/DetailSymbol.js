@@ -15,7 +15,7 @@ class DetailSymbol extends React.Component {
         console.log('detailsymbol')
         super(props);
         this.state = {
-            symbol: props.Symbol
+            symbol: props.symbol
         }
     }
 
@@ -56,7 +56,7 @@ class DetailSymbol extends React.Component {
             <div className='detailSymbol'>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
                 {/* <Transaction symbol={this.state.symbol} /> */}
-                {/* <CanslimStandard symbol={this.state.symbol} /> */}
+                <CanslimStandard symbol={this.state.symbol} />
                 {/* {this.props.symbol} */}
             </div>
         );
