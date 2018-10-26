@@ -2,13 +2,16 @@ import React from 'react';
 import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
+import BusinessSummary from '../BusinessSummary/BusinessSummary';
 import { translate, Trans } from 'react-i18next';
-import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl } from '../../helpers/requests';
+import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl, getLastestFinancialReports_1 } from '../../helpers/requests';
 import axios from 'axios';
 import { Tab } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
+import { AgGridReact } from 'ag-grid-react';
+
 
 class DetailSymbol extends React.Component {
     constructor(props) {
@@ -75,13 +78,13 @@ class DetailSymbol extends React.Component {
 
     renderTab7() {
         const panes = [
-            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane>{this.renderTab1()}</Tab.Pane> },
-            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane>{this.renderTab2()}</Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane>{this.renderTab3()}</Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane>{this.renderTab4()}</Tab.Pane> }
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane><BusinessSummary symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> }
         ]
         return <div>7 - {Math.random()}
-            <div onClick={this.handleShowFinancialReport.bind(this)}>Bao cao tai chinh</div>
+            <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>Bao cao tai chinh</div>
             <div className={`financialReport ${this.state.showFinancialReport ? 'show' : 'hide'}`}>
                 <div>
                     Bao cao tai chinh
@@ -102,6 +105,8 @@ class DetailSymbol extends React.Component {
             showFinancialReport: !this.state.showFinancialReport
         })
     }
+
+
 
     render() {
         const panes = [

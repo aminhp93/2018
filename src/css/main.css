@@ -227,3 +227,7 @@
 .financialReport.hide{
   display: none !important;
 }
+
+.btn {
+  background: green;
+}

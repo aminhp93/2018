@@ -171,3 +171,20 @@ export function postDailyWatchlistUrl() {
 export function deleteDailyWatchlistUrl(symbol) {
     return 'https://watchlist-api.vndirect.com.vn/api/watchlists/5bc4c50ab93c4e67cff5e867/symbols/' + symbol
 }
+
+export function getLastestFinancialReports_1(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=' + symbol + '&type=1&year=2018&quarter=0&count=5'
+}
+
+export function getLastestFinancialReports_2(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=' + symbol + '&type=2&year=2018&quarter=0&count=5'
+}
+
+export function getLastestFinancialReports_3(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=' + symbol + '&type=3&year=2018&quarter=0&count=5'
+}
+
+export function getLastestFinancialReports_4(symbol) {
+    return 'https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=' + symbol + '&type=4&year=2018&quarter=0&count=5'
+}
+

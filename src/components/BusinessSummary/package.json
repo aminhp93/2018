@@ -1,0 +1,6 @@
+{
+    "name": "BusinessSummary",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./BusinessSummary.js"
+}
