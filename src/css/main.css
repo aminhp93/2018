@@ -145,7 +145,9 @@
   display: flex;
   flex-direction: row;
 }
-
+.detailSymbol .tabContainer .item {
+  color: black !important;
+}
 .tabContainer .item{
   color: white !important;
 }
@@ -216,4 +218,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.financialReport.show {
+  display: block !important;
+}
+
+.financialReport.hide{
+  display: none !important;
 }

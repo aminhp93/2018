@@ -8,7 +8,7 @@ export default class CanslimStandard extends React.Component {
         super(props);
         this.state = {
             symbolObj: {},
-            symbol: '',
+            symbol: props.symbol,
             latestFinancialInfoObj: {},
             intradayQuotesArray: [],
             historicalQuotesArray: [],
@@ -195,7 +195,60 @@ export default class CanslimStandard extends React.Component {
         );
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        if (!this.state.symbol) return
+        let url = getLatestFinancialInfoUrl(this.state.symbol)
+        let latestFinancialInfoObj = {}
+        let intradayQuotesArray = []
+        let historicalQuotesArray = []
+        let companyNewsArray = []
+
+        await axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    latestFinancialInfoObj = response.data
+
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+        url = getIntradayQuotesUrl(this.state.symbol)
+        await axios.get(url)
+            .then(response => {
+                if (response.data && response.data.length) {
+                    intradayQuotesArray = response.data
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+        url = getCompanyHistoricalQuotesUrl(this.state.symbol)
+        await axios.get(url)
+            .then(response => {
+                if (response.data && response.data.length) {
+                    historicalQuotesArray = response.data
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+        url = getCompanyNewsUrl(this.state.symbol)
+        await axios.get(url)
+            .then(response => {
+                if (response.data && response.data.length) {
+                    companyNewsArray = response.data
+                }
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+        this.setState({
+            latestFinancialInfoObj,
+            intradayQuotesArray,
+            historicalQuotesArray,
+            companyNewsArray
+        })
 
     }
 }

@@ -5,7 +5,7 @@ import CanslimStandard from '../CanslimStandard/CanslimStandard';
 import { translate, Trans } from 'react-i18next';
 import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl } from '../../helpers/requests';
 import axios from 'axios';
-
+import { Tab } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
@@ -15,7 +15,8 @@ class DetailSymbol extends React.Component {
         console.log('detailsymbol')
         super(props);
         this.state = {
-            symbol: props.symbol
+            symbol: props.symbol,
+            showFinancialReport: false
         }
     }
 
@@ -33,53 +34,97 @@ class DetailSymbol extends React.Component {
         })
         this.props.actions && this.props.actions.changeSymbol(symbol)
         let url = getLatestFinancialInfoUrl(symbol)
-        // let latestFinancialInfoObj = {}
-        // let intradayQuotesArray = []
-        // let historicalQuotesArray = []
-        // let companyNewsArray = []
 
         axios.get(url)
             .then(response => {
                 if (response.data) {
-                    // latestFinancialInfoObj = response.data
                     console.log(response)
-
                 }
             })
             .catch(error => {
                 console.log(error.response)
             });
     }
+    handleOnChangeTab() {
+
+    }
+
+    renderTab1() {
+        return <div>1 - {Math.random()}</div>
+    }
+
+    renderTab2() {
+        return <div>2 - {Math.random()}</div>
+    }
+
+    renderTab3() {
+        return <div>3 - {Math.random()}</div>
+    }
+
+    renderTab4() {
+        return <div>4 - {Math.random()}</div>
+    }
+
+    renderTab5() {
+        return <div>5 - {Math.random()}</div>
+    }
+
+    renderTab6() {
+        return <div>6 - {Math.random()}</div>
+    }
+
+    renderTab7() {
+        const panes = [
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane>{this.renderTab1()}</Tab.Pane> },
+            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane>{this.renderTab2()}</Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane>{this.renderTab3()}</Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane>{this.renderTab4()}</Tab.Pane> }
+        ]
+        return <div>7 - {Math.random()}
+            <div onClick={this.handleShowFinancialReport.bind(this)}>Bao cao tai chinh</div>
+            <div className={`financialReport ${this.state.showFinancialReport ? 'show' : 'hide'}`}>
+                <div>
+                    Bao cao tai chinh
+                </div>
+                <Tab className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
+            </div>
+
+
+        </div>
+    }
+
+    renderTab8() {
+        return <div>8 - {Math.random()}</div>
+    }
+
+    handleShowFinancialReport() {
+        this.setState({
+            showFinancialReport: !this.state.showFinancialReport
+        })
+    }
 
     render() {
+        const panes = [
+            { menuItem: 'Giao dich', render: () => <Tab.Pane>{this.renderTab1()}</Tab.Pane> },
+            { menuItem: 'Ho so', render: () => <Tab.Pane>{this.renderTab2()}</Tab.Pane> },
+            { menuItem: 'Co dong', render: () => <Tab.Pane>{this.renderTab3()}</Tab.Pane> },
+            { menuItem: 'Von va co tuc', render: () => <Tab.Pane>{this.renderTab4()}</Tab.Pane> },
+            { menuItem: 'Tin tuc', render: () => <Tab.Pane>{this.renderTab5()}</Tab.Pane> },
+            { menuItem: 'Gia qua khu', render: () => <Tab.Pane>{this.renderTab6()}</Tab.Pane> },
+            { menuItem: 'Tai chinh', render: () => <Tab.Pane>{this.renderTab7()}</Tab.Pane> },
+            { menuItem: 'Ky thuat', render: () => <Tab.Pane>{this.renderTab8()}</Tab.Pane> },
+        ]
         return (
             <div className='detailSymbol'>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
-                {/* <Transaction symbol={this.state.symbol} /> */}
-                <CanslimStandard symbol={this.state.symbol} />
-                {/* {this.props.symbol} */}
+                <Tab className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
+                <div onClick={() => this.props.close()}>Close</div>
+
             </div>
         );
     }
 
     componentDidMount() {
-        let url = getLatestFinancialInfoUrl(this.state.symbol)
-        // let latestFinancialInfoObj = {}
-        // let intradayQuotesArray = []
-        // let historicalQuotesArray = []
-        // let companyNewsArray = []
-
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    // latestFinancialInfoObj = response.data
-                    console.log(response)
-
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
     }
 }
 
