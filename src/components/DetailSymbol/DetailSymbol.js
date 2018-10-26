@@ -2,7 +2,10 @@ import React from 'react';
 import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
-import BusinessSummary from '../BusinessSummary/BusinessSummary';
+import BusinessSummary1 from '../BusinessSummary1/BusinessSummary1';
+import BusinessSummary2 from '../BusinessSummary2/BusinessSummary2';
+import BusinessSummary3 from '../BusinessSummary3/BusinessSummary3';
+import BusinessSummary4 from '../BusinessSummary4/BusinessSummary4';
 import { translate, Trans } from 'react-i18next';
 import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl, getLastestFinancialReports_1 } from '../../helpers/requests';
 import axios from 'axios';
@@ -78,12 +81,12 @@ class DetailSymbol extends React.Component {
 
     renderTab7() {
         const panes = [
-            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane><BusinessSummary symbol={this.state.symbol} /></Tab.Pane> },
-            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane><BusinessSummary /></Tab.Pane> }
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary1 symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary2 symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary3 symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary4 symbol={this.state.symbol} /></Tab.Pane> }
         ]
-        return <div>7 - {Math.random()}
+        return <div className='finances'>7 - {Math.random()}
             <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>Bao cao tai chinh</div>
             <div className={`financialReport ${this.state.showFinancialReport ? 'show' : 'hide'}`}>
                 <div>

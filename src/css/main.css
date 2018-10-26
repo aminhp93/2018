@@ -231,3 +231,12 @@
 .btn {
   background: green;
 }
+
+.tabBusinessSummary{
+  height: 400px !important;
+}
+
+.finances {
+  display: flex;
+  flex-direction: column;
+}

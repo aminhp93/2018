@@ -30,7 +30,6 @@ class CurrentPrice extends React.Component {
                     cellRenderer: function (params) {
                         const div = document.createElement('div')
                         div.innerHTML = params.data.Symbol
-                        console.log('mouseover')
                         div.addEventListener('click', function () {
                             showModal({
                                 component: DetailSymbol,
@@ -137,7 +136,7 @@ class CurrentPrice extends React.Component {
                         onRowClicked={this.onRowClicked.bind(this)}
                         enableFilter={true}
                     />
-                </ div >
+                </div>
             )
         } else {
             return <div>No data</div>
