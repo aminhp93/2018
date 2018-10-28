@@ -261,3 +261,16 @@
   padding: 80px;
   background: red;
 }
+
+.durationReportSelection{
+  display: flex;
+  height: 20px !important;
+}
+
+.durationReportSelection .selected {
+  background: green;
+}
+
+.durationReportSelection .unselect {
+  background: white;
+}

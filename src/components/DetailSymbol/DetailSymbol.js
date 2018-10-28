@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import { AgGridReact } from 'ag-grid-react';
+import durationReportEnums from '../../constants/durationReportEnums'
 
 
 class DetailSymbol extends React.Component {
@@ -21,7 +22,8 @@ class DetailSymbol extends React.Component {
         super(props);
         this.state = {
             symbol: props.symbol,
-            showFinancialReport: true
+            showFinancialReport: true,
+            durationReport: durationReportEnums.YEAR
         }
     }
 
@@ -78,15 +80,26 @@ class DetailSymbol extends React.Component {
         return <div>6 - {Math.random()}</div>
     }
 
+    handleChangeDurationReport(index) {
+        this.setState({
+            durationReport: index === durationReportEnums.QUARTER ? durationReportEnums.QUARTER : durationReportEnums.YEAR
+        })
+    }
+
     renderTab7() {
         const panes = [
-            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary1 symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary1 durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
             { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary2 symbol={this.state.symbol} /></Tab.Pane> },
             { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary3 symbol={this.state.symbol} /></Tab.Pane> },
             { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary4 symbol={this.state.symbol} /></Tab.Pane> }
         ]
         return <div className='finances'>7 - {Math.random()}
             <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>{this.state.showFinancialReport ? 'Hide' : 'Show'} Bao cao tai chinh</div>
+            <div className='durationReportSelection'>
+                <div onClick={() => this.handleChangeDurationReport(durationReportEnums.QUARTER)} className={this.state.durationReport === durationReportEnums.QUARTER ? 'selected' : 'unselect'}>Hang quy</div>
+                <div onClick={() => this.handleChangeDurationReport(durationReportEnums.YEAR)} className={this.state.durationReport === durationReportEnums.QUARTER ? 'unselect' : 'selected'}>Hang nam</div>
+            </div>
+
             <div className={`financialReport ${this.state.showFinancialReport ? 'show' : 'hide'}`}>
                 <div>
                     Bao cao tai chinh
