@@ -39,18 +39,6 @@ class DetailSymbol extends React.Component {
         this.setState({
             symbol: symbol
         })
-        // this.props.actions && this.props.actions.changeSymbol(symbol)
-        // let url = getLatestFinancialInfoUrl(symbol)
-
-        // axios.get(url)
-        //     .then(response => {
-        //         if (response.data) {
-        //             console.log(response)
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.log(error.response)
-        // });
     }
     handleOnChangeTab() {
 

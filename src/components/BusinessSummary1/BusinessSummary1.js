@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import * as symbolActions from '../../actions/symbol.actions';
 import { AgGridReact } from 'ag-grid-react';
 import durationReportEnums from '../../constants/durationReportEnums'
+import { formatNumber } from '../../helpers/helperFunctions';
 
 export default class BusinessSummary1 extends React.Component {
     constructor(props) {
@@ -31,7 +32,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "2013",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[0] || {}).Value || ''
+                    return (params.data.Values[0] || {}).Value ? formatNumber((params.data.Values[0] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -39,7 +40,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "2014",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[1] || {}).Value || ''
+                    return (params.data.Values[1] || {}).Value ? formatNumber((params.data.Values[1] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -47,7 +48,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "2015",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[2] || {}).Value || ''
+                    return (params.data.Values[2] || {}).Value ? formatNumber((params.data.Values[2] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -55,7 +56,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "2016",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[3] || {}).Value || ''
+                    return (params.data.Values[3] || {}).Value ? formatNumber((params.data.Values[3] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -63,7 +64,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "2017",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[4] || {}).Value || ''
+                    return (params.data.Values[4] || {}).Value ? formatNumber((params.data.Values[4] || {}).Value / 1000000, 1, true) : ''
                 }
             }
         ]
@@ -79,7 +80,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "Q2 2017",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[0] || {}).Value || ''
+                    return (params.data.Values[0] || {}).Value ? formatNumber((params.data.Values[0] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -87,7 +88,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "Q3 2017",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[1] || {}).Value || ''
+                    return (params.data.Values[1] || {}).Value ? formatNumber((params.data.Values[1] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -95,7 +96,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "Q4 2017",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[2] || {}).Value || ''
+                    return (params.data.Values[2] || {}).Value ? formatNumber((params.data.Values[2] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -103,7 +104,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "Q1 2018",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[3] || {}).Value || ''
+                    return (params.data.Values[3] || {}).Value ? formatNumber((params.data.Values[3] || {}).Value / 1000000, 1, true) : ''
                 }
             },
             {
@@ -111,7 +112,7 @@ export default class BusinessSummary1 extends React.Component {
                 field: "Q2 2018",
                 width: 120,
                 cellRenderer: function (params) {
-                    return (params.data.Values[4] || {}).Value || ''
+                    return (params.data.Values[4] || {}).Value ? formatNumber((params.data.Values[4] || {}).Value / 1000000, 1, true) : ''
                 }
             }
         ]
