@@ -225,6 +225,7 @@ class GoldenLayoutWrapper extends React.Component {
 
     componentDidMount() {
         this.initGoldenLayout('filterSymbol');
+        return
         let url = getTradingStatisticUrl();
         let promise1 = null;
         let promise2 = null;

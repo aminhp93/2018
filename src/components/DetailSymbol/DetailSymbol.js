@@ -18,11 +18,10 @@ import { AgGridReact } from 'ag-grid-react';
 
 class DetailSymbol extends React.Component {
     constructor(props) {
-        console.log('detailsymbol')
         super(props);
         this.state = {
             symbol: props.symbol,
-            showFinancialReport: false
+            showFinancialReport: true
         }
     }
 
@@ -38,18 +37,18 @@ class DetailSymbol extends React.Component {
         this.setState({
             symbol: symbol
         })
-        this.props.actions && this.props.actions.changeSymbol(symbol)
-        let url = getLatestFinancialInfoUrl(symbol)
+        // this.props.actions && this.props.actions.changeSymbol(symbol)
+        // let url = getLatestFinancialInfoUrl(symbol)
 
-        axios.get(url)
-            .then(response => {
-                if (response.data) {
-                    console.log(response)
-                }
-            })
-            .catch(error => {
-                console.log(error.response)
-            });
+        // axios.get(url)
+        //     .then(response => {
+        //         if (response.data) {
+        //             console.log(response)
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log(error.response)
+        // });
     }
     handleOnChangeTab() {
 
@@ -87,7 +86,7 @@ class DetailSymbol extends React.Component {
             { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary4 symbol={this.state.symbol} /></Tab.Pane> }
         ]
         return <div className='finances'>7 - {Math.random()}
-            <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>Bao cao tai chinh</div>
+            <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>{this.state.showFinancialReport ? 'Hide' : 'Show'} Bao cao tai chinh</div>
             <div className={`financialReport ${this.state.showFinancialReport ? 'show' : 'hide'}`}>
                 <div>
                     Bao cao tai chinh
@@ -125,7 +124,7 @@ class DetailSymbol extends React.Component {
         return (
             <div className='detailSymbol'>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
-                <Tab className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
+                <Tab activeIndex='6' className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
                 <div onClick={() => this.props.close()}>Close</div>
 
             </div>

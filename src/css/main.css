@@ -121,7 +121,14 @@
 .tabContainer{
   color: black;
   flex: 1;
+  height: 100%;
 }
+
+.tabContainer > .tab {
+  height: 91% !important;
+  padding: 0px;
+}
+
 
 .tabContainer .segment,
 .tabContainer .segment > div,
@@ -222,6 +229,7 @@
 
 .financialReport.show {
   display: block !important;
+  overflow: hidden;
 }
 
 .financialReport.hide{
@@ -230,10 +238,16 @@
 
 .btn {
   background: green;
+  height: 20px !important;
+  width: 100%;
 }
 
 .tabBusinessSummary{
   height: 400px !important;
+}
+
+.tabBusinessSummary .ag-theme-balham > div {
+  width: 100% !important;
 }
 
 .finances {
