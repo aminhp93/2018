@@ -27,7 +27,7 @@ export default class BusinessSummary2 extends React.Component {
                     field: "2013",
                     width: 120,
                     cellRenderer: function (params) {
-                        return params.data.Values[0].Value
+                        return (params.data.Values[0] || {}).Value || ''
                     }
                 },
                 {
@@ -35,7 +35,7 @@ export default class BusinessSummary2 extends React.Component {
                     field: "2014",
                     width: 120,
                     cellRenderer: function (params) {
-                        return params.data.Values[1].Value
+                        return (params.data.Values[1] || {}).Value || ''
                     }
                 },
                 {
@@ -43,7 +43,7 @@ export default class BusinessSummary2 extends React.Component {
                     field: "2015",
                     width: 120,
                     cellRenderer: function (params) {
-                        return params.data.Values[2].Value
+                        return (params.data.Values[2] || {}).Value || ''
                     }
                 },
                 {
@@ -51,7 +51,7 @@ export default class BusinessSummary2 extends React.Component {
                     field: "2016",
                     width: 120,
                     cellRenderer: function (params) {
-                        return params.data.Values[3].Value
+                        return (params.data.Values[3] || {}).Value || ''
                     }
                 },
                 {
@@ -59,9 +59,9 @@ export default class BusinessSummary2 extends React.Component {
                     field: "2017",
                     width: 120,
                     cellRenderer: function (params) {
-                        return params.data.Values[4].Value
+                        return (params.data.Values[4] || {}).Value || ''
                     }
-                },
+                }
             ]
         }
         this.defaultColDef = {
