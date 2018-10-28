@@ -12,6 +12,16 @@ import * as symbolActions from '../../actions/symbol.actions';
 import { AgGridReact } from 'ag-grid-react';
 import durationReportEnums from '../../constants/durationReportEnums'
 import { formatNumber } from '../../helpers/helperFunctions';
+import { LicenseManager } from 'ag-grid-enterprise';
+import "ag-grid-enterprise";
+
+
+function strcmp(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+
+LicenseManager.prototype.validateLicense = function () {
+};
 
 export default class BusinessSummary1 extends React.Component {
     constructor(props) {
@@ -25,13 +35,15 @@ export default class BusinessSummary1 extends React.Component {
             {
                 headerName: "Name",
                 field: "Name",
-                width: 200
+                width: 200,
+                // rowGroup: true
             },
             {
                 headerName: "2013",
                 field: "2013",
                 width: 120,
                 cellRenderer: function (params) {
+                    // params = params.colDef.cellRenderer
                     return (params.data.Values[0] || {}).Value ? formatNumber((params.data.Values[0] || {}).Value / 1000000, 1, true) : ''
                 }
             },
@@ -116,10 +128,25 @@ export default class BusinessSummary1 extends React.Component {
                 }
             }
         ]
+
         this.defaultColDef = {
             width: 120,
             editable: false,
             filter: 'agTextColumnFilter'
+        }
+
+        this.autoGroupColumnDef = {
+            headerName: " CUSTOM! ",
+            cellRendererParams: {
+                suppressCount: true,
+                checkbox: true
+            },
+            comparator: function (valueA, valueB) {
+                if (valueA == null || valueB == null) return valueA - valueB;
+                if (!valueA.substring || !valueB.substring) return valueA - valueB;
+                if (valueA.length < 1 || valueB.length < 1) return valueA - valueB;
+                return strcmp(valueA.substring(1, valueA.length), valueB.substring(1, valueB.length));
+            }
         }
     }
 
@@ -145,6 +172,7 @@ export default class BusinessSummary1 extends React.Component {
                     enableSorting={true}
                     onRowClicked={this.onRowClicked.bind(this)}
                     enableFilter={true}
+                    autoGroupColumnDef={this.autoGroupColumnDef}
                 />
             </div>
         )
@@ -171,6 +199,7 @@ export default class BusinessSummary1 extends React.Component {
                 console.log(response)
                 this.gridApi.setRowData(response.data)
                 this.gridApi.setColumnDefs(index === durationReportEnums.YEAR ? this.columnDefs_year : this.columnDefs_quarter)
+                this.gridApi.sizeColumnsToFit()
             })
             .catch(error => {
                 console.log(error)
