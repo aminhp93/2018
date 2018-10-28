@@ -173,6 +173,10 @@ export function deleteDailyWatchlistUrl(symbol) {
     return 'https://watchlist-api.vndirect.com.vn/api/watchlists/5bc4c50ab93c4e67cff5e867/symbols/' + symbol
 }
 
+export function getLastestFinancialReports(type, symbol, index) {
+    return `https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=${symbol}&type=${type}&year=2018&quarter=${index === durationReportEnums.YEAR ? '0' : '4'}&count=5`
+}
+
 export function getLastestFinancialReports_1(symbol, index) {
     return `https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=${symbol}&type=1&year=2018&quarter=${index === durationReportEnums.YEAR ? '0' : '4'}&count=5`
 }

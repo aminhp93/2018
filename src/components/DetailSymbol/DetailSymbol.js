@@ -2,6 +2,7 @@ import React from 'react';
 import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
+import BusinessSummary from '../BusinessSummary/BusinessSummary';
 import BusinessSummary1 from '../BusinessSummary1/BusinessSummary1';
 import BusinessSummary2 from '../BusinessSummary2/BusinessSummary2';
 import BusinessSummary3 from '../BusinessSummary3/BusinessSummary3';
@@ -40,8 +41,8 @@ class DetailSymbol extends React.Component {
             symbol: symbol
         })
     }
-    handleOnChangeTab() {
-
+    handleOnTabChange(index, data) {
+        console.log(index, data)
     }
 
     renderTab1() {
@@ -76,10 +77,10 @@ class DetailSymbol extends React.Component {
 
     renderTab7() {
         const panes = [
-            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary1 durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
-            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary2 symbol={this.state.symbol} /></Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary3 symbol={this.state.symbol} /></Tab.Pane> },
-            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary4 symbol={this.state.symbol} /></Tab.Pane> }
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='1' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='2' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='3' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='4' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> }
         ]
         return <div className='finances'>7 - {Math.random()}
             <div onClick={this.handleShowFinancialReport.bind(this)} className='btn'>{this.state.showFinancialReport ? 'Hide' : 'Show'} Bao cao tai chinh</div>
@@ -92,7 +93,7 @@ class DetailSymbol extends React.Component {
                 <div>
                     Bao cao tai chinh
                 </div>
-                <Tab className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
+                <Tab className='tabContainer' panes={panes} onTabChange={this.handleOnTabChange.bind(this)} />
             </div>
 
 
@@ -125,7 +126,7 @@ class DetailSymbol extends React.Component {
         return (
             <div className='detailSymbol'>
                 <SearchSymbol dataReceivedFromSearchSymbol={this.dataReceivedFromSearchSymbol.bind(this)} />
-                <Tab activeIndex='6' className='tabContainer' panes={panes} onTabChange={this.handleOnChangeTab.bind(this)} />
+                <Tab defaultActiveIndex='6' className='tabContainer' panes={panes} onTabChange={this.handleOnTabChange.bind(this)} />
                 <div onClick={() => this.props.close()}>Close</div>
 
             </div>
