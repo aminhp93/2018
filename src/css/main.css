@@ -274,3 +274,15 @@
 .durationReportSelection .unselect {
   background: white;
 }
+
+.note > input {
+  background: #171b28;
+  /* background: red; */
+  border: none;
+  color: white;
+  width: 100%;
+  /* height: 100%; */
+}
+.note > input:focus{
+  outline: none;
+}

@@ -193,3 +193,14 @@ export function getLastestFinancialReports_4(symbol, index) {
     return `https://www.fireant.vn/api/Data/Finance/LastestFinancialReports?symbol=${symbol}&type=4&year=2018&quarter=${index === durationReportEnums.YEAR ? '0' : '4'}&count=5`
 }
 
+export function getAllNotesUrl() {
+    return 'http://localhost:8000/notes/all'
+}
+
+export function getInsertNoteUrl() {
+    return 'http://localhost:8000/note/insert'
+}
+
+export function getUpdateNoteUrl() {
+    return 'http://localhost:8000/note/update'
+}

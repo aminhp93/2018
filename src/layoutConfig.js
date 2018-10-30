@@ -97,8 +97,29 @@ const getDefaultFilterSymbolLayout = (percentHeightTop = 40, percentWidth = 20) 
     ]
 }
 
+const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
+    return [
+
+        {
+            'type': 'row',
+            'content': [
+                {
+                    'type': 'component',
+                    'component': 'Note',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'Note'
+                }
+
+            ]
+        }
+    ]
+}
+
 export default {
     getDefaultWorkLayout,
     getDefaultLifeLayout,
-    getDefaultFilterSymbolLayout
+    getDefaultFilterSymbolLayout,
+    getDefaultLayout
 }

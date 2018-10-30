@@ -5,6 +5,7 @@ import GoldenLayout from 'golden-layout';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import App from './App';
+import Note from './Note';
 import Book from './Book';
 import Header from './Header';
 import DetailSymbol from './DetailSymbol';
@@ -56,7 +57,7 @@ class GoldenLayoutWrapper extends React.Component {
             } else if (mode === 'filterSymbol') {
                 layout = layoutConfig.getDefaultFilterSymbolLayout();
             } else {
-                layout = layoutConfig.getDefaultLifeLayout();
+                layout = layoutConfig.getDefaultLayout();
             }
             const cbFunc = layout => {
                 config = {
@@ -132,6 +133,10 @@ class GoldenLayoutWrapper extends React.Component {
                 this.goldenLayout.registerComponent('MarketWatch',
                     wrapComponent(MarketWatch, this.context.store)
                 );
+                this.goldenLayout.registerComponent('Note',
+                    wrapComponent(Note, this.context.store)
+                );
+
 
                 /// Callback for every created stack
                 this.goldenLayout.on('stackCreated', (stack) => {
@@ -218,7 +223,7 @@ class GoldenLayoutWrapper extends React.Component {
     }
 
     componentDidMount() {
-        this.initGoldenLayout('filterSymbol');
+        this.initGoldenLayout();
         return
         let url = getTradingStatisticUrl();
         let promise1 = null;
