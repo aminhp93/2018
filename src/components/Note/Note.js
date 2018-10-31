@@ -9,7 +9,7 @@ export default class Note extends React.Component {
 
     handleOnChange(e) {
         console.log('press', e.target.value, this.input)
-        const obj = { 'note': 'note1' }
+        const obj = { 'note': e.target.value }
         const url = getUpdateNoteUrl()
         axios.post(url, obj)
             .then(response => {
@@ -24,7 +24,7 @@ export default class Note extends React.Component {
     render() {
         return (
             <div className='note'>
-                <input ref={input => this.input = input} onChange={this.handleOnChange.bind(this)} />
+                <textarea ref={input => this.input = input} onChange={this.handleOnChange.bind(this)} />
             </div>
         );
     }

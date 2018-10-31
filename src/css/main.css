@@ -275,14 +275,14 @@
   background: white;
 }
 
-.note > input {
+.note > textarea {
   background: #171b28;
   /* background: red; */
   border: none;
   color: white;
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
 }
-.note > input:focus{
+.note > textarea:focus{
   outline: none;
 }
