@@ -69,6 +69,12 @@ export default class Menu extends React.Component {
                 <div onClick={this.handleChangeFilterSymbolMode.bind(this)}>
                     FilterSymbolMode
                 </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    Note
+                </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    TradingViewFilter
+                </div>
             </div>
         );
     }

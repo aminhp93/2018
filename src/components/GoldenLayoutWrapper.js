@@ -21,6 +21,7 @@ import MarketWatch from './MarketWatch';
 import Financials from './Financials';
 import PersonalStuffs from './PersonalStuffs';
 import MovieActorSpeech from './MovieActorSpeech';
+import TradingViewFilter from './TradingViewFilter';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
 import axios from 'axios';
@@ -135,6 +136,9 @@ class GoldenLayoutWrapper extends React.Component {
                 );
                 this.goldenLayout.registerComponent('Note',
                     wrapComponent(Note, this.context.store)
+                );
+                this.goldenLayout.registerComponent('TradingViewFilter',
+                    wrapComponent(TradingViewFilter, this.context.store)
                 );
 
 

@@ -1,0 +1,6 @@
+{
+    "name": "TradingViewFilter",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./TradingViewFilter.js"
+}

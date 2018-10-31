@@ -32,12 +32,7 @@ export default class Note extends React.Component {
     componentDidMount() {
         this.input && this.input.focus()
         const url = getAllNotesUrl()
-        const headers = {
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
-        axios.get(url, headers)
+        axios.get(url)
             .then(response => {
                 console.log(response)
                 if (response.data) {

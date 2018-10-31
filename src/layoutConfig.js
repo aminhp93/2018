@@ -91,7 +91,6 @@ const getDefaultFilterSymbolLayout = (percentHeightTop = 40, percentWidth = 20) 
                     'reorderEnabled': true,
                     'title': 'CurrentPrice'
                 }
-
             ]
         }
     ]
@@ -103,15 +102,22 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
         {
             'type': 'row',
             'content': [
+                // {
+                //     'type': 'component',
+                //     'component': 'Note',
+                //     'componentName': 'lm-react-component',
+                //     'isClosable': true,
+                //     'reorderEnabled': true,
+                //     'title': 'Note'
+                // },
                 {
                     'type': 'component',
-                    'component': 'Note',
+                    'component': 'TradingViewFilter',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'Note'
+                    'title': 'TradingViewFilter'
                 }
-
             ]
         }
     ]

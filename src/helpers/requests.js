@@ -212,3 +212,11 @@ export function getInsertNoteUrl() {
 export function getUpdateNoteUrl() {
     return domain + '/note/update'
 }
+
+export function getTradingViewScanUrl() {
+    return 'https://scanner.tradingview.com/vietnam/scan'
+}
+
+export function getTradingViewNewsUrl() {
+    return 'https://news-headlines.tradingview.com/headlines/yahoo/category/stocks/?locale=vi_VN'
+}
