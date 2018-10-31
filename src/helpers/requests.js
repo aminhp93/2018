@@ -1,10 +1,18 @@
 import dataStorage from '../dataStorage';
 import durationReportEnums from '../constants/durationReportEnums'
+import config from '../config';
 var moment = require('moment');
 
 const accountNumber = dataStorage.accountNumber;
 const currentTime = moment()
 const todayDate = moment().format('YYYY-M-DD')
+
+let domain
+if (config.environment === 'PRODUCTION') {
+    domain = 'https://project-2018-backend.herokuapp.com'
+} else {
+    domain = 'http://localhost:8000'
+}
 
 export function getHeaderRequest() {
     return {
@@ -194,13 +202,13 @@ export function getLastestFinancialReports_4(symbol, index) {
 }
 
 export function getAllNotesUrl() {
-    return 'http://localhost:8000/notes/all'
+    return domain + '/notes/all'
 }
 
 export function getInsertNoteUrl() {
-    return 'http://localhost:8000/note/insert'
+    return domain + '/note/insert'
 }
 
 export function getUpdateNoteUrl() {
-    return 'http://localhost:8000/note/update'
+    return domain + '/note/update'
 }
