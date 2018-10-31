@@ -1,5 +1,6 @@
 export default {
-    environment: 'PRODUCTION',
+    // environment: 'PRODUCTION',
+    environment: 'TEST',
     apiKey: "AIzaSyDxyDnYyeWYkL5v-huWJPTEFC19zEXaKKA",
     clientId: "910039617664-sa0mnshsldnu7g7kpv86sctjtflh8a47.apps.googleusercontent.com",
     discoveryDocs:
