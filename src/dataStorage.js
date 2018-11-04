@@ -6,5 +6,8 @@ export default {
     allSymbolsArray_HOSE: [],
     allSymbolsArray_HNX: [],
     allSymbolsArray_UPCOM: [],
-    currentSymbolsObj: {}
+    currentSymbolsObj: {},
+    numberStockIncrease: 0,
+    numberStockDecrease: 0,
+    numberStockUnchange: 0
 }

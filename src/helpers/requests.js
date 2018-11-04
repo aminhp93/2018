@@ -202,15 +202,15 @@ export function getLastestFinancialReports_4(symbol, index) {
 }
 
 export function getAllNotesUrl() {
-    return domain + '/notes/all'
+    return 'https://project-2018-backend.herokuapp.com' + '/notes/all'
 }
 
 export function getInsertNoteUrl() {
-    return domain + '/note/insert'
+    return 'https://project-2018-backend.herokuapp.com' + '/note/insert'
 }
 
 export function getUpdateNoteUrl() {
-    return domain + '/note/update'
+    return 'https://project-2018-backend.herokuapp.com' + '/note/update'
 }
 
 export function getTradingViewScanUrl() {

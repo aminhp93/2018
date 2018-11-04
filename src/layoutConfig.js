@@ -112,11 +112,11 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
                 // },
                 {
                     'type': 'component',
-                    'component': 'TradingViewFilter',
+                    'component': 'CurrentPrice',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'TradingViewFilter'
+                    'title': 'CurrentPrice'
                 }
             ]
         }

@@ -228,7 +228,7 @@ class GoldenLayoutWrapper extends React.Component {
 
     componentDidMount() {
         this.initGoldenLayout();
-        return
+        // return
         let url = getTradingStatisticUrl();
         let promise1 = null;
         let promise2 = null;
@@ -236,6 +236,9 @@ class GoldenLayoutWrapper extends React.Component {
         let volume = 100000;
         let ratioVolume = 2;
         let averageNumberDay = 20;
+        let averageNumberPrice = 30;
+        let sumPrice = 0;
+        let averagePrice = null;
 
         axios.get(url)
             .then(response => {
@@ -243,6 +246,7 @@ class GoldenLayoutWrapper extends React.Component {
                     let allSymbolsString = [];
                     let allSymbolsArray = response.data;
                     let currentSymbolObj = {}
+                    // for (let i = 0; i < 30; i++) {
                     for (let i = 0; i < allSymbolsArray.length; i++) {
                         currentSymbolObj = allSymbolsArray[i]
                         allSymbolsString.push(allSymbolsArray[i].Symbol)
@@ -271,8 +275,13 @@ class GoldenLayoutWrapper extends React.Component {
                                         for (let j = 1; j < (averageNumberDay + 1); j++) {
                                             sum1monthVolume += data[data.length - 1 - j].Volume
                                         }
+                                        let currentPrice = data[data.length - 1].Close
+                                        let price1MonthAgo = data[data.length - 30].Close
+                                        let performancePrice1Month = (price1MonthAgo - currentPrice) / currentPrice
+
                                         average1monthVolume = sum1monthVolume / averageNumberDay
-                                        data[data.length - 1].Average1monthVolume = average1monthVolume
+                                        data[data.length - 1].PerformancePrice1Month = performancePrice1Month
+                                        data[data.length - 1].AveragePrice = averagePrice
                                         data[data.length - 1].RatioVolume = data[data.length - 1].Volume / average1monthVolume
 
                                         // Calculate RSI
@@ -310,9 +319,20 @@ class GoldenLayoutWrapper extends React.Component {
                                         allSymbolsArray[i].Close = data[data.length - 1].Close
                                         allSymbolsArray[i].High = data[data.length - 1].High
                                         allSymbolsArray[i].Low = data[data.length - 1].Low
+                                        allSymbolsArray[i].RSI_14_previous = Number(data[data.length - 2].RSI.toFixed(0)) || 0
                                         allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
                                         allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
                                         allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
+                                        allSymbolsArray[i].PerformancePrice1Month = data[data.length - 1].PerformancePrice1Month
+
+                                        if (allSymbolsArray[i].Close > allSymbolsArray[i].Open) {
+                                            dataStorage.numberStockIncrease += 1
+                                        } else if (allSymbolsArray[i].Close < allSymbolsArray[i].Open) {
+                                            dataStorage.numberStockDecrease += 1
+                                        } else {
+                                            dataStorage.numberStockUnchange += 1
+                                        }
+
                                     }
                                     resolve({});
                                 })
