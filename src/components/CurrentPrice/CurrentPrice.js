@@ -287,7 +287,7 @@ class CurrentPrice extends React.Component {
     filter(condition) {
         let result = []
         if (condition === 'RSI_60') {
-            let filter_data = dataStorage.tradingStatisticObj.filter(item => item.RSI_14 > 60 && item.RSI_14 < 70 && item.RSI_14 > item.RSI_14_previous)
+            let filter_data = dataStorage.tradingStatisticObj.filter(item => item.RSI_14 > 60 && item.RSI_14 < 70 && item.RSI_14 > item.RSI_14_previous && item.valid_volume)
             this.gridApi.setRowData(filter_data)
             this.gridApi.sizeColumnsToFit()
             // var RSIFilterComponent = this.gridApi.getFilterInstance("RSI_14");

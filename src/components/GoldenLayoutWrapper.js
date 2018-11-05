@@ -272,7 +272,11 @@ class GoldenLayoutWrapper extends React.Component {
                                         // Calculate Average Volume
                                         let average1monthVolume = 0;
                                         let sum1monthVolume = 0
+                                        allSymbolsArray[i].valid_volume = true
                                         for (let j = 1; j < (averageNumberDay + 1); j++) {
+                                            if (data[data.length - 1 - j].Volume < 1000 && allSymbolsArray[i].valid_volume) {
+                                                allSymbolsArray[i].valid_volume = false
+                                            }
                                             sum1monthVolume += data[data.length - 1 - j].Volume
                                         }
                                         let currentPrice = data[data.length - 1].Close

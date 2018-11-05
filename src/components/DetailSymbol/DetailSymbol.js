@@ -77,8 +77,8 @@ class DetailSymbol extends React.Component {
 
     renderTab7() {
         const panes = [
-            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='1' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
-            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='2' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Can doi ke toan', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='1' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
+            { menuItem: 'Ket qua kinh doanh', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='2' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
             { menuItem: 'Luu chuyen tien te - Truc tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='3' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> },
             { menuItem: 'Luu chuyen tien te - Gian tiep', render: () => <Tab.Pane className='tabBusinessSummary'><BusinessSummary typeBusinessSummary='4' durationReport={this.state.durationReport} symbol={this.state.symbol} /></Tab.Pane> }
         ]

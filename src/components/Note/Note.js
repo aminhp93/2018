@@ -8,7 +8,6 @@ export default class Note extends React.Component {
     }
 
     handleOnChange(e) {
-        console.log('press', e.target.value, this.input)
         const obj = { 'note': e.target.value }
         const url = getUpdateNoteUrl()
         axios.post(url, obj)
@@ -34,11 +33,9 @@ export default class Note extends React.Component {
         const url = getAllNotesUrl()
         axios.get(url)
             .then(response => {
-                console.log(response)
                 if (response.data) {
                     this.input.value = response.data.note
                 }
-
             })
             .catch(error => {
                 console.log(error)
