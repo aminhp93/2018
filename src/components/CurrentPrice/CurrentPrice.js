@@ -221,6 +221,25 @@ class CurrentPrice extends React.Component {
         }
     }
 
+    getCurrentWatchlist() {
+        let url = getDailyWatchlistUrl()
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let symbolsArray = response.data.symbols || []
+                    let currentWatchlist = dataStorage.tradingStatisticObj.filter(item => {
+                        return symbolsArray.indexOf(item.Symbol) > -1
+                    })
+                    console.log(currentWatchlist)
+                    this.gridApi.setRowData(currentWatchlist)
+                    this.gridApi.sizeColumnsToFit()
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     render() {
         return (
             <div className='filterSystem'>
@@ -246,10 +265,13 @@ class CurrentPrice extends React.Component {
                     </div>
                 </div>
                 <div className='filterOption'>
+                    <div onClick={() => this.getCurrentWatchlist()}>
+                        Watchlist
+                    </div>
                     <div onClick={() => this.filter('RSI_60')}>
                         RSI > 60
                     </div>
-                    <div onClick={() => this.filter('Volume_100000')}>
+                    {/* <div onClick={() => this.filter('Volume_100000')}>
                         Volume > 100000
                     </div>
                     <div onClick={() => this.filter('EPS_3000')}>
@@ -260,7 +282,8 @@ class CurrentPrice extends React.Component {
                     </div>
                     <div onClick={() => this.filter('Canslim')}>
                         Canslim
-                    </div>
+                    </div> */}
+
 
                     {
                         this.state.checkFilterReady
