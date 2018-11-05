@@ -149,7 +149,7 @@ class ChartTV extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div className='chartTV'>
             <article className='chartTV' id={this.id} />
         </div>
 

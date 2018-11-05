@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import configureStore from '../../store/configureStore';
+
+const store = configureStore();
 
 export default function (obj) {
     const Component = obj.component;
@@ -18,6 +21,6 @@ export default function (obj) {
     const props = {}
     if (obj.props) Object.assign(props, obj.props);
     const div = document.createElement('div');
-    ReactDom.render(<Component close={close} {...props} />, div);
+    ReactDom.render(<Component store={store} close={close} {...props} />, div);
     outer.appendChild(div);
 };

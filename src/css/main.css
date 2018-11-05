@@ -286,3 +286,30 @@
 .note > textarea:focus{
   outline: none;
 }
+
+.detailSymbol .tab1 {
+  display: flex;
+}
+
+.tabColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabColumn > div:first-child{
+  height: 50%;
+}
+
+
+.tableInfo1,
+.tableInfo2,
+.tableInfo3,
+.tableInfo4 {
+  width: 50%;
+}
+
+.row {
+  display:flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
