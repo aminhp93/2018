@@ -18,9 +18,9 @@ export default function (obj) {
         div.classList.add('closing')
         outer.removeChild(div)
     }
-    const props = {}
-    if (obj.props) Object.assign(props, obj.props);
+    const data = {}
+    if (obj.data) data.symbol = obj.data
     const div = document.createElement('div');
-    ReactDom.render(<Component store={store} close={close} {...props} />, div);
+    ReactDom.render(<Component store={store} close={close} data={data} />, div);
     outer.appendChild(div);
 };

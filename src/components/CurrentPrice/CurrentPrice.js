@@ -44,9 +44,7 @@ class CurrentPrice extends React.Component {
                         span.addEventListener('click', function () {
                             showModal({
                                 component: DetailSymbol,
-                                props: {
-                                    symbol: params.data.Symbol
-                                }
+                                data: params.data.Symbol
                             });
                         })
                         return div

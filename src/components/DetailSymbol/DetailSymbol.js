@@ -22,7 +22,7 @@ class DetailSymbol extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            symbol: props.symbol,
+            symbol: props.data.symbol,
             showFinancialReport: true,
             durationReport: durationReportEnums.YEAR
         }
