@@ -9,5 +9,9 @@ export default {
     currentSymbolsObj: {},
     numberStockIncrease: 0,
     numberStockDecrease: 0,
-    numberStockUnchange: 0
+    numberStockUnchange: 0,
+    tradingStatisticObj: [],
+    HSX_data: null,
+    HNX_data: null,
+    UPCOM_data: null
 }

@@ -317,3 +317,38 @@
 .onMarket {
   background: lightblue;
 }
+
+.test{
+  display: flex;
+}
+
+.marketContainer {
+  display: flex;
+}
+
+.marketContainer > div {
+  width: 50px;
+}
+
+.HSXButton.show {
+  background: green;
+}
+.HSXButton.hide {
+  background: #171b28
+}
+
+.HNXButton.show {
+  background: green;
+}
+
+.HNXButton.hide {
+  background: #171b28
+}
+
+.UPCOMButton.show {
+  background: green;
+}
+
+.UPCOMButton.hide {
+  background: #171b28
+}

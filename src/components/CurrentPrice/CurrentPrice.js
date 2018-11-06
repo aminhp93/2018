@@ -13,6 +13,7 @@ import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
 import ReactDOM from 'react-dom';
 import showModal from './../Modal';
 import DetailSymbol from '../DetailSymbol';
+import { setTimeout } from 'timers';
 const actionsTemps = { ...symbolActions, ...checkFilterReady }
 
 
@@ -106,7 +107,10 @@ class CurrentPrice extends React.Component {
             checkFilterReady: false,
             numberStockIncrease: 0,
             numberStockDecrease: 0,
-            numberStockUnchange: 0
+            numberStockUnchange: 0,
+            showHNX: false,
+            showHSX: false,
+            showUPCOM: false
         }
 
         this.defaultColDef = {
@@ -281,6 +285,60 @@ class CurrentPrice extends React.Component {
 
     }
 
+    handleClickHSXButton() {
+        this.setState({
+            showHSX: !this.state.showHSX
+        }, () => {
+            if (!dataStorage.HSX_data) {
+                this.getData('HOSTC')
+            } else {
+                // const lst = [];
+                // this.gridApi && this.gridApi.forEachLeafNode(params => {
+                //     lst.push(params.data);
+                // })
+                let filter_data = dataStorage.HSX_data.filter(item => this.state.showHSX ? item.Exchange === 'HOSTC' : item.Exchange !== 'HOSTC')
+                this.gridApi.setRowData(filter_data)
+                this.gridApi.sizeColumnsToFit()
+            }
+        })
+    }
+
+    handleClickHNXButton() {
+        this.setState({
+            showHNX: !this.state.showHNX
+        }, () => {
+            if (!dataStorage.HNX_data) {
+                this.getData('HASTC')
+            } else {
+                // const lst = [];
+                // this.gridApi && this.gridApi.forEachLeafNode(params => {
+                //     lst.push(params.data);
+                // })
+                let filter_data = dataStorage.HNX_data.filter(item => this.state.showHNX ? item.Exchange === 'HASTC' : item.Exchange !== 'HASTC')
+                this.gridApi.setRowData(filter_data)
+                this.gridApi.sizeColumnsToFit()
+            }
+        })
+    }
+
+    handleClickUPCOMButton() {
+        this.setState({
+            showUPCOM: !this.state.showUPCOM
+        }, () => {
+            if (!dataStorage.UPCOM_data) {
+                this.getData('UPCOM')
+            } else {
+                // const lst = [];
+                // this.gridApi && this.gridApi.forEachLeafNode(params => {
+                //     lst.push(params.data);
+                // })
+                let filter_data = dataStorage.UPCOM_data.filter(item => this.state.showUPCOM ? item.Exchange === 'UPCOM' : item.Exchange !== 'UPCOM')
+                this.gridApi.setRowData(filter_data)
+                this.gridApi.sizeColumnsToFit()
+            }
+        })
+    }
+
     render() {
         return (
             <div className='filterSystem'>
@@ -300,9 +358,21 @@ class CurrentPrice extends React.Component {
                             });
                     }
                 }} />
-                <div>
+
+                <div className='test'>
                     <div>
                         <span className='green'>{this.state.numberStockIncrease}</span> - <span className='red'>{this.state.numberStockDecrease}</span> - <span>{this.state.numberStockUnchange}</span>
+                    </div>
+                    <div className='marketContainer'>
+                        <div className={`HSXButton ${this.state.showHSX ? 'show' : 'hide'}`} onClick={() => this.handleClickHSXButton()}>
+                            HSX
+                        </div>
+                        <div className={`HNXButton ${this.state.showHNX ? 'show' : 'hide'}`} onClick={() => this.handleClickHNXButton()}>
+                            HNX
+                        </div>
+                        <div className={`UPCOMButton ${this.state.showUPCOM ? 'show' : 'hide'}`} onClick={() => this.handleClickUPCOMButton()}>
+                            UPCOM
+                        </div>
                     </div>
                 </div>
                 <div className='filterOption'>
@@ -324,24 +394,7 @@ class CurrentPrice extends React.Component {
                     <div onClick={() => this.filter('Canslim')}>
                         Canslim
                     </div> */}
-
-
-                    {
-                        this.state.checkFilterReady
-                            ? <div onClick={() => {
-                                console.log(dataStorage.tradingStatisticObj)
-                                this.setState({
-                                    numberStockIncrease: dataStorage.numberStockIncrease,
-                                    numberStockDecrease: dataStorage.numberStockDecrease,
-                                    numberStockUnchange: dataStorage.numberStockUnchange
-                                })
-                                this.gridApi.setRowData(dataStorage.tradingStatisticObj)
-
-                                this.gridApi.sizeColumnsToFit()
-                            }}>Get data</div>
-                            : <div>Not ready</div>
-                    }
-
+                    <div id='getDataButton' onClick={() => this.handleGetData()}>{!this.state.loading ? 'Get data' : ''}</div>
                 </div>
                 {this.renderContent()}
             </div>
@@ -413,7 +466,157 @@ class CurrentPrice extends React.Component {
         }
     }
 
-    componentDidMount() {
+    handleGetData() {
+        console.log(dataStorage.tradingStatisticObj)
+        document.querySelector('#getDataButton').innerText = 'Loading'
+        this.getData('HOSTC')
+
+        // this.setState({
+        //     numberStockIncrease: dataStorage.numberStockIncrease,
+        //     numberStockDecrease: dataStorage.numberStockDecrease,
+        //     numberStockUnchange: dataStorage.numberStockUnchange
+        // })
+
+    }
+
+    getData(exchange) {
+        let url = getTradingStatisticUrl();
+        let promise1 = null;
+        let listPromise = [];
+        let volume = 100000;
+        let ratioVolume = 2;
+        let averageNumberDay = 20;
+        let averageNumberPrice = 30;
+        let sumPrice = 0;
+        let averagePrice = null;
+        this.gridApi.showLoadingOverlay()
+        axios.get(url)
+            .then(response => {
+                if (response.data) {
+                    let allSymbolsString = [];
+                    let allSymbolsArray = response.data;
+                    let currentSymbolObj = {}
+                    let result = []
+                    for (let i = 0; i < allSymbolsArray.length; i++) {
+                        if (allSymbolsArray[i].Exchange !== exchange) continue
+                        promise1 = new Promise(resolve => {
+                            url = getMarketHistoricalQuotesUrl(allSymbolsArray[i].Symbol);
+                            axios.get(url)
+                                .then(response => {
+                                    if (response.data) {
+                                        let data = response.data;
+                                        // Calculate Average Volume
+                                        let average1monthVolume = 0;
+                                        let sum1monthVolume = 0
+                                        allSymbolsArray[i].valid_volume = true
+                                        for (let j = 1; j < (averageNumberDay + 1); j++) {
+                                            if (data[data.length - 1 - j].Volume < 1000 && allSymbolsArray[i].valid_volume) {
+                                                allSymbolsArray[i].valid_volume = false
+                                            }
+                                            sum1monthVolume += data[data.length - 1 - j].Volume
+                                        }
+                                        let currentPrice = data[data.length - 1].Close
+                                        let price1MonthAgo = data[data.length - 30].Close
+                                        let performancePrice1Month = (price1MonthAgo - currentPrice) / currentPrice
+
+                                        average1monthVolume = sum1monthVolume / averageNumberDay
+                                        data[data.length - 1].PerformancePrice1Month = performancePrice1Month
+                                        data[data.length - 1].AveragePrice = averagePrice
+                                        data[data.length - 1].RatioVolume = data[data.length - 1].Volume / average1monthVolume
+
+                                        // Calculate RSI
+                                        let sumGain = 0;
+                                        let sumLoss = 0
+                                        for (let j = 1; j < data.length; j++) {
+                                            let change = data[j].Close - data[j - 1].Close;
+                                            if (change > 0) {
+                                                data[j].Gain = change
+                                                data[j].Loss = 0
+                                            }
+                                            if (change < 0) {
+                                                data[j].Loss = -change
+                                                data[j].Gain = 0
+                                            }
+                                            if (change === 0) {
+                                                data[j].Loss = 0
+                                                data[j].Gain = 0
+                                            }
+                                            sumGain += data[j].Gain || 0
+                                            sumLoss += data[j].Loss || 0
+                                            if (j < 14) {
+                                                data[j].AverageGain = sumGain / 14
+                                                data[j].AverageLoss = sumLoss / 14
+                                            } else {
+                                                data[j].AverageGain = (data[j - 1].AverageGain * 13 + data[j].Gain) / 14
+                                                data[j].AverageLoss = (data[j - 1].AverageLoss * 13 + data[j].Loss) / 14
+                                                data[j].RSI = 100 - 100 / (1 + (data[j].AverageGain) / (data[j].AverageLoss))
+
+                                            }
+                                        }
+
+                                        allSymbolsArray[i].Volume = data[data.length - 1].Volume
+                                        allSymbolsArray[i].Open = data[data.length - 1].Open
+                                        allSymbolsArray[i].Close = data[data.length - 1].Close
+                                        allSymbolsArray[i].High = data[data.length - 1].High
+                                        allSymbolsArray[i].Low = data[data.length - 1].Low
+                                        allSymbolsArray[i].RSI_14_previous = Number(data[data.length - 2].RSI.toFixed(0)) || 0
+                                        allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
+                                        allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
+                                        allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
+                                        allSymbolsArray[i].PerformancePrice1Month = data[data.length - 1].PerformancePrice1Month
+
+                                        if (allSymbolsArray[i].Close > allSymbolsArray[i].Open) {
+                                            dataStorage.numberStockIncrease += 1
+                                        } else if (allSymbolsArray[i].Close < allSymbolsArray[i].Open) {
+                                            dataStorage.numberStockDecrease += 1
+                                        } else {
+                                            dataStorage.numberStockUnchange += 1
+                                        }
+                                        result.push(allSymbolsArray[i])
+
+                                    }
+                                    resolve({});
+                                })
+                                .catch(error => {
+                                    resolve({});
+                                    console.log(error)
+                                })
+                        })
+                        listPromise.push(promise1)
+                    }
+                    Promise.all(listPromise)
+                        .then(response => {
+                            if (exchange === 'HOSTC') {
+                                dataStorage.HSX_data = result
+                            } else if (exchange === 'HASTC') {
+                                dataStorage.HNX_data = result
+                            } else if (exchange === 'UPCOM') {
+                                dataStorage.UPCOM_data = result
+                            }
+                            console.log(result)
+                            // dataStorage.allSymbolsString = allSymbolsString
+                            this.gridApi.setRowData(result)
+                            // this.gridApi.updateRowData({ add: allSymbolsArray })
+                            this.gridApi.sizeColumnsToFit()
+                            document.querySelector('#getDataButton').innerText = 'All data'
+                            this.gridApi.hideOverlay()
+                        })
+                        .catch(error => {
+                            document.querySelector('#getDataButton').innerText = 'Get data failed'
+                            setTimeout(() => {
+                                document.querySelector('#getDataButton').innerText = 'Get data again'
+                            }, 3000)
+                            console.log(error.response)
+                        });
+                }
+            })
+            .catch(error => {
+                document.querySelector('#getDataButton').innerText = 'Get data failed'
+                setTimeout(() => {
+                    document.querySelector('#getDataButton').innerText = 'Get data again'
+                }, 3000)
+                console.log(error.response)
+            });
     }
 }
 

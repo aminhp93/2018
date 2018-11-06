@@ -6,21 +6,38 @@ const getDefaultWorkLayout = (percentHeightTop = 40, percentWidth = 20) => {
             'content': [
                 {
                     'type': 'component',
-                    'component': 'DailyWatchlist',
+                    'component': 'CurrentPrice',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'DailyWatchlist',
-                    'width': 10
+                    'title': 'CurrentPrice',
+                    'width': 30
                 },
+
                 {
-                    'type': 'component',
-                    'component': 'ChartTV',
-                    'componentName': 'lm-react-component',
+                    'type': 'stack',
+                    'width': 70,
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'ChartTV',
-                    'width': 90
+                    'title': '',
+                    'content': [
+                        {
+                            'type': 'component',
+                            'component': 'ChartTV',
+                            'componentName': 'lm-react-component',
+                            'isClosable': true,
+                            'reorderEnabled': true,
+                            'title': 'ChartTV'
+                        },
+                        {
+                            'type': 'component',
+                            'component': 'Note',
+                            'componentName': 'lm-react-component',
+                            'isClosable': true,
+                            'reorderEnabled': true,
+                            'title': 'Note'
+                        }
+                    ]
                 }
             ]
         }

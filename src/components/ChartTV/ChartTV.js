@@ -75,7 +75,8 @@ class ChartTV extends React.Component {
             that.widget.createButton()
                 .append(div);
             div.parentNode.parentNode.addEventListener('click', function () {
-                that.saveLayoutChart();
+                console.log(div)
+                that.saveLayoutChart(div);
             })
             that.loadLayoutChart()
         });
@@ -112,7 +113,7 @@ class ChartTV extends React.Component {
         }, 0)
     }
 
-    saveLayoutChart() {
+    saveLayoutChart(div) {
         this.widget && this.widget.save && this.widget.save(savedObj => {
             console.log(savedObj)
             let url = getSaveLayoutChartUrl()
@@ -136,13 +137,16 @@ class ChartTV extends React.Component {
             formData.append('symbol', 'VNM');
             formData.append('resolution', 'D');
 
+            div.innerText = 'Saving'
             axios.post(url, formData)
                 .then(response => {
                     if (response.data) {
+                        div.innerText = 'Done'
                         console.log(response.data)
                     }
                 })
                 .catch(error => {
+                    div.innerText = 'Failed'
                     console.log(error.response)
                 });
         })
