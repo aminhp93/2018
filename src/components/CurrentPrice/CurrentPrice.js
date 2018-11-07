@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import axios from 'axios';
-import { getHeaderRequest, getTradingStatisticUrl, getMarketHistoricalQuotesUrl, getAccountPortfolioUrl, getDailyWatchlistUrl, postDailyWatchlistUrl, deleteDailyWatchlistUrl, getYearlyFinancialInfoUrl } from '../../helpers/requests';
+import { getHeaderRequest, getTradingStatisticUrl, getMarketHistoricalQuotesUrl, getAccountPortfolioUrl, getDailyWatchlistUrl, postDailyWatchlistUrl, deleteDailyWatchlistUrl, getYearlyFinancialInfoUrl, getTradingViewScanUrl } from '../../helpers/requests';
 import dataStorage from '../../dataStorage';
 import { AgGridReact } from 'ag-grid-react';
 import { connect } from 'react-redux';
@@ -15,12 +15,9 @@ import showModal from './../Modal';
 import DetailSymbol from '../DetailSymbol';
 import { setTimeout } from 'timers';
 const actionsTemps = { ...symbolActions, ...checkFilterReady }
-
-
 class CurrentPrice extends React.Component {
     constructor(props) {
         super(props);
-        console.log(dataStorage.tradingStatisticObj)
         this.state = {
             allSymbolsArray: [],
             columnDefs: [
@@ -62,12 +59,17 @@ class CurrentPrice extends React.Component {
                     width: 60,
                     filter: "agNumberColumnFilter"
                 },
-                // {
-                //     headerName: "Volume",
-                //     field: "Volume",
-                //     width: 80,
-                //     filter: "agNumberColumnFilter"
-                // },
+                {
+                    headerName: "Exchange",
+                    field: "Exchange",
+                    width: 60
+                },
+                {
+                    headerName: 'RatioVolume',
+                    field: "RatioVolume",
+                    width: 80,
+                    decimal: 1
+                },
                 // {
                 //     headerName: "EPS",
                 //     field: "EPS",
@@ -269,7 +271,7 @@ class CurrentPrice extends React.Component {
                 let currentOnMarketArray = response[1].data
 
                 let symbolsArray = currentWatchlistArray || []
-                let currentWatchlist = dataStorage.tradingStatisticObj.filter(item => {
+                let currentWatchlist = dataStorage.all_data.filter(item => {
                     if (currentOnMarketArray.indexOf(item.Symbol) > -1) {
                         item.OnMarket = true
                     }
@@ -287,25 +289,21 @@ class CurrentPrice extends React.Component {
 
     handleClickHSXButton() {
         this.setState({
-            showHSX: !this.state.showHSX
+            showHSX: true
         }, () => {
             if (!dataStorage.HSX_data) {
                 this.getData('HOSTC')
             } else {
-                // const lst = [];
-                // this.gridApi && this.gridApi.forEachLeafNode(params => {
-                //     lst.push(params.data);
-                // })
-                let filter_data = dataStorage.HSX_data.filter(item => this.state.showHSX ? item.Exchange === 'HOSTC' : item.Exchange !== 'HOSTC')
-                this.gridApi.setRowData(filter_data)
-                this.gridApi.sizeColumnsToFit()
+                // let filter_data = dataStorage.all_data.filter(item => this.state.showHSX ? item.Exchange === 'HOSTC' : item.Exchange !== 'HOSTC')
+                // this.gridApi.setRowData(filter_data)
+                // this.gridApi.sizeColumnsToFit()
             }
         })
     }
 
     handleClickHNXButton() {
         this.setState({
-            showHNX: !this.state.showHNX
+            showHNX: true
         }, () => {
             if (!dataStorage.HNX_data) {
                 this.getData('HASTC')
@@ -314,16 +312,16 @@ class CurrentPrice extends React.Component {
                 // this.gridApi && this.gridApi.forEachLeafNode(params => {
                 //     lst.push(params.data);
                 // })
-                let filter_data = dataStorage.HNX_data.filter(item => this.state.showHNX ? item.Exchange === 'HASTC' : item.Exchange !== 'HASTC')
-                this.gridApi.setRowData(filter_data)
-                this.gridApi.sizeColumnsToFit()
+                // let filter_data = dataStorage.all_data.filter(item => this.state.showHNX ? item.Exchange === 'HASTC' : item.Exchange !== 'HASTC')
+                // this.gridApi.setRowData(filter_data)
+                // this.gridApi.sizeColumnsToFit()
             }
         })
     }
 
     handleClickUPCOMButton() {
         this.setState({
-            showUPCOM: !this.state.showUPCOM
+            showUPCOM: true
         }, () => {
             if (!dataStorage.UPCOM_data) {
                 this.getData('UPCOM')
@@ -332,9 +330,9 @@ class CurrentPrice extends React.Component {
                 // this.gridApi && this.gridApi.forEachLeafNode(params => {
                 //     lst.push(params.data);
                 // })
-                let filter_data = dataStorage.UPCOM_data.filter(item => this.state.showUPCOM ? item.Exchange === 'UPCOM' : item.Exchange !== 'UPCOM')
-                this.gridApi.setRowData(filter_data)
-                this.gridApi.sizeColumnsToFit()
+                // let filter_data = dataStorage.all_data.filter(item => this.state.showUPCOM ? item.Exchange === 'UPCOM' : item.Exchange !== 'UPCOM')
+                // this.gridApi.setRowData(filter_data)
+                // this.gridApi.sizeColumnsToFit()
             }
         })
     }
@@ -382,6 +380,12 @@ class CurrentPrice extends React.Component {
                     <div onClick={() => this.filter('RSI_60')}>
                         RSI > 60
                     </div>
+                    <div onClick={() => this.filter('high_change_volume')}>
+                        High change volume
+                    </div>
+                    <div onClick={() => this.filter('strong_buy')}>
+                        Strong Buy
+                    </div>
                     {/* <div onClick={() => this.filter('Volume_100000')}>
                         Volume > 100000
                     </div>
@@ -404,7 +408,7 @@ class CurrentPrice extends React.Component {
     filter(condition) {
         let result = []
         if (condition === 'RSI_60') {
-            let filter_data = dataStorage.tradingStatisticObj.filter(item => item.RSI_14 > 60 && item.RSI_14 < 70 && item.RSI_14 > item.RSI_14_previous && item.valid_volume)
+            let filter_data = dataStorage.all_data.filter(item => item.RSI_14 > 60 && item.RSI_14 < 70 && item.RSI_14 > item.RSI_14_previous && item.valid_volume)
             this.gridApi.setRowData(filter_data)
             this.gridApi.sizeColumnsToFit()
             // var RSIFilterComponent = this.gridApi.getFilterInstance("RSI_14");
@@ -414,6 +418,33 @@ class CurrentPrice extends React.Component {
             //     filterTo: null
             // });
             // this.gridApi.onFilterChanged();
+        } else if (condition === 'strong_buy') {
+            let url = getTradingViewScanUrl()
+            let obj = { "filter": [{ "left": "Recommend.All|1M", "operation": "nempty" }, { "left": "Recommend.All|1M", "operation": "nequal", "right": 0.5 }, { "left": "Recommend.All|1M", "operation": "in_range", "right": [0.5, 1] }], "symbols": { "query": { "types": [] }, "tickers": [] }, "columns": ["name", "close|1M", "change|1M", "change_abs|1M", "Recommend.All|1M", "volume|1M", "market_cap_basic", "price_earnings_ttm", "earnings_per_share_basic_ttm", "number_of_employees", "sector", "description", "name", "type", "subtype", "pricescale", "minmov", "fractional", "minmove2"], "sort": { "sortBy": "Recommend.All|1M", "sortOrder": "desc" }, "options": { "lang": "vi" }, "range": [0, 150] }
+            axios.post(url, obj)
+                .then(response => {
+                    if (response.data && response.data.data) {
+                        let filter_data = dataStorage.all_data.filter(item => {
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                if ('HOSE:' + item.Symbol === response.data.data[i].s) return true
+                            }
+                        })
+                        this.gridApi.setRowData(filter_data)
+                        this.gridApi.sizeColumnsToFit()
+                    } else {
+                        this.gridApi.setRowData([])
+                        this.gridApi.sizeColumnsToFit()
+                    }
+                })
+                .catch(error => {
+                    this.gridApi.setRowData([])
+                    this.gridApi.sizeColumnsToFit()
+                    console.log(error)
+                })
+        } else if (condition === 'high_change_volume') {
+            let filter_data = dataStorage.all_data.filter(item => item.RatioVolume > 1.5)
+            this.gridApi.setRowData(filter_data)
+            this.gridApi.sizeColumnsToFit()
         } else if (condition === 'Volume_100000') {
             var VolumeFilterComponent = this.gridApi.getFilterInstance("Volume");
             VolumeFilterComponent.setModel({
@@ -469,8 +500,8 @@ class CurrentPrice extends React.Component {
     handleGetData() {
         console.log(dataStorage.tradingStatisticObj)
         document.querySelector('#getDataButton').innerText = 'Loading'
-        this.getData('HOSTC')
-
+        this.gridApi.setRowData(dataStorage.all_data)
+        this.gridApi.sizeColumnsToFit()
         // this.setState({
         //     numberStockIncrease: dataStorage.numberStockIncrease,
         //     numberStockDecrease: dataStorage.numberStockDecrease,
@@ -486,6 +517,7 @@ class CurrentPrice extends React.Component {
         let volume = 100000;
         let ratioVolume = 2;
         let averageNumberDay = 20;
+        let averageNumberVolume = 30;
         let averageNumberPrice = 30;
         let sumPrice = 0;
         let averagePrice = null;
@@ -509,7 +541,7 @@ class CurrentPrice extends React.Component {
                                         let average1monthVolume = 0;
                                         let sum1monthVolume = 0
                                         allSymbolsArray[i].valid_volume = true
-                                        for (let j = 1; j < (averageNumberDay + 1); j++) {
+                                        for (let j = 1; j < (averageNumberVolume + 1); j++) {
                                             if (data[data.length - 1 - j].Volume < 1000 && allSymbolsArray[i].valid_volume) {
                                                 allSymbolsArray[i].valid_volume = false
                                             }
@@ -561,7 +593,6 @@ class CurrentPrice extends React.Component {
                                         allSymbolsArray[i].Low = data[data.length - 1].Low
                                         allSymbolsArray[i].RSI_14_previous = Number(data[data.length - 2].RSI.toFixed(0)) || 0
                                         allSymbolsArray[i].RSI_14 = Number(data[data.length - 1].RSI.toFixed(0)) || 0
-                                        allSymbolsArray[i].Average1monthVolume = data[data.length - 1].Average1monthVolume
                                         allSymbolsArray[i].RatioVolume = data[data.length - 1].RatioVolume
                                         allSymbolsArray[i].PerformancePrice1Month = data[data.length - 1].PerformancePrice1Month
 
@@ -593,9 +624,10 @@ class CurrentPrice extends React.Component {
                             } else if (exchange === 'UPCOM') {
                                 dataStorage.UPCOM_data = result
                             }
+                            dataStorage.all_data = dataStorage.all_data.concat(result)
                             console.log(result)
                             // dataStorage.allSymbolsString = allSymbolsString
-                            this.gridApi.setRowData(result)
+                            this.gridApi.setRowData(dataStorage.all_data)
                             // this.gridApi.updateRowData({ add: allSymbolsArray })
                             this.gridApi.sizeColumnsToFit()
                             document.querySelector('#getDataButton').innerText = 'All data'

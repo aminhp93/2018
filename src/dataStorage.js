@@ -13,5 +13,6 @@ export default {
     tradingStatisticObj: [],
     HSX_data: null,
     HNX_data: null,
-    UPCOM_data: null
+    UPCOM_data: null,
+    all_data: []
 }
