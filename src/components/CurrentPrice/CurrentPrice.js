@@ -68,7 +68,9 @@ class CurrentPrice extends React.Component {
                     headerName: 'RatioVolume',
                     field: "RatioVolume",
                     width: 80,
-                    decimal: 1
+                    cellRenderer: function (params) {
+                        return params.data.RatioVolume && params.data.RatioVolume.toFixed(1)
+                    }
                 },
                 // {
                 //     headerName: "EPS",
@@ -426,7 +428,7 @@ class CurrentPrice extends React.Component {
                     if (response.data && response.data.data) {
                         let filter_data = dataStorage.all_data.filter(item => {
                             for (let i = 0; i < response.data.data.length; i++) {
-                                if ('HOSE:' + item.Symbol === response.data.data[i].s) return true
+                                if (('HOSE:' + item.Symbol === response.data.data[i].s) && item.valid_volume) return true
                             }
                         })
                         this.gridApi.setRowData(filter_data)
@@ -442,7 +444,7 @@ class CurrentPrice extends React.Component {
                     console.log(error)
                 })
         } else if (condition === 'high_change_volume') {
-            let filter_data = dataStorage.all_data.filter(item => item.RatioVolume > 1.5)
+            let filter_data = dataStorage.all_data.filter(item => item.RatioVolume > 1.5 && item.valid_volume)
             this.gridApi.setRowData(filter_data)
             this.gridApi.sizeColumnsToFit()
         } else if (condition === 'Volume_100000') {
