@@ -9,11 +9,17 @@ class Chat extends Component {
         };
     }
     componentDidMount() {
+    }
+
+    handleOnClick() {
         const { endpoint } = this.state;
         const socket = socketIOClient(endpoint);
-        socket.on("FromAPI", data => {
-            this.setState({ response: data })
+        socket.emit('message', this.input.value);
+        this.input.value = ''
+        socket.on("message", response => {
+            this.setState({ response })
         });
+
     }
     render() {
         const { response } = this.state;
@@ -21,9 +27,11 @@ class Chat extends Component {
             <div style={{ textAlign: "center" }}>
                 {
                     response
-                        ? <p>The temperature in Florence is: {response} °F</p>
-                        : <p>Loading...</p>
                 }
+                <div>
+                    <input ref={dom => this.input = dom} />
+                    <div onClick={() => this.handleOnClick()}>Send</div>
+                </div>
             </div>
         );
     }
