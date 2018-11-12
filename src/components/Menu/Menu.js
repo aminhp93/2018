@@ -75,6 +75,9 @@ export default class Menu extends React.Component {
                 <div onClick={this.handleOnClick.bind(this)}>
                     TradingViewFilter
                 </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    Chat
+                </div>
             </div>
         );
     }
