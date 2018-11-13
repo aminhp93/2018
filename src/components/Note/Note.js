@@ -2,12 +2,13 @@ import React from 'react';
 import axios from 'axios'
 import { getAllNotesUrl, getUpdateNoteUrl } from '../../helpers/requests';
 import socketIOClient from "socket.io-client";
+import config from './../../config'
 export default class Note extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             response: false,
-            endpoint: "http://127.0.0.1:4001"
+            endpoint: config.environment === 'TEST' ? "http://127.0.0.1:4001" : 'https://project-2018-frontend.herokuapp.com/note'
         };
     }
 
