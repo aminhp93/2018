@@ -75,6 +75,10 @@ export function getCompanyNewsCountUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/News/CompanyNewsCount?symbol=' + symbol
 }
 
+export function getNewContentUrl(newsId) {
+    return 'https://svr1.fireant.vn/api/Data/News/NewsContent?id=' + newsId
+}
+
 export function getCompanyHistoricalQuotesUrl(symbol) {
     return 'https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2017-10-8&endDate=2018-10-3'
     // return 'https://cors-anywhere.herokuapp.com/https://www.fireant.vn/api/Data/Companies/HistoricalQuotes?symbol=' + symbol + '&startDate=2018-8-19&endDate=2018-9-19'

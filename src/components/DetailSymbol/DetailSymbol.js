@@ -3,10 +3,6 @@ import SearchSymbol from '../SearchSymbol';
 import Transaction from '../Transaction/Transaction';
 import CanslimStandard from '../CanslimStandard/CanslimStandard';
 import BusinessSummary from '../BusinessSummary/BusinessSummary';
-import BusinessSummary1 from '../BusinessSummary1/BusinessSummary1';
-import BusinessSummary2 from '../BusinessSummary2/BusinessSummary2';
-import BusinessSummary3 from '../BusinessSummary3/BusinessSummary3';
-import BusinessSummary4 from '../BusinessSummary4/BusinessSummary4';
 import { translate, Trans } from 'react-i18next';
 import { getLatestFinancialInfoUrl, getIntradayQuotesUrl, getCompanyHistoricalQuotesUrl, getCompanyNewsUrl, getLastestFinancialReports_1 } from '../../helpers/requests';
 import axios from 'axios';
@@ -17,6 +13,7 @@ import * as symbolActions from '../../actions/symbol.actions';
 import { AgGridReact } from 'ag-grid-react';
 import durationReportEnums from '../../constants/durationReportEnums'
 import ChartTV from '../ChartTV';
+import News from '../News';
 
 class DetailSymbol extends React.Component {
     constructor(props) {
@@ -310,7 +307,9 @@ class DetailSymbol extends React.Component {
     }
 
     renderTab5() {
-        return <div>5 - {Math.random()}</div>
+        return <div>
+            <News />
+        </div>
     }
 
     renderTab6() {
@@ -362,7 +361,7 @@ class DetailSymbol extends React.Component {
 
     render() {
         const panes = [
-            { menuItem: 'Giao dich', render: () => <Tab.Pane onClick={() => this.handleOnclickTab1()}>{this.renderTab1()}</Tab.Pane> },
+            { menuItem: 'Giao dich', render: () => <Tab.Pane>{this.renderTab1()}</Tab.Pane> },
             { menuItem: 'Ho so', render: () => <Tab.Pane>{this.renderTab2()}</Tab.Pane> },
             { menuItem: 'Co dong', render: () => <Tab.Pane>{this.renderTab3()}</Tab.Pane> },
             { menuItem: 'Von va co tuc', render: () => <Tab.Pane>{this.renderTab4()}</Tab.Pane> },
