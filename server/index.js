@@ -1,17 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const pino = require('express-pino-logger')();
-
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+const port = process.env.PORT || 4001;
+const router = express.Router();
+router.get("/", (req, res) => {
+    res.send({ response: "I am alive" }).status(200);
+});
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(pino);
-
-app.get('/', (req, res) => {
-    const name = req.query.name || 'World';
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
+app.use(router);
+const server = http.createServer(app);
+const io = socketIo(server);
+io.on("connection", socket => {
+    console.log("New client connected")
+    socket.on("disconnect", () => console.log("Client disconnected"));
+    socket.on('message', function (msg) {
+        console.log(msg)
+        io.emit("message", msg);
+    });
 });
 
-app.listen(3001, () =>
-    console.log('Express server is running on localhost:3001')
-);
+server.listen(port, () => console.log(`Listening on port ${port}`));
