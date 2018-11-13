@@ -8,7 +8,13 @@ class Chat extends Component {
             endpoint: "http://127.0.0.1:4001"
         };
     }
+
     componentDidMount() {
+        const { endpoint } = this.state;
+        const socket = socketIOClient(endpoint);
+        socket.on("message", response => {
+            this.setState({ response })
+        });
     }
 
     handleOnClick() {
@@ -16,11 +22,8 @@ class Chat extends Component {
         const socket = socketIOClient(endpoint);
         socket.emit('message', this.input.value);
         this.input.value = ''
-        socket.on("message", response => {
-            this.setState({ response })
-        });
-
     }
+
     render() {
         const { response } = this.state;
         return (
