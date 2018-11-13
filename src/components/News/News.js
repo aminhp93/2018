@@ -5,6 +5,7 @@ export default class News extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            symbol: props.symbol || 'SBT',
             companyNewsObj: [],
             companyNewsCountObj: null
         }
@@ -33,7 +34,7 @@ export default class News extends React.Component {
     }
 
     componentDidMount() {
-        let url = getCompanyNewsUrl('SBT')
+        let url = getCompanyNewsUrl(this.state.symbol)
         axios.get(url)
             .then(response => {
                 if (response.data) {
@@ -45,7 +46,7 @@ export default class News extends React.Component {
             .catch(error => {
                 console.log(error.response)
             });
-        url = getCompanyNewsCountUrl('SBT')
+        url = getCompanyNewsCountUrl(this.state.symbol)
         axios.get(url)
             .then(response => {
                 if (response.data) {

@@ -308,7 +308,7 @@ class DetailSymbol extends React.Component {
 
     renderTab5() {
         return <div>
-            <News />
+            <News symbol={this.state.symbol} />
         </div>
     }
 
