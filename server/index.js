@@ -3,7 +3,7 @@ const http = require("http");
 const socketIo = require("socket.io");
 const port = process.env.PORT || 4001;
 const router = express.Router();
-router.get("/note", (req, res) => {
+router.get("/", (req, res) => {
     res.send({ response: "I am alive" }).status(200);
 });
 const app = express();

@@ -41,7 +41,6 @@
   "engines": {
     "node": "8.11.2"
   },
-  "proxy": "https://project-2018-frontend.herokuapp.com/note",
   "devDependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
