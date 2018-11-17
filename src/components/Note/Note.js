@@ -14,13 +14,13 @@ export default class Note extends React.Component {
 
     handleOnChange(e) {
         const { endpoint } = this.state;
-        const socket = socketIOClient(endpoint);
+        // const socket = socketIOClient(endpoint);
         const obj = { 'note': e.target.value }
         const url = getUpdateNoteUrl()
         axios.post(url, obj)
             .then(response => {
                 console.log(response)
-                socket.emit('message', this.input.value);
+                // socket.emit('message', this.input.value);
             })
             .catch(error => {
                 console.log(error)
@@ -37,11 +37,11 @@ export default class Note extends React.Component {
 
     componentDidMount() {
         const { endpoint } = this.state;
-        const socket = socketIOClient(endpoint);
+        // const socket = socketIOClient(endpoint);
         const that = this
-        socket.on("message", response => {
-            that.input.value = response
-        });
+        // socket.on("message", response => {
+        //     that.input.value = response
+        // });
         this.input && this.input.focus()
         const url = getAllNotesUrl()
         axios.get(url)

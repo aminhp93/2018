@@ -22,6 +22,7 @@ import Financials from './Financials';
 import PersonalStuffs from './PersonalStuffs';
 import MovieActorSpeech from './MovieActorSpeech';
 import TradingViewFilter from './TradingViewFilter';
+import Alpha from './Alpha';
 import Chat from './Chat';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import layoutConfig from '../layoutConfig';
@@ -93,58 +94,31 @@ class GoldenLayoutWrapper extends React.Component {
                 if (this.goldenLayout) this.goldenLayout.destroy();
 
                 this.goldenLayout = new GoldenLayout(config, this.layout);
-                this.goldenLayout.registerComponent('App',
-                    wrapComponent(App, this.context.store)
-                );
-                this.goldenLayout.registerComponent('Book',
-                    wrapComponent(Book, this.context.store)
-                );
-                this.goldenLayout.registerComponent('DetailSymbol',
-                    wrapComponent(DetailSymbol, this.context.store)
-                );
-                this.goldenLayout.registerComponent('DailyWatchlist',
-                    wrapComponent(DailyWatchlist, this.context.store)
-                );
-                this.goldenLayout.registerComponent('Tennis',
-                    wrapComponent(Tennis, this.context.store)
-                );
-                this.goldenLayout.registerComponent('AccountManagement',
-                    wrapComponent(AccountManagement, this.context.store)
-                );
-                this.goldenLayout.registerComponent('FilterSystem',
-                    wrapComponent(FilterSystem, this.context.store)
-                );
-                this.goldenLayout.registerComponent('CurrentPrice',
-                    wrapComponent(CurrentPrice, this.context.store)
-                );
-                this.goldenLayout.registerComponent('NewOrder',
-                    wrapComponent(NewOrder, this.context.store)
-                );
-                this.goldenLayout.registerComponent('ChartTV',
-                    wrapComponent(ChartTV, this.context.store)
-                );
-                this.goldenLayout.registerComponent('Financials',
-                    wrapComponent(Financials, this.context.store)
-                );
-                this.goldenLayout.registerComponent('PersonalStuffs',
-                    wrapComponent(PersonalStuffs, this.context.store)
-                );
-                this.goldenLayout.registerComponent('MovieActorSpeech',
-                    wrapComponent(MovieActorSpeech, this.context.store)
-                );
-                this.goldenLayout.registerComponent('MarketWatch',
-                    wrapComponent(MarketWatch, this.context.store)
-                );
-                this.goldenLayout.registerComponent('Note',
-                    wrapComponent(Note, this.context.store)
-                );
-                this.goldenLayout.registerComponent('TradingViewFilter',
-                    wrapComponent(TradingViewFilter, this.context.store)
-                );
-                this.goldenLayout.registerComponent('Chat',
-                    wrapComponent(Chat, this.context.store)
-                );
-
+                const listComponent = [
+                    ['App', App],
+                    ['Book', Book],
+                    ['DetailSymbol', DetailSymbol],
+                    ['DailyWatchlist', DailyWatchlist],
+                    ['Tennis', Tennis],
+                    ['AccountManagement', AccountManagement],
+                    ['FilterSystem', FilterSystem],
+                    ['CurrentPrice', CurrentPrice],
+                    ['NewOrder', NewOrder],
+                    ['ChartTV', ChartTV],
+                    ['Financials', Financials],
+                    ['PersonalStuffs', PersonalStuffs],
+                    ['MovieActorSpeech', MovieActorSpeech],
+                    ['MarketWatch', MarketWatch],
+                    ['Note', Note],
+                    ['TradingViewFilter', TradingViewFilter],
+                    ['Chat', Chat],
+                    ['Alpha', Alpha]
+                ]
+                for (let i = 0; i < listComponent.length; i++) {
+                    this.goldenLayout.registerComponent(listComponent[i][0],
+                        wrapComponent(listComponent[i][1], this.context.store)
+                    );
+                }
 
                 /// Callback for every created stack
                 this.goldenLayout.on('stackCreated', (stack) => {

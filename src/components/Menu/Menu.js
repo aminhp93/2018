@@ -78,6 +78,9 @@ export default class Menu extends React.Component {
                 <div onClick={this.handleOnClick.bind(this)}>
                     Chat
                 </div>
+                <div onClick={this.handleOnClick.bind(this)}>
+                    Alpha
+                </div>
             </div>
         );
     }

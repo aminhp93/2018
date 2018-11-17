@@ -1,0 +1,6 @@
+{
+    "name": "Alpha",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./Alpha.js"
+}
