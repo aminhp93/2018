@@ -119,21 +119,21 @@ const getDefaultLayout = (percentHeightTop = 40, percentWidth = 20) => {
         {
             'type': 'row',
             'content': [
-                // {
-                //     'type': 'component',
-                //     'component': 'Note',
-                //     'componentName': 'lm-react-component',
-                //     'isClosable': true,
-                //     'reorderEnabled': true,
-                //     'title': 'Note'
-                // },
                 {
                     'type': 'component',
-                    'component': 'CurrentPrice',
+                    'component': 'Note',
                     'componentName': 'lm-react-component',
                     'isClosable': true,
                     'reorderEnabled': true,
-                    'title': 'CurrentPrice'
+                    'title': 'Note'
+                },
+                {
+                    'type': 'component',
+                    'component': 'Alpha',
+                    'componentName': 'lm-react-component',
+                    'isClosable': true,
+                    'reorderEnabled': true,
+                    'title': 'Alpha'
                 }
             ]
         }
