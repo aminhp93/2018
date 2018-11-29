@@ -501,8 +501,9 @@ class CurrentPrice extends React.Component {
 
     handleGetData() {
         console.log(dataStorage.tradingStatisticObj)
-        document.querySelector('#getDataButton').innerText = 'Loading'
-        this.gridApi.setRowData(dataStorage.all_data)
+        // document.querySelector('#getDataButton').innerText = 'Loading'
+        let filter_data = dataStorage.all_data.filter(item => item.RSI_14 > 30 && item.RSI_14 < 85 && item.valid_volume && item.RatioVolume.toFixed(1) !== 0)
+        this.gridApi.setRowData(filter_data)
         this.gridApi.sizeColumnsToFit()
         // this.setState({
         //     numberStockIncrease: dataStorage.numberStockIncrease,
